@@ -52,6 +52,13 @@ namespace MiniBug.Classes
         /// </summary>
         public DateTime DateModified { get; set; }
 
-
+        /// <summary>
+        /// Creates a new task.
+        /// </summary>
+        /// <param name="id">The ID of this task.</param>
+        public Task(int id)
+        {
+            ID = id;
+        }
     }
 }

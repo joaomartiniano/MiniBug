@@ -57,5 +57,13 @@ namespace MiniBug
         /// </summary>
         public DateTime DateModified { get; set; }
 
+        /// <summary>
+        /// Creates a new issue.
+        /// </summary>
+        /// <param name="id">The ID of this issue.</param>
+        public Issue(int id)
+        {
+            ID = id;
+        }
     }
 }
