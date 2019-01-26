@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiniBug.Classes
+namespace MiniBug
 {
     public enum TaskStatus { None = 0 /* ....add more */ };
 
