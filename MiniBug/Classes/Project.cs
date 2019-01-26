@@ -10,26 +10,43 @@ namespace MiniBug
     public enum FileOperationsStatus { None = 0, Success, DirectoryNotFound, FileNotFound, IOError, PathTooLong }
 
     /// <summary>
-    /// Stores the application data and is responsible for loading and saving it.
+    /// Stores the issues and tasks of a software project.
     /// </summary>
-    class ApplicationData
+    public class Project
     {
-        public static string Filename { get; set; } = string.Empty;
+        /// <summary>
+        /// Gets or sets the project name.
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the issues.
+        /// Gets or sets the project filename.
         /// </summary>
-        public static List<Issue> Issues { get; set; } = new List<Issue>();
+        public string Filename { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the tasks.
+        /// Gets or sets the project issues.
         /// </summary>
-        public static List<Task> Tasks { get; set; } = new List<Task>();
+        public List<Issue> Issues { get; set; } = new List<Issue>();
+
+        /// <summary>
+        /// Gets or sets the project tasks.
+        /// </summary>
+        public List<Task> Tasks { get; set; } = new List<Task>();
+
+        /// <summary>
+        /// Creates a new project.
+        /// </summary>
+        /// <param name="name">The project name.</param>
+        public Project(string name)
+        {
+            Name = name;
+        }
 
         /// <summary>
         /// Load application data.
         /// </summary>
-        public static FileOperationsStatus Load()
+        public FileOperationsStatus Load()
         {
             String json = string.Empty;
 
@@ -64,7 +81,7 @@ namespace MiniBug
         /// <summary>
         /// Saves the application data. The file is overwritten.
         /// </summary>
-        public static FileOperationsStatus Save()
+        public FileOperationsStatus Save()
         {
             var serializer = new JavaScriptSerializer();
             var serializedResult = serializer.Serialize(Issues);

@@ -10,7 +10,7 @@ namespace MiniBug
 
     public enum IssuePriority { None = 0, Low, Normal, High, Urgent, Immediate };
 
-    class Issue
+    public class Issue
     {
         /// <summary>
         /// Gets the ID of this issue.

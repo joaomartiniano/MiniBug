@@ -10,7 +10,7 @@ namespace MiniBug
 
     public enum TaskPriority { None = 0, Low, Normal, High, Urgent, Immediate };
 
-    class Task
+    public class Task
     {
         /// <summary>
         /// Gets the ID of this task.
