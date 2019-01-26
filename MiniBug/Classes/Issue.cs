@@ -64,6 +64,27 @@ namespace MiniBug
         public Issue(int id)
         {
             ID = id;
+
+            DateCreated = DateTime.Now;
+            DateModified = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Creates a new issue.
+        /// </summary>
+        /// <param name="id">The ID of this issue.</param>
+        public Issue(int id, IssueStatus status, IssuePriority priority, string summary, string description, string version, string targetVersion)
+        {
+            ID = id;
+            Status = status;
+            Priority = priority;
+            Summary = summary;
+            Description = description;
+            Version = version;
+            TargetVersion = targetVersion;
+
+            DateCreated = DateTime.Now;
+            DateModified = DateTime.Now;
         }
     }
 }
