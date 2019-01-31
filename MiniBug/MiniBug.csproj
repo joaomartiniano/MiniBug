@@ -47,9 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ComboBoxItem.cs" />
+    <Compile Include="Classes\HelperClass.cs" />
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\Issue.cs" />
     <Compile Include="Classes\Task.cs" />
+    <Compile Include="IssueForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IssueForm.Designer.cs">
+      <DependentUpon>IssueForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +66,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="IssueForm.resx">
+      <DependentUpon>IssueForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

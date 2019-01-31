@@ -47,10 +47,7 @@ namespace MiniBug
         {
             GridIssues.BackgroundColor = TabControl.DefaultBackColor;
             GridIssues.BorderStyle = BorderStyle.None;
-            GridIssues.Left = TabControl.ClientRectangle.Left;
-            GridIssues.Top = TabControl.ClientRectangle.Top;
-            GridIssues.Width = TabControl.ClientRectangle.Width;
-            GridIssues.Height = TabControl.ClientRectangle.Height;
+            GridIssues.Dock = DockStyle.Fill;
 
             // *** adapt **
             //GridIssues.StandardTab = true;
@@ -58,7 +55,8 @@ namespace MiniBug
             //remove this? *** GridIssues.AllowUserToDeleteRows = false;
             GridIssues.AllowUserToOrderColumns = true;
             GridIssues.AllowUserToResizeColumns = true;
-            //remove? ** GridIssues.AllowUserToResizeRows = false;
+            GridIssues.AllowUserToResizeRows = false;
+            GridIssues.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             GridIssues.ColumnHeadersVisible = true;
             GridIssues.RowHeadersVisible = false;
             //GridIssues.GridColor = UnicodeViewer.Settings.GRID_BORDER_COLOR;
@@ -75,6 +73,7 @@ namespace MiniBug
             GridIssues.Columns[2].HeaderText = "Version";
             GridIssues.Columns[3].HeaderText = "Summary";
             GridIssues.Columns[4].HeaderText = "Created";
+            GridIssues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void PopulateGridIssues()
@@ -82,6 +81,43 @@ namespace MiniBug
             foreach (Issue I in Program.SoftwareProject.Issues)
             {
                 GridIssues.Rows.Add(new string[] { I.ID.ToString(), I.Status.ToString(), I.Version, I.Summary, I.DateCreated.ToString() });
+            }
+        }
+
+        /// <summary>
+        /// Create a new issue.
+        /// </summary>
+        private void NewIssue_Click(object sender, EventArgs e)
+        {
+            IssueForm frmIssue = new IssueForm(OperationType.New);
+
+            if (frmIssue.ShowDialog() == DialogResult.OK)
+            {
+                Program.SoftwareProject.Issues.Add(frmIssue.CurrentIssue);
+                GridIssues.Rows.Add(new string[] { frmIssue.CurrentIssue.ID.ToString(), frmIssue.CurrentIssue.Status.ToString(), frmIssue.CurrentIssue.Version, frmIssue.CurrentIssue.Summary, frmIssue.CurrentIssue.DateCreated.ToString() });
+            }
+
+            frmIssue.Dispose();
+        }
+
+        /// <summary>
+        /// Edit the selected issue.
+        /// </summary>
+        private void EditIssue_Click(object sender, EventArgs e)
+        {
+            if (GridIssues.SelectedRows.Count == 1)
+            {
+                int i = Int32.Parse(GridIssues.SelectedRows[0].Cells[0].Value.ToString());
+                IssueForm frmIssue = new IssueForm(OperationType.Edit, Program.SoftwareProject.Issues[i - 1]);
+
+                if (frmIssue.ShowDialog() == DialogResult.OK)
+                {
+                    // ****
+                }
+
+                frmIssue.Dispose();
+
+                //MessageBox.Show("ID = " + );
             }
         }
     }

@@ -86,5 +86,32 @@ namespace MiniBug
             DateCreated = DateTime.Now;
             DateModified = DateTime.Now;
         }
+
+        public static string IssueStatusToString(IssueStatus Value)
+        {
+            switch (Value)
+            {
+                case IssueStatus.None:
+                    return string.Empty;
+
+                case IssueStatus.Unconfirmed:
+                    return "Unconfirmed";
+
+                case IssueStatus.Confirmed:
+                    return "Confirmed";
+
+                case IssueStatus.InProgress:
+                    return "In Progress";
+
+                case IssueStatus.Resolved:
+                    return "Resolved";
+
+                case IssueStatus.Verified:
+                    return "Verified";
+
+                default:
+                    return string.Empty;
+            }
+        }
     }
 }
