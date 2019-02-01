@@ -19,6 +19,7 @@ namespace MiniBug
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.Icon = MiniBug.Properties.Resources.Minibug;
             this.Text = "MiniBug Issue Tracker";
             
             // Suspend the layout logic for the form, while the application is initializing

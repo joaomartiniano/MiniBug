@@ -104,5 +104,8 @@
   <ItemGroup>
     <None Include="Resources\DeleteBug_32x32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minibug.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
