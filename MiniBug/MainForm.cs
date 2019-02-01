@@ -26,8 +26,10 @@ namespace MiniBug
 
             Program.SoftwareProject = new MiniBug.Project("FlexBox Simulator");
             Program.SoftwareProject.Filename = "MINIBUG-FlexBoxSimulator.json";
-            Program.SoftwareProject.Issues.Add(new Issue(1, IssueStatus.Verified, IssuePriority.Normal, "Código CSS gerado: inicialização não está a obter valor do color picker do background do container", string.Empty, "0.1", "1.0.0"));
-            Program.SoftwareProject.Issues.Add(new Issue(2, IssueStatus.Verified, IssuePriority.Low, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
+            
+            // *** temporário
+            Program.SoftwareProject.Issues.Add(1, new Issue(1, IssueStatus.Verified, IssuePriority.Normal, "Código CSS gerado: inicialização não está a obter valor do color picker do background do container", string.Empty, "0.1", "1.0.0"));
+            Program.SoftwareProject.Issues.Add(2, new Issue(2, IssueStatus.Verified, IssuePriority.Low, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
 
             InitializeTabControl();
             InitializeGridIssues();
@@ -35,6 +37,9 @@ namespace MiniBug
 
             // Resume the layout logic
             this.ResumeLayout();
+
+            // experiência***
+            //Program.SoftwareProject.Save();
         }
 
         private void InitializeTabControl()
@@ -78,9 +83,9 @@ namespace MiniBug
 
         private void PopulateGridIssues()
         {
-            foreach (Issue I in Program.SoftwareProject.Issues)
+            foreach (KeyValuePair<int, Issue> item in Program.SoftwareProject.Issues)
             {
-                GridIssues.Rows.Add(new string[] { I.ID.ToString(), I.Status.ToString(), I.Version, I.Summary, I.DateCreated.ToString() });
+                GridIssues.Rows.Add(new string[] { item.Key.ToString(), item.Value.Status.ToString(), item.Value.Version, item.Value.Summary, item.Value.DateCreated.ToString() });
             }
         }
 
@@ -93,7 +98,7 @@ namespace MiniBug
 
             if (frmIssue.ShowDialog() == DialogResult.OK)
             {
-                Program.SoftwareProject.Issues.Add(frmIssue.CurrentIssue);
+                Program.SoftwareProject.Issues.Add(frmIssue.CurrentIssue.ID, frmIssue.CurrentIssue);
                 GridIssues.Rows.Add(new string[] { frmIssue.CurrentIssue.ID.ToString(), frmIssue.CurrentIssue.Status.ToString(), frmIssue.CurrentIssue.Version, frmIssue.CurrentIssue.Summary, frmIssue.CurrentIssue.DateCreated.ToString() });
             }
 
@@ -107,8 +112,10 @@ namespace MiniBug
         {
             if (GridIssues.SelectedRows.Count == 1)
             {
-                int i = Int32.Parse(GridIssues.SelectedRows[0].Cells[0].Value.ToString());
-                IssueForm frmIssue = new IssueForm(OperationType.Edit, Program.SoftwareProject.Issues[i - 1]);
+                // Get the key of the issue in the selected row 
+                int key = Int32.Parse(GridIssues.SelectedRows[0].Cells[0].Value.ToString());
+
+                IssueForm frmIssue = new IssueForm(OperationType.Edit, Program.SoftwareProject.Issues[key]);
 
                 if (frmIssue.ShowDialog() == DialogResult.OK)
                 {
@@ -118,6 +125,30 @@ namespace MiniBug
                 frmIssue.Dispose();
 
                 //MessageBox.Show("ID = " + );
+            }
+        }
+
+        /// <summary>
+        /// Delete the selected issue.
+        /// </summary>
+        private void DeleteIssue_Click(object sender, EventArgs e)
+        {
+            if (GridIssues.SelectedRows.Count == 1)
+            {
+                // Confirm this operation
+                if (MessageBox.Show("Are you sure you want to delete this issue?", "Delete Issue", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+                {
+                    // Get the key of the issue in the selected row 
+                    int key = Int32.Parse(GridIssues.SelectedRows[0].Cells[0].Value.ToString());
+                    // Get the index of the selected row
+                    int i = GridIssues.SelectedRows[0].Index;
+
+                    // Remove the issue from the collection
+                    Program.SoftwareProject.Issues.Remove(key);
+                    
+                    // Remove the row from the grid
+                    GridIssues.Rows.RemoveAt(i);
+                }
             }
         }
     }

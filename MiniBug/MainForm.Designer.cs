@@ -39,6 +39,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewIssue = new System.Windows.Forms.ToolStripButton();
             this.EditIssue = new System.Windows.Forms.ToolStripButton();
+            this.DeleteIssue = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.GridIssues)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -89,15 +90,17 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewProject,
             this.OpenProject,
             this.toolStripSeparator1,
             this.NewIssue,
-            this.EditIssue});
+            this.EditIssue,
+            this.DeleteIssue});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 54);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -107,7 +110,7 @@
             this.NewProject.Image = ((System.Drawing.Image)(resources.GetObject("NewProject.Image")));
             this.NewProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.NewProject.Name = "NewProject";
-            this.NewProject.Size = new System.Drawing.Size(23, 22);
+            this.NewProject.Size = new System.Drawing.Size(36, 51);
             this.NewProject.Text = "toolStripButton1";
             this.NewProject.ToolTipText = "New Project";
             // 
@@ -117,36 +120,47 @@
             this.OpenProject.Image = ((System.Drawing.Image)(resources.GetObject("OpenProject.Image")));
             this.OpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenProject.Name = "OpenProject";
-            this.OpenProject.Size = new System.Drawing.Size(23, 22);
+            this.OpenProject.Size = new System.Drawing.Size(36, 36);
             this.OpenProject.Text = "toolStripButton2";
             this.OpenProject.ToolTipText = "Open Project";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
             // NewIssue
             // 
-            this.NewIssue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.NewIssue.Image = ((System.Drawing.Image)(resources.GetObject("NewIssue.Image")));
+            this.NewIssue.Image = global::MiniBug.Properties.Resources.NewBug_32x32;
             this.NewIssue.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.NewIssue.Name = "NewIssue";
-            this.NewIssue.Size = new System.Drawing.Size(23, 22);
-            this.NewIssue.Text = "toolStripButton1";
+            this.NewIssue.Size = new System.Drawing.Size(64, 51);
+            this.NewIssue.Text = "New Issue";
+            this.NewIssue.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.NewIssue.ToolTipText = "New Issue";
             this.NewIssue.Click += new System.EventHandler(this.NewIssue_Click);
             // 
             // EditIssue
             // 
-            this.EditIssue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EditIssue.Image = ((System.Drawing.Image)(resources.GetObject("EditIssue.Image")));
+            this.EditIssue.Image = global::MiniBug.Properties.Resources.EditBug_32x32;
             this.EditIssue.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.EditIssue.Name = "EditIssue";
-            this.EditIssue.Size = new System.Drawing.Size(23, 22);
-            this.EditIssue.Text = "toolStripButton1";
+            this.EditIssue.Size = new System.Drawing.Size(60, 51);
+            this.EditIssue.Text = "Edit Issue";
+            this.EditIssue.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+            this.EditIssue.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.EditIssue.ToolTipText = "Edit Issue";
             this.EditIssue.Click += new System.EventHandler(this.EditIssue_Click);
+            // 
+            // DeleteIssue
+            // 
+            this.DeleteIssue.Image = global::MiniBug.Properties.Resources.DeleteBug_32x32;
+            this.DeleteIssue.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.DeleteIssue.Name = "DeleteIssue";
+            this.DeleteIssue.Size = new System.Drawing.Size(73, 51);
+            this.DeleteIssue.Text = "Delete Issue";
+            this.DeleteIssue.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.DeleteIssue.Click += new System.EventHandler(this.DeleteIssue_Click);
             // 
             // MainForm
             // 
@@ -180,6 +194,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton NewIssue;
         private System.Windows.Forms.ToolStripButton EditIssue;
+        private System.Windows.Forms.ToolStripButton DeleteIssue;
     }
 }
 

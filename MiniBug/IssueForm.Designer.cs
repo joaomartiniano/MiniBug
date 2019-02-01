@@ -53,7 +53,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(12, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 13);
             this.label1.TabIndex = 0;
@@ -63,7 +63,7 @@
             // 
             this.lblID.AutoSize = true;
             this.lblID.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblID.Location = new System.Drawing.Point(67, 9);
+            this.lblID.Location = new System.Drawing.Point(67, 13);
             this.lblID.Name = "lblID";
             this.lblID.Size = new System.Drawing.Size(20, 13);
             this.lblID.TabIndex = 1;
@@ -72,7 +72,7 @@
             // lblDateCreatedTitle
             // 
             this.lblDateCreatedTitle.AutoSize = true;
-            this.lblDateCreatedTitle.Location = new System.Drawing.Point(132, 9);
+            this.lblDateCreatedTitle.Location = new System.Drawing.Point(132, 13);
             this.lblDateCreatedTitle.Name = "lblDateCreatedTitle";
             this.lblDateCreatedTitle.Size = new System.Drawing.Size(73, 13);
             this.lblDateCreatedTitle.TabIndex = 2;
@@ -81,7 +81,7 @@
             // lblDateModifiedTitle
             // 
             this.lblDateModifiedTitle.AutoSize = true;
-            this.lblDateModifiedTitle.Location = new System.Drawing.Point(357, 9);
+            this.lblDateModifiedTitle.Location = new System.Drawing.Point(357, 13);
             this.lblDateModifiedTitle.Name = "lblDateModifiedTitle";
             this.lblDateModifiedTitle.Size = new System.Drawing.Size(76, 13);
             this.lblDateModifiedTitle.TabIndex = 3;
@@ -216,20 +216,20 @@
             // lblDateCreated
             // 
             this.lblDateCreated.AutoSize = true;
-            this.lblDateCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateCreated.Location = new System.Drawing.Point(204, 9);
+            this.lblDateCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateCreated.Location = new System.Drawing.Point(204, 13);
             this.lblDateCreated.Name = "lblDateCreated";
-            this.lblDateCreated.Size = new System.Drawing.Size(48, 13);
+            this.lblDateCreated.Size = new System.Drawing.Size(41, 13);
             this.lblDateCreated.TabIndex = 18;
             this.lblDateCreated.Text = "label10";
             // 
             // lblDateModified
             // 
             this.lblDateModified.AutoSize = true;
-            this.lblDateModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateModified.Location = new System.Drawing.Point(432, 9);
+            this.lblDateModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateModified.Location = new System.Drawing.Point(432, 13);
             this.lblDateModified.Name = "lblDateModified";
-            this.lblDateModified.Size = new System.Drawing.Size(48, 13);
+            this.lblDateModified.Size = new System.Drawing.Size(41, 13);
             this.lblDateModified.TabIndex = 19;
             this.lblDateModified.Text = "label11";
             // 

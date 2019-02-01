@@ -14,6 +14,10 @@ namespace MiniBug
     /// </summary>
     public class Project
     {
+        private int IssueIdCounter = 0;
+
+        private int TaskIdCounter = 0;
+
         /// <summary>
         /// Gets or sets the project name.
         /// </summary>
@@ -27,12 +31,13 @@ namespace MiniBug
         /// <summary>
         /// Gets or sets the project issues.
         /// </summary>
-        public List<Issue> Issues { get; set; } = new List<Issue>();
+        public Dictionary<int, Issue> Issues { get; set; } = new Dictionary<int, Issue>();
 
         /// <summary>
         /// Gets or sets the project tasks.
         /// </summary>
-        public List<Task> Tasks { get; set; } = new List<Task>();
+        public Dictionary<int, Task> Tasks { get; set; } = new Dictionary<int, Task>();
+        //public List<Task> Tasks { get; set; } = new List<Task>();
 
         /// <summary>
         /// Creates a new project.
@@ -41,6 +46,8 @@ namespace MiniBug
         public Project(string name)
         {
             Name = name;
+            IssueIdCounter = 1;
+            TaskIdCounter = 1;
         }
 
         /// <summary>

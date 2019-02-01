@@ -24,8 +24,10 @@ namespace MiniBug
             
             if (Operation == OperationType.New)
             {
-                // ****
-                CurrentIssue = new Issue(99);
+                // Generate a new ID
+                int newID = Program.SoftwareProject.Issues[Program.SoftwareProject.Issues.Count].ID + 1;
+
+                CurrentIssue = new Issue(newID);
             }
             else if ((Operation == OperationType.Edit) && (issue != null))
             {
@@ -45,21 +47,30 @@ namespace MiniBug
             txtDescription.AcceptsReturn = true;
             txtDescription.ScrollBars = ScrollBars.Vertical;
 
-            // Populate the Status combobox
+            // Initialize and populate the Status combobox
+            cboStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             foreach (IssueStatus stat in Enum.GetValues(typeof(IssueStatus)))
             {
-                cboStatus.Items.Add(new ComboBoxItem(Convert.ToInt32(stat), Issue.IssueStatusToString(stat)));
+                if (stat != IssueStatus.None)
+                {
+                    cboStatus.Items.Add(new ComboBoxItem(Convert.ToInt32(stat), Issue.IssueStatusToString(stat)));
+                }                
             }
             cboStatus.ValueMember = "Value";
             cboStatus.DisplayMember = "Text";
 
-            // Populate the Priority combobox
+            // Initialize and populate the Priority combobox
+            cboPriority.DropDownStyle = ComboBoxStyle.DropDownList;
             foreach (IssuePriority p in Enum.GetValues(typeof(IssuePriority)))
             {
-                cboPriority.Items.Add(new ComboBoxItem(Convert.ToInt32(p), p.ToString()));
+                if (p != IssuePriority.None)
+                {
+                    cboPriority.Items.Add(new ComboBoxItem(Convert.ToInt32(p), p.ToString()));
+                }                
             }
             cboStatus.ValueMember = "Value";
             cboStatus.DisplayMember = "Text";
+            //***experienciacboStatus.SelectedIndex = 1;
 
             if (Operation == OperationType.New)
             {
@@ -74,7 +85,6 @@ namespace MiniBug
                 this.Text = "Edit Issue";
 
                 // Populate the controls
-                lblID.Text = CurrentIssue.ID.ToString();
                 lblDateCreated.Text = CurrentIssue.DateCreated.ToString();
                 lblDateModified.Text = CurrentIssue.DateModified.ToString();
                 txtSummary.Text = CurrentIssue.Summary;
@@ -82,9 +92,11 @@ namespace MiniBug
                 txtTargetVersion.Text = CurrentIssue.TargetVersion;
                 txtDescription.Text = CurrentIssue.Description;
 
-                cboStatus.SelectedIndex = (int)CurrentIssue.Status;
-                cboPriority.SelectedIndex = (int)CurrentIssue.Priority;
+                cboStatus.SelectedValue = (int)CurrentIssue.Status;
+                //cboPriority.SelectedIndex = (int)CurrentIssue.Priority;
             }
+
+            lblID.Text = CurrentIssue.ID.ToString();
 
             // Resume the layout logic
             this.ResumeLayout();
@@ -98,21 +110,19 @@ namespace MiniBug
             if (txtSummary.Text != string.Empty)
             {
                 CurrentIssue.Summary = txtSummary.Text;
-                //CurrentIssue.Status = cboStatus.SelectedValue;
-                //CurrentIssue.Priority = 
+                CurrentIssue.Status = ((IssueStatus)((MiniBug.ComboBoxItem)cboStatus.SelectedItem).Value);
+                CurrentIssue.Priority = ((IssuePriority)((MiniBug.ComboBoxItem)cboPriority.SelectedItem).Value);
                 CurrentIssue.Version = txtVersion.Text;
                 CurrentIssue.TargetVersion = txtTargetVersion.Text;
                 CurrentIssue.Description = txtDescription.Text;
 
-                if (Operation == OperationType.New)
+                /*if (Operation == OperationType.New)
                 {
                     // ***
                     //CurrentIssue.DateCreated = DateTime.Now;
-                }
+                }*/
 
                 CurrentIssue.DateModified = DateTime.Now;
-
-                //TaskStatus = (TaskStatusValues)((ComboBoxItem)cboStatus.SelectedItem).Value;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
