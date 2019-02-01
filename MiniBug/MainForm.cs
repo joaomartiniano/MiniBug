@@ -89,6 +89,14 @@ namespace MiniBug
             }
         }
 
+        private void RefreshItemGridIssues(int index, int key)
+        {
+            GridIssues.Rows[index].Cells[1].Value = Program.SoftwareProject.Issues[key].Status.ToString();
+            GridIssues.Rows[index].Cells[2].Value = Program.SoftwareProject.Issues[key].Version;
+            GridIssues.Rows[index].Cells[3].Value = Program.SoftwareProject.Issues[key].Summary;
+            GridIssues.Rows[index].Cells[4].Value = Program.SoftwareProject.Issues[key].DateCreated.ToString();
+        }
+
         /// <summary>
         /// Create a new issue.
         /// </summary>
@@ -119,12 +127,11 @@ namespace MiniBug
 
                 if (frmIssue.ShowDialog() == DialogResult.OK)
                 {
-                    // ****
+                    Program.SoftwareProject.Issues[key] = frmIssue.CurrentIssue;
+                    RefreshItemGridIssues(GridIssues.SelectedRows[0].Index, key);
                 }
 
                 frmIssue.Dispose();
-
-                //MessageBox.Show("ID = " + );
             }
         }
 
