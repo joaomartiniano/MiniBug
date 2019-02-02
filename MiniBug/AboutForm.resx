@@ -117,26 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="About_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\About_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CloneBug_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CloneBug_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DeleteBug_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DeleteBug_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EditBug_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EditBug_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Minibug" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Minibug.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MiniBugImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MiniBug- about-image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NewBug_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NewBug_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
+        HOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAADsNAAA7DQFhD4DuAAAAGXRFWHRTb2Z0d2FyZQB3d3cu
+        aW5rc2NhcGUub3Jnm+48GgAAAn1JREFUeF7tmzFuE2EYRF1Q0XMCTkBBQWHJ67WEKHyBdIiOlgPARbgD
+        J6DmDvRIdEjQRCgOf6QprCeR7M6s/3zFPmna983YWsvNblZWVlYeYhzHVy1f9vv9n5bbR8rP1uGlKvWj
+        Hd2249co81i5+wLeqFof2sGvZwUq5G/LW9W7PO3Yr7PjVXJq+aSKlwWHb3vD++dpj+fn3W73RFUvA4/2
+        hveZux/n4/H4VHWXhwd7w/v/ybftdvtMlZeFx3rD+/fke8tz1V4OHFGtfvD+fWmPw4/D4fBC1ZeBR3rD
+        +xPyexiG16qfwwO94f2JuW4fwpUmZFDeG96fkWX+K0CqWv3g/bnRDB8Ke8P7c6MZPhT2hvfnRjN8KOwN
+        78+NZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQ
+        mEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0Kf
+        ZvhQmEIfk0KfZvhQmEIfk0KfZvhQmEIfk0KfZvhQWB321QwfCqvDvprhQ2F12FczfCisDvtqhg+FKfQx
+        KfRphg+FKfQxKfRphg+FKfQxKfRphg+FKfQxKfRphg+FKfQxKfRphg+FKfQxKfRphg+FKfQxKfRphg+F
+        KfQxKfRphg+F1WFfzfChsDrsqxk+FFaHfTXDh8LqsK9m+FBYHfbVDB8Kq8O+muFDYXXYVzN8KKwO+2qG
+        T5NUfGFiaj5qhk+TVHtlZkpO4zh+0ISMYi9NTclpGIb3qr8M7UOo8NrclNy0nu9Ue2VlZeUBNpt/1Pqv
+        vTzMmPUAAAAASUVORK5CYII=
+</value>
   </data>
 </root>

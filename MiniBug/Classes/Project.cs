@@ -37,7 +37,6 @@ namespace MiniBug
         /// Gets or sets the project tasks.
         /// </summary>
         public Dictionary<int, Task> Tasks { get; set; } = new Dictionary<int, Task>();
-        //public List<Task> Tasks { get; set; } = new List<Task>();
 
         /// <summary>
         /// Creates a new project.
@@ -49,6 +48,11 @@ namespace MiniBug
             IssueIdCounter = 1;
             TaskIdCounter = 1;
         }
+
+        /* *** em desenvolvimento *** public void AddIssue()
+        {
+            // Program.SoftwareProject.Issues.Add(frmIssue.CurrentIssue.ID, frmIssue.CurrentIssue);
+        }*/
 
         /// <summary>
         /// Load application data.

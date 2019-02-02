@@ -40,6 +40,12 @@
             this.NewIssue = new System.Windows.Forms.ToolStripButton();
             this.EditIssue = new System.Windows.Forms.ToolStripButton();
             this.DeleteIssue = new System.Windows.Forms.ToolStripButton();
+            this.CloneIssue = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.NewTask = new System.Windows.Forms.ToolStripButton();
+            this.EditTask = new System.Windows.Forms.ToolStripButton();
+            this.DeleteTask = new System.Windows.Forms.ToolStripButton();
+            this.About = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.GridIssues)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -97,7 +103,13 @@
             this.toolStripSeparator1,
             this.NewIssue,
             this.EditIssue,
-            this.DeleteIssue});
+            this.DeleteIssue,
+            this.CloneIssue,
+            this.toolStripSeparator2,
+            this.NewTask,
+            this.EditTask,
+            this.DeleteTask,
+            this.About});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(800, 54);
@@ -120,14 +132,14 @@
             this.OpenProject.Image = ((System.Drawing.Image)(resources.GetObject("OpenProject.Image")));
             this.OpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenProject.Name = "OpenProject";
-            this.OpenProject.Size = new System.Drawing.Size(36, 36);
+            this.OpenProject.Size = new System.Drawing.Size(36, 51);
             this.OpenProject.Text = "toolStripButton2";
             this.OpenProject.ToolTipText = "Open Project";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 54);
             // 
             // NewIssue
             // 
@@ -162,6 +174,59 @@
             this.DeleteIssue.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.DeleteIssue.Click += new System.EventHandler(this.DeleteIssue_Click);
             // 
+            // CloneIssue
+            // 
+            this.CloneIssue.Image = global::MiniBug.Properties.Resources.CloneBug_32x32;
+            this.CloneIssue.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CloneIssue.Name = "CloneIssue";
+            this.CloneIssue.Size = new System.Drawing.Size(71, 51);
+            this.CloneIssue.Text = "Clone Issue";
+            this.CloneIssue.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.CloneIssue.Click += new System.EventHandler(this.CloneIssue_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 54);
+            // 
+            // NewTask
+            // 
+            this.NewTask.Image = ((System.Drawing.Image)(resources.GetObject("NewTask.Image")));
+            this.NewTask.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.NewTask.Name = "NewTask";
+            this.NewTask.Size = new System.Drawing.Size(62, 51);
+            this.NewTask.Text = "New Task";
+            this.NewTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // EditTask
+            // 
+            this.EditTask.Image = ((System.Drawing.Image)(resources.GetObject("EditTask.Image")));
+            this.EditTask.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditTask.Name = "EditTask";
+            this.EditTask.Size = new System.Drawing.Size(58, 51);
+            this.EditTask.Text = "Edit Task";
+            this.EditTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // DeleteTask
+            // 
+            this.DeleteTask.Image = ((System.Drawing.Image)(resources.GetObject("DeleteTask.Image")));
+            this.DeleteTask.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.DeleteTask.Name = "DeleteTask";
+            this.DeleteTask.Size = new System.Drawing.Size(71, 51);
+            this.DeleteTask.Text = "Delete Task";
+            this.DeleteTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // About
+            // 
+            this.About.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.About.Image = global::MiniBug.Properties.Resources.About_32x32;
+            this.About.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.About.Name = "About";
+            this.About.Size = new System.Drawing.Size(92, 51);
+            this.About.Text = "About Minibug";
+            this.About.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.About.Click += new System.EventHandler(this.About_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -195,6 +260,12 @@
         private System.Windows.Forms.ToolStripButton NewIssue;
         private System.Windows.Forms.ToolStripButton EditIssue;
         private System.Windows.Forms.ToolStripButton DeleteIssue;
+        private System.Windows.Forms.ToolStripButton CloneIssue;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton NewTask;
+        private System.Windows.Forms.ToolStripButton EditTask;
+        private System.Windows.Forms.ToolStripButton DeleteTask;
+        private System.Windows.Forms.ToolStripButton About;
     }
 }
 

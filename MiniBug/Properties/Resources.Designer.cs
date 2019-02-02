@@ -63,6 +63,26 @@ namespace MiniBug.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap About_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("About_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CloneBug_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("CloneBug_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DeleteBug_32x32 {
             get {
                 object obj = ResourceManager.GetObject("DeleteBug_32x32", resourceCulture);
@@ -87,6 +107,16 @@ namespace MiniBug.Properties {
             get {
                 object obj = ResourceManager.GetObject("Minibug", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MiniBugImage {
+            get {
+                object obj = ResourceManager.GetObject("MiniBugImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

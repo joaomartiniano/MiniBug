@@ -159,5 +159,33 @@ namespace MiniBug
                 }
             }
         }
+
+        /// <summary>
+        /// Clone the selected issue.
+        /// </summary>
+        private void CloneIssue_Click(object sender, EventArgs e)
+        {
+            if (GridIssues.SelectedRows.Count == 1)
+            {
+                // Get the key of the issue in the selected row 
+                int key = Int32.Parse(GridIssues.SelectedRows[0].Cells[0].Value.ToString());
+
+                //Program.SoftwareProject.Issues.Add(99, ...);
+                //GridIssues.Rows.Add(new string[] { frmIssue.CurrentIssue.ID.ToString(), frmIssue.CurrentIssue.Status.ToString(), frmIssue.CurrentIssue.Version, frmIssue.CurrentIssue.Summary, frmIssue.CurrentIssue.DateCreated.ToString() });
+
+            }
+        }
+
+        /// <summary>
+        /// Show the 'About Minibug' form.
+        /// </summary>
+        private void About_Click(object sender, EventArgs e)
+        {
+            AboutForm frmAbout = new AboutForm();
+
+            frmAbout.ShowDialog();
+
+            frmAbout.Dispose();
+        }
     }
 }
