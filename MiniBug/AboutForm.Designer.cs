@@ -52,7 +52,7 @@
             // 
             this.lblApplicationName.AutoSize = true;
             this.lblApplicationName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblApplicationName.Location = new System.Drawing.Point(118, 12);
+            this.lblApplicationName.Location = new System.Drawing.Point(107, 12);
             this.lblApplicationName.Name = "lblApplicationName";
             this.lblApplicationName.Size = new System.Drawing.Size(197, 24);
             this.lblApplicationName.TabIndex = 1;
@@ -61,7 +61,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(25, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(20, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(64, 64);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -71,7 +71,7 @@
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(118, 52);
+            this.lblVersion.Location = new System.Drawing.Point(107, 52);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(46, 13);
             this.lblVersion.TabIndex = 3;
@@ -80,7 +80,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(118, 81);
+            this.label2.Location = new System.Drawing.Point(107, 81);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(192, 13);
             this.label2.TabIndex = 4;
@@ -89,7 +89,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(118, 110);
+            this.linkLabel1.Location = new System.Drawing.Point(107, 110);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(264, 13);
             this.linkLabel1.TabIndex = 5;

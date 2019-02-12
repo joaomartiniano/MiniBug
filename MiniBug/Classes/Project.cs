@@ -14,9 +14,9 @@ namespace MiniBug
     /// </summary>
     public class Project
     {
-        private int IssueIdCounter = 0;
+        public int IssueIdCounter { get; private set; } = 0;
 
-        private int TaskIdCounter = 0;
+        public int TaskIdCounter { get; private set; } = 0;
 
         /// <summary>
         /// Gets or sets the project name.
@@ -49,10 +49,33 @@ namespace MiniBug
             TaskIdCounter = 1;
         }
 
-        /* *** em desenvolvimento *** public void AddIssue()
+        /// <summary>
+        /// Add a new issue.
+        /// </summary>
+        /// <param name="newIssue">An instance of the Issue class to add.</param>
+        /// <returns>The id of the added issue.</returns>
+        public int AddIssue(Issue newIssue)
         {
-            // Program.SoftwareProject.Issues.Add(frmIssue.CurrentIssue.ID, frmIssue.CurrentIssue);
-        }*/
+            newIssue.ID = IssueIdCounter;
+            Issues.Add(IssueIdCounter, newIssue);
+            IssueIdCounter++;
+
+            return newIssue.ID;
+        }
+
+        /// <summary>
+        /// Add a new task.
+        /// </summary>
+        /// <param name="newTask">An instance of the Task class to add.</param>
+        /// <returns>The id of the added task.</returns>
+        public int AddTask(Task newTask)
+        {
+            newTask.ID = TaskIdCounter;
+            Tasks.Add(TaskIdCounter, newTask);
+            TaskIdCounter++;
+
+            return newTask.ID;
+        }
 
         /// <summary>
         /// Load application data.

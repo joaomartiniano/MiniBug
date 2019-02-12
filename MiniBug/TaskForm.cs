@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace MiniBug
 {
-    public partial class IssueForm : Form
+    public partial class TaskForm : Form
     {
         /// <summary>
         /// The current operation.
@@ -18,9 +18,9 @@ namespace MiniBug
         public MiniBug.OperationType Operation { get; private set; } = OperationType.None;
 
         /// <summary>
-        /// The current issue (being created or edited).
+        /// The current task (being created or edited).
         /// </summary>
-        public MiniBug.Issue CurrentIssue { get; private set; } = null;
+        public MiniBug.Task CurrentTask { get; private set; } = null;
 
         /// <summary>
         /// List of status options.
@@ -32,50 +32,50 @@ namespace MiniBug
         /// </summary>
         private List<ComboBoxItem> PriorityList = new List<ComboBoxItem>();
 
-        public IssueForm(OperationType operation, MiniBug.Issue issue = null)
+        public TaskForm(OperationType operation, MiniBug.Task task = null)
         {
             InitializeComponent();
 
             Operation = operation;
-            
+
             if (Operation == OperationType.New)
             {
-                // Create a new instance of the Issue class
-                CurrentIssue = new Issue();
+                // Create a new instance of the Task class
+                CurrentTask = new Task();
             }
-            else if ((Operation == OperationType.Edit) && (issue != null))
+            else if ((Operation == OperationType.Edit) && (task != null))
             {
-                // Edit an existing issue
-                CurrentIssue = issue;
+                // Edit an existing task
+                CurrentTask = task;
             }
 
             // Populate the status list
-            foreach (IssueStatus stat in Enum.GetValues(typeof(IssueStatus)))
+            foreach (TaskStatus stat in Enum.GetValues(typeof(TaskStatus)))
             {
-                if (stat != IssueStatus.None)
+                if (stat != TaskStatus.None)
                 {
                     StatusOptionsList.Add(new ComboBoxItem(Convert.ToInt32(stat), stat.ToDescription()));
                 }
             }
 
             // Populate the priority list
-            foreach (IssuePriority p in Enum.GetValues(typeof(IssuePriority)))
+            foreach (TaskPriority p in Enum.GetValues(typeof(TaskPriority)))
             {
-                if (p != IssuePriority.None)
+                if (p != TaskPriority.None)
                 {
                     PriorityList.Add(new ComboBoxItem(Convert.ToInt32(p), p.ToString()));
                 }
             }
         }
 
-        private void IssueForm_Load(object sender, EventArgs e)
+        private void TaskForm_Load(object sender, EventArgs e)
         {
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
 
             this.AcceptButton = btOk;
             this.CancelButton = btCancel;
-            this.MinimumSize = new Size(644, 351);
+            this.MinimumSize = new Size(691, 351);
 
             txtDescription.AcceptsReturn = true;
             txtDescription.ScrollBars = ScrollBars.Vertical;
@@ -89,7 +89,7 @@ namespace MiniBug
 
             // Initialize and populate the Priority combobox
             cboPriority.AutoCompleteMode = AutoCompleteMode.None;
-            cboPriority.DropDownStyle = ComboBoxStyle.DropDownList;            
+            cboPriority.DropDownStyle = ComboBoxStyle.DropDownList;
             cboPriority.DataSource = PriorityList;
             cboPriority.ValueMember = "Value";
             cboPriority.DisplayMember = "Text";
@@ -97,7 +97,7 @@ namespace MiniBug
             // Make initializations based on the type of operation
             if (Operation == OperationType.New)
             {
-                this.Text = "Add New Issue";
+                this.Text = "Add New Task";
                 lblDateCreatedTitle.Visible = false;
                 lblDateCreated.Visible = false;
                 lblDateModifiedTitle.Visible = false;
@@ -106,25 +106,24 @@ namespace MiniBug
                 cboStatus.SelectedIndex = 0;
                 cboPriority.SelectedIndex = 0;
 
-                lblID.Text = Program.SoftwareProject.IssueIdCounter.ToString();
+                lblID.Text = Program.SoftwareProject.TaskIdCounter.ToString();
             }
             else if (Operation == OperationType.Edit)
             {
-                this.Text = "Edit Issue";
+                this.Text = "Edit Task";
 
                 // Populate the controls
-                lblDateCreated.Text = CurrentIssue.DateCreated.ToString();
-                lblDateModified.Text = CurrentIssue.DateModified.ToString();
-                txtSummary.Text = CurrentIssue.Summary;
-                txtVersion.Text = CurrentIssue.Version;
-                txtTargetVersion.Text = CurrentIssue.TargetVersion;
-                txtDescription.Text = CurrentIssue.Description;
+                lblDateCreated.Text = CurrentTask.DateCreated.ToString();
+                lblDateModified.Text = CurrentTask.DateModified.ToString();
+                txtSummary.Text = CurrentTask.Summary;
+                txtTargetVersion.Text = CurrentTask.TargetVersion;
+                txtDescription.Text = CurrentTask.Description;
 
-                cboStatus.SelectedValue = Convert.ToInt32(CurrentIssue.Status);
-                cboPriority.SelectedValue = Convert.ToInt32(CurrentIssue.Priority);
+                cboStatus.SelectedValue = Convert.ToInt32(CurrentTask.Status);
+                cboPriority.SelectedValue = Convert.ToInt32(CurrentTask.Priority);
 
-                lblID.Text = CurrentIssue.ID.ToString();
-            }            
+                lblID.Text = CurrentTask.ID.ToString();
+            }
 
             // Resume the layout logic
             this.ResumeLayout();
@@ -137,14 +136,13 @@ namespace MiniBug
         {
             if (txtSummary.Text != string.Empty)
             {
-                CurrentIssue.Summary = txtSummary.Text;
-                CurrentIssue.Status = ((IssueStatus)((MiniBug.ComboBoxItem)cboStatus.SelectedItem).Value);
-                CurrentIssue.Priority = ((IssuePriority)((MiniBug.ComboBoxItem)cboPriority.SelectedItem).Value);
-                CurrentIssue.Version = txtVersion.Text;
-                CurrentIssue.TargetVersion = txtTargetVersion.Text;
-                CurrentIssue.Description = txtDescription.Text;
+                CurrentTask.Summary = txtSummary.Text;
+                CurrentTask.Status = ((TaskStatus)((MiniBug.ComboBoxItem)cboStatus.SelectedItem).Value);
+                CurrentTask.Priority = ((TaskPriority)((MiniBug.ComboBoxItem)cboPriority.SelectedItem).Value);
+                CurrentTask.TargetVersion = txtTargetVersion.Text;
+                CurrentTask.Description = txtDescription.Text;
 
-                CurrentIssue.DateModified = DateTime.Now;
+                CurrentTask.DateModified = DateTime.Now;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

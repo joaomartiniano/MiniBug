@@ -3,11 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace MiniBug
 {
-    public enum TaskStatus { None = 0 /* ....add more */ };
+    /// <summary>
+    ///  Status of a task.
+    /// </summary>
+    public enum TaskStatus
+    {
+        None = 0,
+        [DescriptionAttribute("Not started")]
+        NotStarted,
+        [DescriptionAttribute("In progress")]
+        InProgress,
+        Finished
+    };
 
+    /// <summary>
+    /// Priority of a task.
+    /// </summary>
     public enum TaskPriority { None = 0, Low, Normal, High, Urgent, Immediate };
 
     public class Task
@@ -15,7 +30,7 @@ namespace MiniBug
         /// <summary>
         /// Gets the ID of this task.
         /// </summary>
-        public int ID { get; private set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// Gets or sets the status of this task.
@@ -55,10 +70,48 @@ namespace MiniBug
         /// <summary>
         /// Creates a new task.
         /// </summary>
+        public Task()
+        {
+            DateCreated = DateTime.Now;
+            DateModified = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Creates a new task.
+        /// </summary>
         /// <param name="id">The ID of this task.</param>
         public Task(int id)
         {
             ID = id;
+        }
+
+        /// <summary>
+        /// Creates a new task.
+        /// </summary>
+        public Task(TaskStatus status, TaskPriority priority, string summary, string description, string targetVersion)
+        {
+            Status = status;
+            Priority = priority;
+            Summary = summary;
+            Description = description;
+            TargetVersion = targetVersion;
+
+            DateCreated = DateTime.Now;
+            DateModified = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Create a clone of an instance of the Task class.
+        /// </summary>
+        /// <param name="clonedInstance">The instance of the Task class that will get the cloned instance's data.</param>
+        public void Clone(ref Task clonedInstance)
+        {
+            clonedInstance.Status = this.Status;
+            clonedInstance.Priority = this.Priority;
+            clonedInstance.Summary = this.Summary;
+            clonedInstance.Description = this.Description;
+            clonedInstance.TargetVersion = this.TargetVersion;
+            clonedInstance.DateModified = DateTime.Now;
         }
     }
 }

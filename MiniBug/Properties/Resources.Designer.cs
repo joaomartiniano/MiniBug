@@ -93,9 +93,29 @@ namespace MiniBug.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DeleteTask_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("DeleteTask_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap EditBug_32x32 {
             get {
                 object obj = ResourceManager.GetObject("EditBug_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EditTask_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("EditTask_32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +146,66 @@ namespace MiniBug.Properties {
         internal static System.Drawing.Bitmap NewBug_32x32 {
             get {
                 object obj = ResourceManager.GetObject("NewBug_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NewProject_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("NewProject_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NewTask_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("NewTask_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OpenProject_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("OpenProject_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Priority_High {
+            get {
+                object obj = ResourceManager.GetObject("Priority_High", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Priority_Immediate {
+            get {
+                object obj = ResourceManager.GetObject("Priority_Immediate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Priority_Urgent {
+            get {
+                object obj = ResourceManager.GetObject("Priority_Urgent", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
