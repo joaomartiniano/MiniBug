@@ -24,9 +24,14 @@ namespace MiniBug
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets the project filename.
+        /// Gets or sets the name of the project file.
         /// </summary>
         public string Filename { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the location of the project file.
+        /// </summary>
+        public string Location { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the project issues.

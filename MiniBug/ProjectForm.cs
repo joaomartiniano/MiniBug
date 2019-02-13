@@ -13,21 +13,26 @@ namespace MiniBug
     public partial class ProjectForm : Form
     {
         /// <summary>
-        /// The current operation.
+        /// Gets the current operation.
         /// </summary>
         public MiniBug.OperationType Operation { get; private set; } = OperationType.None;
 
         /// <summary>
-        /// Name of the project.
+        /// Gets the name of the project.
         /// </summary>
         public string ProjectName { get; private set; } = string.Empty;
 
         /// <summary>
-        /// Location of the project.
+        /// Gets the name of the project file.
+        /// </summary>
+        public string ProjectFilename { get; private set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the location of the project file.
         /// </summary>
         public string ProjectLocation { get; private set; } = string.Empty;
 
-        public ProjectForm(OperationType operation, string projectName = "", string projectLocation = "")
+        public ProjectForm(OperationType operation, string projectName = "", string projectFilename = "", string projectLocation = "")
         {
             InitializeComponent();
 
@@ -37,6 +42,7 @@ namespace MiniBug
             {
                 // Edit an existing project
                 ProjectName = projectName;
+                ProjectFilename = projectFilename;
                 ProjectLocation = projectLocation;
             }
         }
@@ -56,11 +62,18 @@ namespace MiniBug
             {
                 this.Text = "New Project";
                 lblFormTextBig.Text = "Create a new project";
+
+                btOk.Enabled = false;
             }
             else if (Operation == OperationType.Edit)
             {
                 this.Text = "Edit Project";
                 lblFormTextBig.Text = "Edit the current project";
+
+                // Populate the controls
+                txtName.Text = ProjectName;
+                txtFilename.Text = ProjectFilename;
+                txtLocation.Text = ProjectLocation;
             }
 
             // Resume the layout logic
@@ -75,6 +88,11 @@ namespace MiniBug
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 txtLocation.Text = folderBrowserDialog1.SelectedPath;
+
+                if (txtName.Text != string.Empty)
+                {
+                    btOk.Enabled = true;
+                }
             }
         }
 
@@ -100,6 +118,27 @@ namespace MiniBug
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        /// <summary>
+        /// Handle the TextChanged event for the project name textbox control.
+        /// </summary>
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+            if (txtName.Text != string.Empty)
+            {
+                txtFilename.Text = "minibug-" + txtName.Text + ".json";
+
+                if (txtLocation.Text != string.Empty)
+                {
+                    btOk.Enabled = true;
+                }                
+            }
+            else
+            {
+                txtFilename.Text = string.Empty;
+                btOk.Enabled = false;
+            }
         }
     }
 }

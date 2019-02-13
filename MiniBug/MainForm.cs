@@ -113,6 +113,8 @@ namespace MiniBug
 
             if (frmProject.ShowDialog() == DialogResult.OK)
             {
+                this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
+
                 // ****
             }
 
