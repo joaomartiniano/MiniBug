@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace MiniBug
 {
@@ -25,33 +26,64 @@ namespace MiniBug
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
 
-            Program.SoftwareProject = new MiniBug.Project("FlexBox Simulator");
-            Program.SoftwareProject.Filename = "MINIBUG-FlexBoxSimulator.json";
+            /*Program.SoftwareProject = new MiniBug.Project("FlexBox Simulator");
+            Program.SoftwareProject.Filename = "MINIBUG-FlexBoxSimulator.json";*/
 
             // *** temporário
             //Program.SoftwareProject.Issues.Add(1, new Issue(1, IssueStatus.Verified, IssuePriority.Normal, "Código CSS gerado: inicialização não está a obter valor do color picker do background do container", string.Empty, "0.1", "1.0.0"));
             //Program.SoftwareProject.Issues.Add(2, new Issue(2, IssueStatus.Verified, IssuePriority.Low, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
-            Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Unconfirmed, IssuePriority.Immediate, "Código CSS gerado: inicialização não está a obter valor do color picker do background do container", string.Empty, "0.1", "1.0.0"));
+            /*Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Unconfirmed, IssuePriority.Immediate, "Código CSS gerado: inicialização não está a obter valor do color picker do background do container", string.Empty, "0.1", "1.0.0"));
             Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Confirmed, IssuePriority.Urgent, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
             Program.SoftwareProject.AddIssue(new Issue(IssueStatus.InProgress, IssuePriority.High, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
             Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Resolved, IssuePriority.Normal, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
             Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Closed, IssuePriority.Normal, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
 
             Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.High, "Permitir trabalhar com vários projetos em simultâneo", "...", "2.0"));
-            Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.Immediate, "Gravar settings da aplicação", "...", "1.0"));
+            Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.Immediate, "Gravar settings da aplicação", "...", "1.0"));*/
 
+            InitializeMenuOptions();
+            InitializeToolbarIcons();
             InitializeTabControl();
             InitializeGridIssues();
             PopulateGridIssues();
             InitializeGridTasks();
             PopulateGridTasks();
-            InitializeToolbarIcons();
 
             // Resume the layout logic
             this.ResumeLayout();
+        }
 
-            // experiência***
-            //Program.SoftwareProject.Save();
+        /// <summary>
+        /// Initialize the menu options: set the initial state.
+        /// </summary>
+        private void InitializeMenuOptions()
+        {
+            editProjectToolStripMenuItem.Enabled = false;
+
+            newIssueToolStripMenuItem.Enabled = false;
+            editIssueToolStripMenuItem.Enabled = false;
+            deleteIssueToolStripMenuItem.Enabled = false;
+            cloneIssueToolStripMenuItem.Enabled = false;
+
+            newTaskToolStripMenuItem.Enabled = false;
+            editTaskToolStripMenuItem.Enabled = false;
+            deleteTaskToolStripMenuItem.Enabled = false;
+            cloneTaskToolStripMenuItem.Enabled = false;
+        }
+
+        /// <summary>
+        /// Initialize the toolbar icons: set the initial state.
+        /// </summary>
+        private void InitializeToolbarIcons()
+        {
+            IconNewIssue.Enabled = false;
+            IconEditIssue.Enabled = false;
+            IconDeleteIssue.Enabled = false;
+            IconCloneIssue.Enabled = false;
+            IconNewTask.Enabled = false;
+            IconEditTask.Enabled = false;
+            IconDeleteTask.Enabled = false;
+            IconCloneTask.Enabled = false;
         }
 
         /// <summary>
@@ -65,27 +97,23 @@ namespace MiniBug
         }
 
         /// <summary>
-        /// Initialize the toolbar icons: set the initial state.
-        /// </summary>
-        private void InitializeToolbarIcons()
-        {
-            IconNewTask.Enabled = false;
-            IconEditTask.Enabled = false;
-            IconDeleteTask.Enabled = false;
-            IconCloneTask.Enabled = false;
-        }
-
-        /// <summary>
         /// Enable/disable icons when the user changes tabs.
         /// </summary>
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (TabControl.SelectedIndex == 0)
             {
-                IconNewIssue.Enabled = true;
-                IconEditIssue.Enabled = true;
-                IconDeleteIssue.Enabled = true;
-                IconCloneIssue.Enabled = true;
+                if (Program.SoftwareProject != null)
+                {
+                    IconNewIssue.Enabled = true;
+
+                    if (Program.SoftwareProject.Issues != null)
+                    {
+                        IconEditIssue.Enabled = true;
+                        IconDeleteIssue.Enabled = true;
+                        IconCloneIssue.Enabled = true;
+                    }
+                }
 
                 IconNewTask.Enabled = false;
                 IconEditTask.Enabled = false;
@@ -99,10 +127,17 @@ namespace MiniBug
                 IconDeleteIssue.Enabled = false;
                 IconCloneIssue.Enabled = false;
 
-                IconNewTask.Enabled = true;
-                IconEditTask.Enabled = true;
-                IconDeleteTask.Enabled = true;
-                IconCloneTask.Enabled = true;
+                if (Program.SoftwareProject != null)
+                {
+                    IconNewTask.Enabled = true;
+
+                    if (Program.SoftwareProject.Tasks != null)
+                    {
+                        IconEditTask.Enabled = true;
+                        IconDeleteTask.Enabled = true;
+                        IconCloneTask.Enabled = true;
+                    }
+                }
             }
         }
 
@@ -158,6 +193,9 @@ namespace MiniBug
                 Program.SoftwareProject.Filename = frmProject.ProjectFilename;
                 Program.SoftwareProject.Location = frmProject.ProjectLocation;
 
+                // ****
+                //SaveProject(Program.SoftwareProject);
+                ApplicationData.SaveProject(Program.SoftwareProject);
                 // ****
             }
 
@@ -391,9 +429,12 @@ namespace MiniBug
         /// </summary>
         private void PopulateGridTasks()
         {
-            foreach (KeyValuePair<int, Task> item in Program.SoftwareProject.Tasks)
-            {
-                AddTaskToGrid(item.Value);
+            if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Issues != null))
+            { 
+                foreach (KeyValuePair<int, Task> item in Program.SoftwareProject.Tasks)
+                {
+                    AddTaskToGrid(item.Value);
+                }
             }
         }
 
@@ -697,9 +738,12 @@ namespace MiniBug
         /// </summary>
         private void PopulateGridIssues()
         {
-            foreach (KeyValuePair<int, Issue> item in Program.SoftwareProject.Issues)
+            if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Issues != null))
             {
-                AddIssueToGrid(item.Value);
+                foreach (KeyValuePair<int, Issue> item in Program.SoftwareProject.Issues)
+                {
+                    AddIssueToGrid(item.Value);
+                }
             }
         }
 
