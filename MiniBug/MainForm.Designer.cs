@@ -114,7 +114,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(791, 339);
+            this.tabPage2.Size = new System.Drawing.Size(791, 274);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tasks";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -273,8 +273,9 @@
             // 
             this.newProjectToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewProject_32x32;
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newProjectToolStripMenuItem.Text = "New project...";
+            this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
@@ -353,7 +354,7 @@
             // 
             this.newTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewTask_32x32;
             this.newTaskToolStripMenuItem.Name = "newTaskToolStripMenuItem";
-            this.newTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newTaskToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.newTaskToolStripMenuItem.Text = "New task...";
             this.newTaskToolStripMenuItem.Click += new System.EventHandler(this.newTaskToolStripMenuItem_Click);
             // 
@@ -361,7 +362,7 @@
             // 
             this.editTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.EditTask_32x32;
             this.editTaskToolStripMenuItem.Name = "editTaskToolStripMenuItem";
-            this.editTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editTaskToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.editTaskToolStripMenuItem.Text = "Edit task...";
             this.editTaskToolStripMenuItem.Click += new System.EventHandler(this.editTaskToolStripMenuItem_Click);
             // 
@@ -369,14 +370,14 @@
             // 
             this.deleteTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.DeleteTask_32x32;
             this.deleteTaskToolStripMenuItem.Name = "deleteTaskToolStripMenuItem";
-            this.deleteTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteTaskToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.deleteTaskToolStripMenuItem.Text = "Delete task";
             this.deleteTaskToolStripMenuItem.Click += new System.EventHandler(this.deleteTaskToolStripMenuItem_Click);
             // 
             // cloneTaskToolStripMenuItem
             // 
             this.cloneTaskToolStripMenuItem.Name = "cloneTaskToolStripMenuItem";
-            this.cloneTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cloneTaskToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.cloneTaskToolStripMenuItem.Text = "Clone task";
             this.cloneTaskToolStripMenuItem.Click += new System.EventHandler(this.cloneTaskToolStripMenuItem_Click);
             // 

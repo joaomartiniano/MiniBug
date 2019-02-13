@@ -20,7 +20,7 @@ namespace MiniBug
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Icon = MiniBug.Properties.Resources.Minibug;
-            this.Text = "MiniBug Issue Tracker";
+            this.Text = "New Project - MiniBug Issue Tracker";
             
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
@@ -109,6 +109,15 @@ namespace MiniBug
         #region Projeto
         private void NewProject()
         {
+            ProjectForm frmProject = new ProjectForm(OperationType.New);
+
+            if (frmProject.ShowDialog() == DialogResult.OK)
+            {
+                // ****
+            }
+
+            frmProject.Dispose();
+
             //TaskForm frmTask = new TaskForm(OperationType.New);
 
             //if (frmTask.ShowDialog() == DialogResult.OK)
@@ -133,6 +142,14 @@ namespace MiniBug
         #endregion
 
         #region Menu
+
+        /// <summary>
+        /// Create a new project.
+        /// </summary>
+        private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewProject();
+        }
 
         /// <summary>
         /// Exit this application.
