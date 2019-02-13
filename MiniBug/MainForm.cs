@@ -106,7 +106,8 @@ namespace MiniBug
             }
         }
 
-        #region Projeto
+        #region Project
+
         private void NewProject()
         {
             ProjectForm frmProject = new ProjectForm(OperationType.New);
@@ -141,6 +142,28 @@ namespace MiniBug
 
             //frmTask.Dispose();
         }
+
+        /// <summary>
+        /// Edit the current project settings.
+        /// </summary>
+        private void EditProject()
+        {
+            ProjectForm frmProject = new ProjectForm(OperationType.Edit, Program.SoftwareProject.Name, Program.SoftwareProject.Filename, Program.SoftwareProject.Location);
+
+            if (frmProject.ShowDialog() == DialogResult.OK)
+            {
+                this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
+
+                Program.SoftwareProject.Name = frmProject.ProjectName;
+                Program.SoftwareProject.Filename = frmProject.ProjectFilename;
+                Program.SoftwareProject.Location = frmProject.ProjectLocation;
+
+                // ****
+            }
+
+            frmProject.Dispose();
+        }
+
         #endregion
 
         #region Menu
@@ -151,6 +174,14 @@ namespace MiniBug
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewProject();
+        }
+
+        /// <summary>
+        /// Edit the current project settings.
+        /// </summary>
+        private void editProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditProject();
         }
 
         /// <summary>
@@ -923,6 +954,5 @@ namespace MiniBug
             }
         }
         #endregion
-
     }
 }

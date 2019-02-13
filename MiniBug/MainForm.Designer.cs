@@ -62,6 +62,7 @@
             this.cloneTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMiniBugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.GridIssues)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -114,7 +115,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(791, 274);
+            this.tabPage2.Size = new System.Drawing.Size(791, 339);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tasks";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -263,6 +264,7 @@
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newProjectToolStripMenuItem,
             this.openProjectToolStripMenuItem,
+            this.editProjectToolStripMenuItem,
             this.toolStripSeparator3,
             this.exitToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -281,18 +283,18 @@
             // 
             this.openProjectToolStripMenuItem.Image = global::MiniBug.Properties.Resources.OpenProject_32x32;
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openProjectToolStripMenuItem.Text = "Open project...";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -397,6 +399,13 @@
             this.aboutMiniBugToolStripMenuItem.Text = "About MiniBug";
             this.aboutMiniBugToolStripMenuItem.Click += new System.EventHandler(this.aboutMiniBugToolStripMenuItem_Click);
             // 
+            // editProjectToolStripMenuItem
+            // 
+            this.editProjectToolStripMenuItem.Name = "editProjectToolStripMenuItem";
+            this.editProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editProjectToolStripMenuItem.Text = "Project settings...";
+            this.editProjectToolStripMenuItem.Click += new System.EventHandler(this.editProjectToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -459,6 +468,7 @@
         private System.Windows.Forms.ToolStripMenuItem cloneTaskToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutMiniBugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editProjectToolStripMenuItem;
     }
 }
 
