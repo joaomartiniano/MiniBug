@@ -21,7 +21,7 @@ namespace MiniBug
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Icon = MiniBug.Properties.Resources.Minibug;
-            this.Text = "New Project - MiniBug Issue Tracker";
+            this.Text = "MiniBug Issue Tracker";
             
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
@@ -41,20 +41,24 @@ namespace MiniBug
             Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.High, "Permitir trabalhar com vários projetos em simultâneo", "...", "2.0"));
             Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.Immediate, "Gravar settings da aplicação", "...", "1.0"));*/
 
-            InitializeMenuOptions();
-            InitializeToolbarIcons();
+            //InitializeMenuOptions();
+            //InitializeToolbarIcons();
             InitializeTabControl();
             InitializeGridIssues();
             PopulateGridIssues();
             InitializeGridTasks();
             PopulateGridTasks();
 
+            // ** experiência ***
+            SetControlsState();
+
             // Resume the layout logic
             this.ResumeLayout();
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Initialize the menu options: set the initial state.
+        /// *** atenção: este código está a ficar deprecated *******
         /// </summary>
         private void InitializeMenuOptions()
         {
@@ -69,10 +73,11 @@ namespace MiniBug
             editTaskToolStripMenuItem.Enabled = false;
             deleteTaskToolStripMenuItem.Enabled = false;
             cloneTaskToolStripMenuItem.Enabled = false;
-        }
+        }*/
 
-        /// <summary>
+        /*/// <summary>
         /// Initialize the toolbar icons: set the initial state.
+        /// *** atenção: este código está a ficar deprecated *******
         /// </summary>
         private void InitializeToolbarIcons()
         {
@@ -84,7 +89,7 @@ namespace MiniBug
             IconEditTask.Enabled = false;
             IconDeleteTask.Enabled = false;
             IconCloneTask.Enabled = false;
-        }
+        }*/
 
         /// <summary>
         /// Initialize the tab control.
@@ -98,10 +103,13 @@ namespace MiniBug
 
         /// <summary>
         /// Enable/disable icons when the user changes tabs.
+        ///  ***** atenção; este código está a ficar deprecated ************
         /// </summary>
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (TabControl.SelectedIndex == 0)
+            SetControlsState();
+
+            /*if (TabControl.SelectedIndex == 0)
             {
                 if (Program.SoftwareProject != null)
                 {
@@ -138,6 +146,96 @@ namespace MiniBug
                         IconCloneTask.Enabled = true;
                     }
                 }
+            }*/
+        }
+
+        /// <summary>
+        /// Sets the state (enabled/disabled) of some controls (menu items, toolbar icons, etc.), based on current conditions.
+        /// </summary>
+        private void SetControlsState()
+        {
+            // If there is no current project disable these controls
+            if (Program.SoftwareProject == null)
+            {
+                editProjectToolStripMenuItem.Enabled = false;
+            }
+
+            if (TabControl.SelectedIndex == 0) // The tab 'Issues' is selected
+            {
+                // The user can create a new issue only if the current project != null
+                newIssueToolStripMenuItem.Enabled = IconNewIssue.Enabled = (Program.SoftwareProject == null) ? false : true;
+
+                // ***** testar; replicar nas tasks
+                if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Issues != null) && (GridIssues.Rows.Count > 0))
+                {
+                    // ENABLE these controls if there are issues
+                    editIssueToolStripMenuItem.Enabled = true;
+                    deleteIssueToolStripMenuItem.Enabled = true;
+                    cloneIssueToolStripMenuItem.Enabled = true;
+                    IconEditIssue.Enabled = true;
+                    IconDeleteIssue.Enabled = true;
+                    IconCloneIssue.Enabled = true;
+                }
+                else
+                {
+                    // DISABLE these controls if there are no issues
+                    editIssueToolStripMenuItem.Enabled = false;
+                    deleteIssueToolStripMenuItem.Enabled = false;
+                    cloneIssueToolStripMenuItem.Enabled = false;
+                    IconEditIssue.Enabled = false;
+                    IconDeleteIssue.Enabled = false;
+                    IconCloneIssue.Enabled = false;
+                }
+
+                // Disable tasks menu items
+                newTaskToolStripMenuItem.Enabled = false;
+                editTaskToolStripMenuItem.Enabled = false;
+                deleteTaskToolStripMenuItem.Enabled = false;
+                cloneTaskToolStripMenuItem.Enabled = false;
+
+                // Disable tasks toolbar icons
+                IconNewTask.Enabled = false;
+                IconEditTask.Enabled = false;
+                IconDeleteTask.Enabled = false;
+                IconCloneTask.Enabled = false;
+            }
+            else if (TabControl.SelectedIndex == 1) //  // The tab 'Tasks' is selected
+            {
+                // The user can create a new task only if the current project != null
+                newTaskToolStripMenuItem.Enabled = IconNewTask.Enabled = (Program.SoftwareProject == null) ? false : true;
+
+                if ((Program.SoftwareProject != null) && ((Program.SoftwareProject.Tasks != null) || (GridTasks.Rows.Count > 0)))
+                {
+                    // ENABLE these controls if there are tasks
+                    editTaskToolStripMenuItem.Enabled = true;
+                    deleteTaskToolStripMenuItem.Enabled = true;
+                    cloneTaskToolStripMenuItem.Enabled = true;
+                    IconEditTask.Enabled = true;
+                    IconDeleteTask.Enabled = true;
+                    IconCloneTask.Enabled = true;
+                }
+                else
+                {
+                    // DISABLE these controls if there are no issues
+                    editTaskToolStripMenuItem.Enabled = false;
+                    deleteTaskToolStripMenuItem.Enabled = false;
+                    cloneTaskToolStripMenuItem.Enabled = false;
+                    IconEditTask.Enabled = false;
+                    IconDeleteTask.Enabled = false;
+                    IconCloneTask.Enabled = false;
+                }
+
+                // Disable issues menu items
+                newIssueToolStripMenuItem.Enabled = false;
+                editIssueToolStripMenuItem.Enabled = false;
+                deleteIssueToolStripMenuItem.Enabled = false;
+                cloneIssueToolStripMenuItem.Enabled = false;
+
+                // Disable issues toolbar icons
+                IconNewIssue.Enabled = false;
+                IconEditIssue.Enabled = false;
+                IconDeleteIssue.Enabled = false;
+                IconCloneIssue.Enabled = false;
             }
         }
 
@@ -149,9 +247,28 @@ namespace MiniBug
 
             if (frmProject.ShowDialog() == DialogResult.OK)
             {
+                FileOperationsStatus status = FileOperationsStatus.None;
+
                 this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
 
-                // ****
+                Program.SoftwareProject = null;
+
+                Program.SoftwareProject = new Project(frmProject.ProjectName);
+                Program.SoftwareProject.Filename = frmProject.ProjectFilename;
+                Program.SoftwareProject.Location = frmProject.ProjectLocation;
+
+                status = ApplicationData.SaveProject(Program.SoftwareProject);
+
+                if (status != FileOperationsStatus.Success)
+                {
+                    // *** show an error form ***
+                    MessageBox.Show("Error saving the new project file", "New Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // **************
+                }
+                else
+                {
+                    SetControlsState();
+                }
             }
 
             frmProject.Dispose();

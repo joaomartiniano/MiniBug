@@ -82,6 +82,12 @@
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\Issue.cs" />
     <Compile Include="Classes\Task.cs" />
+    <Compile Include="ErrorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorForm.Designer.cs">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IssueForm.cs">
       <SubType>Form</SubType>
     </Compile>

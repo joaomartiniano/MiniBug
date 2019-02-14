@@ -104,6 +104,7 @@ namespace MiniBug
             if ((txtName.Text != string.Empty) && (txtLocation.Text != string.Empty))
             {
                 ProjectName = txtName.Text;
+                ProjectFilename = txtFilename.Text;
                 ProjectLocation = txtLocation.Text;
 
                 this.DialogResult = DialogResult.OK;
