@@ -83,6 +83,16 @@ namespace MiniBug.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CriticalError_64x64 {
+            get {
+                object obj = ResourceManager.GetObject("CriticalError_64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DeleteBug_32x32 {
             get {
                 object obj = ResourceManager.GetObject("DeleteBug_32x32", resourceCulture);
@@ -116,6 +126,16 @@ namespace MiniBug.Properties {
         internal static System.Drawing.Bitmap EditTask_32x32 {
             get {
                 object obj = ResourceManager.GetObject("EditTask_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FolderError_64x64 {
+            get {
+                object obj = ResourceManager.GetObject("FolderError_64x64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

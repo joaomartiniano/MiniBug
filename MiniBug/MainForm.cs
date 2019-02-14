@@ -241,13 +241,16 @@ namespace MiniBug
 
         #region Project
 
+        /// <summary>
+        /// Create a new project.
+        /// </summary>
         private void NewProject()
         {
+            FileOperationsStatus status = FileOperationsStatus.None;
             ProjectForm frmProject = new ProjectForm(OperationType.New);
 
             if (frmProject.ShowDialog() == DialogResult.OK)
             {
-                FileOperationsStatus status = FileOperationsStatus.None;
 
                 this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
 
@@ -258,41 +261,49 @@ namespace MiniBug
                 Program.SoftwareProject.Location = frmProject.ProjectLocation;
 
                 status = ApplicationData.SaveProject(Program.SoftwareProject);
-
-                if (status != FileOperationsStatus.Success)
-                {
-                    // *** show an error form ***
-                    MessageBox.Show("Error saving the new project file", "New Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    // **************
-                }
-                else
-                {
-                    SetControlsState();
-                }
             }
 
             frmProject.Dispose();
 
-            //TaskForm frmTask = new TaskForm(OperationType.New);
+            // ****  temp
+            status = FileOperationsStatus.IOError;
+            // **********
 
-            //if (frmTask.ShowDialog() == DialogResult.OK)
-            //{
-            //    Program.SoftwareProject.AddTask(frmTask.CurrentTask);
 
-            //    Add the new task to the grid
-            //    AddTaskToGrid(frmTask.CurrentTask);
+            // If there was an error creating the new project file, show feedback
+            if (status != FileOperationsStatus.Success)
+            {
+                // *** show an error form ***
+                //MessageBox.Show("Error saving the new project file", "New Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // **************
 
-            //    Unselect all the previously selected rows
-            //    foreach (DataGridViewRow row in GridTasks.SelectedRows)
-            //    {
-            //        row.Selected = false;
-            //    }
+                FeedbackForm frmFeedback = new FeedbackForm();
+                frmFeedback.FormCaption = "Project Save Error";
+                
+                switch (status)
+                {
+                    case FileOperationsStatus.DirectoryNotFound:
+                        frmFeedback.MessageTitle = "Error Saving Project File: Directory Not Found";
+                        frmFeedback.Message = "The specified directory does not exist.\n\nProject directory: " + Program.SoftwareProject.Location + "\n\nPlease create a new project in a different directory.";
+                        break;
 
-            //    Select the last row(the one which was added)
-            //    GridTasks.Rows[GridTasks.Rows.Count - 1].Selected = true;
-            //}
+                    case FileOperationsStatus.IOError:
+                        frmFeedback.MessageTitle = "Error Saving Project File: I/O Error";
+                        frmFeedback.Message = "There was a general input/output error while saving this project.\n\nPlease try creating a new project in a different drive/device.";
+                        break;
+                }
 
-            //frmTask.Dispose();
+                frmFeedback.ShowDialog();
+                frmFeedback.Dispose();
+
+                // Abort the new project
+                Program.SoftwareProject = null;
+
+            }/*
+            else
+            {
+                SetControlsState();
+            }*/
         }
 
         /// <summary>

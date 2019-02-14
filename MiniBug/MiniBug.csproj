@@ -82,11 +82,11 @@
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\Issue.cs" />
     <Compile Include="Classes\Task.cs" />
-    <Compile Include="ErrorForm.cs">
+    <Compile Include="FeedbackForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ErrorForm.Designer.cs">
-      <DependentUpon>ErrorForm.cs</DependentUpon>
+    <Compile Include="FeedbackForm.Designer.cs">
+      <DependentUpon>FeedbackForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IssueForm.cs">
       <SubType>Form</SubType>
@@ -116,6 +116,9 @@
     </Compile>
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeedbackForm.resx">
+      <DependentUpon>FeedbackForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IssueForm.resx">
       <DependentUpon>IssueForm.cs</DependentUpon>
@@ -215,6 +218,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Info_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FolderError_64x64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CriticalError_64x64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
