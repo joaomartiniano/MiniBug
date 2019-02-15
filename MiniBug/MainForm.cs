@@ -41,8 +41,6 @@ namespace MiniBug
             Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.High, "Permitir trabalhar com vários projetos em simultâneo", "...", "2.0"));
             Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.Immediate, "Gravar settings da aplicação", "...", "1.0"));*/
 
-            //InitializeMenuOptions();
-            //InitializeToolbarIcons();
             InitializeTabControl();
             InitializeGridIssues();
             PopulateGridIssues();
@@ -56,41 +54,6 @@ namespace MiniBug
             this.ResumeLayout();
         }
 
-        /*/// <summary>
-        /// Initialize the menu options: set the initial state.
-        /// *** atenção: este código está a ficar deprecated *******
-        /// </summary>
-        private void InitializeMenuOptions()
-        {
-            editProjectToolStripMenuItem.Enabled = false;
-
-            newIssueToolStripMenuItem.Enabled = false;
-            editIssueToolStripMenuItem.Enabled = false;
-            deleteIssueToolStripMenuItem.Enabled = false;
-            cloneIssueToolStripMenuItem.Enabled = false;
-
-            newTaskToolStripMenuItem.Enabled = false;
-            editTaskToolStripMenuItem.Enabled = false;
-            deleteTaskToolStripMenuItem.Enabled = false;
-            cloneTaskToolStripMenuItem.Enabled = false;
-        }*/
-
-        /*/// <summary>
-        /// Initialize the toolbar icons: set the initial state.
-        /// *** atenção: este código está a ficar deprecated *******
-        /// </summary>
-        private void InitializeToolbarIcons()
-        {
-            IconNewIssue.Enabled = false;
-            IconEditIssue.Enabled = false;
-            IconDeleteIssue.Enabled = false;
-            IconCloneIssue.Enabled = false;
-            IconNewTask.Enabled = false;
-            IconEditTask.Enabled = false;
-            IconDeleteTask.Enabled = false;
-            IconCloneTask.Enabled = false;
-        }*/
-
         /// <summary>
         /// Initialize the tab control.
         /// </summary>
@@ -102,51 +65,11 @@ namespace MiniBug
         }
 
         /// <summary>
-        /// Enable/disable icons when the user changes tabs.
-        ///  ***** atenção; este código está a ficar deprecated ************
+        /// Enable/disable controls when the user changes tabs.
         /// </summary>
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetControlsState();
-
-            /*if (TabControl.SelectedIndex == 0)
-            {
-                if (Program.SoftwareProject != null)
-                {
-                    IconNewIssue.Enabled = true;
-
-                    if (Program.SoftwareProject.Issues != null)
-                    {
-                        IconEditIssue.Enabled = true;
-                        IconDeleteIssue.Enabled = true;
-                        IconCloneIssue.Enabled = true;
-                    }
-                }
-
-                IconNewTask.Enabled = false;
-                IconEditTask.Enabled = false;
-                IconDeleteTask.Enabled = false;
-                IconCloneTask.Enabled = false;
-            }
-            else if (TabControl.SelectedIndex == 1)
-            {
-                IconNewIssue.Enabled = false;
-                IconEditIssue.Enabled = false;
-                IconDeleteIssue.Enabled = false;
-                IconCloneIssue.Enabled = false;
-
-                if (Program.SoftwareProject != null)
-                {
-                    IconNewTask.Enabled = true;
-
-                    if (Program.SoftwareProject.Tasks != null)
-                    {
-                        IconEditTask.Enabled = true;
-                        IconDeleteTask.Enabled = true;
-                        IconCloneTask.Enabled = true;
-                    }
-                }
-            }*/
         }
 
         /// <summary>
@@ -154,11 +77,8 @@ namespace MiniBug
         /// </summary>
         private void SetControlsState()
         {
-            // If there is no current project disable these controls
-            if (Program.SoftwareProject == null)
-            {
-                editProjectToolStripMenuItem.Enabled = false;
-            }
+            // The user can edit the project settings only if the current project != null
+            editProjectToolStripMenuItem.Enabled = (Program.SoftwareProject == null) ? false : true;
 
             if (TabControl.SelectedIndex == 0) // The tab 'Issues' is selected
             {
@@ -203,7 +123,7 @@ namespace MiniBug
                 // The user can create a new task only if the current project != null
                 newTaskToolStripMenuItem.Enabled = IconNewTask.Enabled = (Program.SoftwareProject == null) ? false : true;
 
-                if ((Program.SoftwareProject != null) && ((Program.SoftwareProject.Tasks != null) || (GridTasks.Rows.Count > 0)))
+                if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Tasks != null) && (GridTasks.Rows.Count > 0))
                 {
                     // ENABLE these controls if there are tasks
                     editTaskToolStripMenuItem.Enabled = true;
@@ -250,7 +170,7 @@ namespace MiniBug
 
             if (frmProject.ShowDialog() == DialogResult.OK)
             {
-
+                // Set the main form title bar text
                 this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
 
                 Program.SoftwareProject = null;
@@ -264,53 +184,24 @@ namespace MiniBug
 
             frmProject.Dispose();
 
-            // ****  temp
-            status = FileOperationsStatus.IOError;
-            // **********
-            
             // If there was an error creating the new project file, show feedback
             if (status != FileOperationsStatus.Success)
             {
-                // *** show an error form ***
-                //MessageBox.Show("Error saving the new project file", "New Project", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // **************
-
-                FeedbackForm frmFeedback = new FeedbackForm();
-                frmFeedback.FormCaption = "Project Save Error";
-                
-                switch (status)
-                {
-                    case FileOperationsStatus.DirectoryNotFound:
-                        frmFeedback.MessageTitle = "Error Saving Project File: Directory Not Found";
-                        frmFeedback.Message = "The specified directory does not exist.\n\nProject directory: " + Program.SoftwareProject.Location + "\n\nPlease try creating a new project in a different directory.";
-                        frmFeedback.FormImage = MiniBug.Properties.Resources.FolderError_64x64;
-                        break;
-
-                    case FileOperationsStatus.IOError:
-                        frmFeedback.MessageTitle = "Error Saving Project File: I/O Error";
-                        frmFeedback.Message = "There was a general input/output error while saving this project.\n\nPlease try creating a new project in a different drive/device.";
-                        frmFeedback.FormImage = MiniBug.Properties.Resources.CriticalError_64x64;
-                        break;
-
-                    case FileOperationsStatus.PathTooLong:
-                        frmFeedback.MessageTitle = "Error Saving Project File: Path Too Long";
-                        frmFeedback.Message = "The specified path, filename or both are too long.\nPlease try creating a new project with a shorter path and/or shorter filename.";
-                        frmFeedback.FormImage = MiniBug.Properties.Resources.FileError_64x64;
-                        break;
-
-                }
-
-                frmFeedback.ShowDialog();
-                frmFeedback.Dispose();
+                ShowProjectErrorFeedback(status);
 
                 // Abort the new project
                 Program.SoftwareProject = null;
+            }
 
-            }/*
-            else
-            {
-                SetControlsState();
-            }*/
+            SetControlsState();
+        }
+
+        /// <summary>
+        /// Open an existing project.
+        /// </summary>
+        private void OpenProject()
+        {
+
         }
 
         /// <summary>
@@ -318,23 +209,70 @@ namespace MiniBug
         /// </summary>
         private void EditProject()
         {
+            FileOperationsStatus status = FileOperationsStatus.None;
             ProjectForm frmProject = new ProjectForm(OperationType.Edit, Program.SoftwareProject.Name, Program.SoftwareProject.Filename, Program.SoftwareProject.Location);
 
             if (frmProject.ShowDialog() == DialogResult.OK)
             {
+                // Set the main form title bar text
                 this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
 
                 Program.SoftwareProject.Name = frmProject.ProjectName;
                 Program.SoftwareProject.Filename = frmProject.ProjectFilename;
                 Program.SoftwareProject.Location = frmProject.ProjectLocation;
 
-                // ****
-                //SaveProject(Program.SoftwareProject);
-                ApplicationData.SaveProject(Program.SoftwareProject);
-                // ****
+                status = ApplicationData.SaveProject(Program.SoftwareProject);
             }
 
             frmProject.Dispose();
+
+            // If there was an error creating the new project file, show feedback
+            if (status != FileOperationsStatus.Success)
+            {
+                ShowProjectErrorFeedback(status);
+
+                // **** reverter alterações
+                // Abort the new project
+                //Program.SoftwareProject = null;
+            }
+        }
+
+        /// <summary>
+        /// Show feedback when an error occurs, when saving the project file.
+        /// </summary>
+        /// <param name="status"></param>
+        private void ShowProjectErrorFeedback(FileOperationsStatus status)
+        {
+            FeedbackForm frmFeedback = new FeedbackForm();
+            frmFeedback.FormCaption = "Project Save Error";
+
+            switch (status)
+            {
+                case FileOperationsStatus.DirectoryNotFound:
+                    frmFeedback.MessageTitle = "Error Saving Project File: Directory Not Found";
+                    frmFeedback.Message = "The specified directory does not exist.\n\nProject directory: " + Program.SoftwareProject.Location + "\n\nPlease try creating a new project in a different directory.";
+                    frmFeedback.FormImage = MiniBug.Properties.Resources.FolderError_64x64;
+                    break;
+
+                case FileOperationsStatus.IOError:
+                    frmFeedback.MessageTitle = "Error Saving Project File: I/O Error";
+                    frmFeedback.Message = "There was a general input/output error while saving this project.\n\nPlease try creating a new project in a different drive/device.";
+                    frmFeedback.FormImage = MiniBug.Properties.Resources.CriticalError_64x64;
+                    break;
+
+                case FileOperationsStatus.PathTooLong:
+                    frmFeedback.MessageTitle = "Error Saving Project File: Path Too Long";
+                    frmFeedback.Message = "The specified path, filename or both are too long.\n\nPlease try creating a new project with a shorter path and/or shorter filename.\n\nProject directory: " + Program.SoftwareProject.Location + "\nProject filename: " + Program.SoftwareProject.Filename;
+                    frmFeedback.FormImage = MiniBug.Properties.Resources.FileError_64x64;
+                    break;
+
+                default:
+                    frmFeedback.Dispose();
+                    return;
+            }
+
+            frmFeedback.ShowDialog();
+            frmFeedback.Dispose();
         }
 
         #endregion
@@ -347,6 +285,14 @@ namespace MiniBug
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewProject();
+        }
+
+        /// <summary>
+        /// Open an existing project.
+        /// </summary>
+        private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenProject();
         }
 
         /// <summary>
@@ -1133,5 +1079,6 @@ namespace MiniBug
             }
         }
         #endregion
+
     }
 }
