@@ -27,6 +27,11 @@ namespace MiniBug
         /// </summary>
         public string Message { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets the image displayed in the form.
+        /// </summary>
+        public Image FormImage { get; set; } = null;
+
         public FeedbackForm()
         {
             InitializeComponent();
@@ -43,6 +48,7 @@ namespace MiniBug
             lblMessageTitle.Text = MessageTitle;
             lblMessage.Text = Message;
 
+            pictureBox1.Image = FormImage;
             pictureBox1.Left = (lblMessageTitle.Left / 2) - (pictureBox1.Width / 2);
 
             // Resume the layout logic

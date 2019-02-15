@@ -133,6 +133,16 @@ namespace MiniBug.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FileError_64x64 {
+            get {
+                object obj = ResourceManager.GetObject("FileError_64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FolderError_64x64 {
             get {
                 object obj = ResourceManager.GetObject("FolderError_64x64", resourceCulture);

@@ -37,7 +37,7 @@
             // 
             // btClose
             // 
-            this.btClose.Location = new System.Drawing.Point(667, 228);
+            this.btClose.Location = new System.Drawing.Point(621, 228);
             this.btClose.Name = "btClose";
             this.btClose.Size = new System.Drawing.Size(75, 23);
             this.btClose.TabIndex = 0;
@@ -49,7 +49,7 @@
             // 
             this.lblMessageTitle.AutoSize = true;
             this.lblMessageTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMessageTitle.Location = new System.Drawing.Point(107, 23);
+            this.lblMessageTitle.Location = new System.Drawing.Point(91, 23);
             this.lblMessageTitle.Name = "lblMessageTitle";
             this.lblMessageTitle.Size = new System.Drawing.Size(155, 32);
             this.lblMessageTitle.TabIndex = 1;
@@ -58,16 +58,15 @@
             // lblMessage
             // 
             this.lblMessage.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMessage.Location = new System.Drawing.Point(113, 75);
+            this.lblMessage.Location = new System.Drawing.Point(94, 75);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(597, 126);
+            this.lblMessage.Size = new System.Drawing.Size(583, 126);
             this.lblMessage.TabIndex = 2;
             this.lblMessage.Text = "Message";
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::MiniBug.Properties.Resources.CriticalError_64x64;
-            this.pictureBox1.Location = new System.Drawing.Point(19, 23);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 23);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(64, 64);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -78,7 +77,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(754, 263);
+            this.ClientSize = new System.Drawing.Size(708, 263);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.lblMessageTitle);

@@ -165,7 +165,6 @@ namespace MiniBug
                 // The user can create a new issue only if the current project != null
                 newIssueToolStripMenuItem.Enabled = IconNewIssue.Enabled = (Program.SoftwareProject == null) ? false : true;
 
-                // ***** testar; replicar nas tasks
                 if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Issues != null) && (GridIssues.Rows.Count > 0))
                 {
                     // ENABLE these controls if there are issues
@@ -268,8 +267,7 @@ namespace MiniBug
             // ****  temp
             status = FileOperationsStatus.IOError;
             // **********
-
-
+            
             // If there was an error creating the new project file, show feedback
             if (status != FileOperationsStatus.Success)
             {
@@ -284,13 +282,22 @@ namespace MiniBug
                 {
                     case FileOperationsStatus.DirectoryNotFound:
                         frmFeedback.MessageTitle = "Error Saving Project File: Directory Not Found";
-                        frmFeedback.Message = "The specified directory does not exist.\n\nProject directory: " + Program.SoftwareProject.Location + "\n\nPlease create a new project in a different directory.";
+                        frmFeedback.Message = "The specified directory does not exist.\n\nProject directory: " + Program.SoftwareProject.Location + "\n\nPlease try creating a new project in a different directory.";
+                        frmFeedback.FormImage = MiniBug.Properties.Resources.FolderError_64x64;
                         break;
 
                     case FileOperationsStatus.IOError:
                         frmFeedback.MessageTitle = "Error Saving Project File: I/O Error";
                         frmFeedback.Message = "There was a general input/output error while saving this project.\n\nPlease try creating a new project in a different drive/device.";
+                        frmFeedback.FormImage = MiniBug.Properties.Resources.CriticalError_64x64;
                         break;
+
+                    case FileOperationsStatus.PathTooLong:
+                        frmFeedback.MessageTitle = "Error Saving Project File: Path Too Long";
+                        frmFeedback.Message = "The specified path, filename or both are too long.\nPlease try creating a new project with a shorter path and/or shorter filename.";
+                        frmFeedback.FormImage = MiniBug.Properties.Resources.FileError_64x64;
+                        break;
+
                 }
 
                 frmFeedback.ShowDialog();
