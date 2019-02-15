@@ -201,6 +201,25 @@ namespace MiniBug
         /// </summary>
         private void OpenProject()
         {
+            openFileDialog1.Title = "Open Project";
+            openFileDialog1.Multiselect = false;
+            openFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 0;
+            openFileDialog1.FileName = string.Empty;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                // Atualizar o nome de ficheiro do projeto
+                //Projeto1.NomeFicheiro = openFileDialog1.FileName;
+
+                // Limpar a gridview
+                //gvwCampos.Rows.Clear();
+
+                // Abrir o projeto
+                //FicheiroProjeto Ficheiro = new FicheiroProjeto(Projeto1, Projeto1.NomeFicheiro);
+                //Ficheiro.Abrir();
+
+            }
 
         }
 

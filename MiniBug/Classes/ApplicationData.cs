@@ -75,6 +75,11 @@ namespace MiniBug
                 softwareProject = null;
                 return FileOperationsStatus.FileNotFound;
             }
+            catch (System.IO.PathTooLongException) // The path is too long
+            {
+                softwareProject = null;
+                return FileOperationsStatus.PathTooLong;
+            }
             catch
             {
                 softwareProject = null;
