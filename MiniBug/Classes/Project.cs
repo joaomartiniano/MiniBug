@@ -11,8 +11,19 @@ namespace MiniBug
     /// </summary>
     public class Project
     {
+        /// <summary>
+        /// Gets the file format version of the project file.
+        /// </summary>
+        public string Version { get; private set; } = "1.0";
+        
+        /// <summary>
+        /// Gets the current value of issue ID counter: the next issue created will have this value. This property is incremented automatically.
+        /// </summary>
         public int IssueIdCounter { get; private set; } = 0;
 
+        /// <summary>
+        /// Gets the current value of task ID counter: the next task created will have this value. This property is incremented automatically.
+        /// </summary>
         public int TaskIdCounter { get; private set; } = 0;
 
         /// <summary>

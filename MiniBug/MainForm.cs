@@ -203,7 +203,7 @@ namespace MiniBug
         {
             openFileDialog1.Title = "Open Project";
             openFileDialog1.Multiselect = false;
-            openFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog1.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
             openFileDialog1.FilterIndex = 0;
             openFileDialog1.FileName = string.Empty;
 
