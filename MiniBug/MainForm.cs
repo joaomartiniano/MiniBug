@@ -1498,8 +1498,8 @@ namespace MiniBug
                 newIssue.Version,
                 newIssue.TargetVersion,
                 newIssue.Summary,
-                newIssue.DateCreated.ToString(),
-                newIssue.DateModified.ToString()
+                newIssue.DateCreated.ToString("g"),
+                newIssue.DateModified.ToString("g")
             });
 
             // Versão antiga (que funciona) **** remover ****
