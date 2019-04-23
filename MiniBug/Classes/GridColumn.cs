@@ -23,8 +23,6 @@ namespace MiniBug
         /// <summary>The order of the column in the issues DataGridView. The first item has a value of 0.</summary>
         public int DisplayIndex { get; set; } = -1;
 
-        public int SortOrder { get; set; } = 0;
-
         /// <summary>A description of the column.</summary>
         public string Description { get; set; } = string.Empty;
     }
