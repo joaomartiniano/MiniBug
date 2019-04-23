@@ -100,28 +100,28 @@ namespace MiniBug
         public static Dictionary<IssueFieldsUI, GridColumn> GridIssuesColumns = new Dictionary<IssueFieldsUI, GridColumn>()
         {
             { IssueFieldsUI.ID,
-                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 0, SortOrder = 0, Description = "Unique numerical code of the issue" } },
+                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 0, Description = "Unique numerical code of the issue" } },
 
             { IssueFieldsUI.Priority,
-                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 1, SortOrder = 0, Description = "Priority of an issue" } },
+                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 1, Description = "Priority of an issue" } },
 
             { IssueFieldsUI.Status,
-                new GridColumn { Name = "status", HeaderText = "Status", Visible = true, DisplayIndex = 2, SortOrder = 0, Description = "Current status of the issue" } },
+                new GridColumn { Name = "status", HeaderText = "Status", Visible = true, DisplayIndex = 2, Description = "Current status of the issue" } },
 
             { IssueFieldsUI.Version,
-                new GridColumn { Name = "version", HeaderText = "Version", Visible = true, DisplayIndex = 3, SortOrder = 0, Description = "Version where the issue was detected" } },
+                new GridColumn { Name = "version", HeaderText = "Version", Visible = true, DisplayIndex = 3, Description = "Version where the issue was detected" } },
 
             { IssueFieldsUI.TargetVersion,
-                new GridColumn { Name = "target", HeaderText = "Target", Visible = false, DisplayIndex = 4, SortOrder = 0, Description = "Version where the issue must be resolved" } },
+                new GridColumn { Name = "target", HeaderText = "Target", Visible = false, DisplayIndex = 4, Description = "Version where the issue must be resolved" } },
 
             { IssueFieldsUI.Summary,
-                new GridColumn { Name = "summary", HeaderText = "Summary", Visible = true, DisplayIndex = 5, SortOrder = 0, Description = "Brief summary of the issue" } },
+                new GridColumn { Name = "summary", HeaderText = "Summary", Visible = true, DisplayIndex = 5, Description = "Brief summary of the issue" } },
 
             { IssueFieldsUI.DateCreated,
-                new GridColumn { Name = "created", HeaderText = "Created", Visible = true, DisplayIndex = 6, SortOrder = 0, Description = "Date/time when the issue was created" } },
+                new GridColumn { Name = "created", HeaderText = "Created", Visible = true, DisplayIndex = 6, Description = "Date/time when the issue was created" } },
 
             { IssueFieldsUI.DateModified,
-                new GridColumn { Name = "modified", HeaderText = "Modified", Visible = false, DisplayIndex = 7, SortOrder = 0, Description = "Date/time when the issue was last modified" } }
+                new GridColumn { Name = "modified", HeaderText = "Modified", Visible = false, DisplayIndex = 7, Description = "Date/time when the issue was last modified" } }
         };
 
         /// <summary>
@@ -130,25 +130,25 @@ namespace MiniBug
         public static Dictionary<TaskFieldsUI, GridColumn> GridTasksColumns = new Dictionary<TaskFieldsUI, GridColumn>()
         {
             { TaskFieldsUI.ID,
-                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 0, SortOrder = 0, Description = "Unique numerical code of the task" } },
+                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 0, Description = "Unique numerical code of the task" } },
 
             { TaskFieldsUI.Priority,
-                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 1, SortOrder = 0, Description = "Priority of a task" } },
+                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 1, Description = "Priority of a task" } },
 
             { TaskFieldsUI.Status,
-                new GridColumn { Name = "status", HeaderText = "Status", Visible = true, DisplayIndex = 2, SortOrder = 0, Description = "Current status of the task" } },
+                new GridColumn { Name = "status", HeaderText = "Status", Visible = true, DisplayIndex = 2, Description = "Current status of the task" } },
 
             { TaskFieldsUI.TargetVersion,
-                new GridColumn { Name = "target", HeaderText = "Target", Visible = false, DisplayIndex = 3, SortOrder = 0, Description = "Version where the task must be resolved" } },
+                new GridColumn { Name = "target", HeaderText = "Target", Visible = false, DisplayIndex = 3, Description = "Version where the task must be resolved" } },
 
             { TaskFieldsUI.Summary,
-                new GridColumn { Name = "summary", HeaderText = "Summary", Visible = true, DisplayIndex = 4, SortOrder = 0, Description = "Brief summary of the task" } },
+                new GridColumn { Name = "summary", HeaderText = "Summary", Visible = true, DisplayIndex = 4, Description = "Brief summary of the task" } },
 
             { TaskFieldsUI.DateCreated,
-                new GridColumn { Name = "created", HeaderText = "Created", Visible = true, DisplayIndex = 5, SortOrder = 0, Description = "Date/time when the task was created" } },
+                new GridColumn { Name = "created", HeaderText = "Created", Visible = true, DisplayIndex = 5, Description = "Date/time when the task was created" } },
 
             { TaskFieldsUI.DateModified,
-                new GridColumn { Name = "modified", HeaderText = "Modified", Visible = false, DisplayIndex = 6, SortOrder = 0, Description = "Date/time when the task was last modified" } }
+                new GridColumn { Name = "modified", HeaderText = "Modified", Visible = false, DisplayIndex = 6, Description = "Date/time when the task was last modified" } }
         };
 
         /// <summary>
