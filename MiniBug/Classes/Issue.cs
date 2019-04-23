@@ -7,6 +7,9 @@ using System.ComponentModel;
 
 namespace MiniBug
 {
+    /// <summary>
+    ///  Status of an issue.
+    /// </summary>
     public enum IssueStatus
     {
         None = 0,
@@ -18,8 +21,31 @@ namespace MiniBug
         Closed
     };
 
+    /// <summary>
+    /// Priority of an issue.
+    /// </summary>
     public enum IssuePriority { None = 0, Low, Normal, High, Urgent, Immediate };
 
+    /// <summary>
+    /// Fields used on the user interface (in a DataGridView and on a form) to represent an issue.
+    /// </summary>
+    public enum IssueFieldsUI
+    {
+        ID = 0,
+        Priority,
+        Status,
+        Version,
+        [DescriptionAttribute("Target version")]
+        TargetVersion,
+        Summary,
+        Description,
+        [DescriptionAttribute("Date created")]
+        DateCreated,
+        [DescriptionAttribute("Date modified")]
+        DateModified
+    };
+
+    [Serializable]
     public class Issue
     {
         /// <summary>
@@ -28,24 +54,14 @@ namespace MiniBug
         public int ID { get; set; } = 0;
 
         /// <summary>
-        /// Gets or sets the status of this issue.
-        /// </summary>
-        public IssueStatus Status { get; set; } = IssueStatus.None;
-
-        /// <summary>
         /// Gets or sets the priority of this issue.
         /// </summary>
         public IssuePriority Priority { get; set; } = IssuePriority.None;
 
         /// <summary>
-        /// Gets or sets the summary of this issue.
+        /// Gets or sets the status of this issue.
         /// </summary>
-        public string Summary { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the description of this issue.
-        /// </summary>
-        public string Description { get; set; } = string.Empty;
+        public IssueStatus Status { get; set; } = IssueStatus.None;
 
         /// <summary>
         /// Gets or sets the version of the software on which this issue occurs.
@@ -58,9 +74,19 @@ namespace MiniBug
         public string TargetVersion { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets the date/time this issue was created.
+        /// Gets or sets the summary of this issue.
         /// </summary>
-        public DateTime DateCreated { get; private set; }
+        public string Summary { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the description of this issue.
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the date/time this issue was created.
+        /// </summary>
+        public DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the date/time this issue was modified.
@@ -72,8 +98,7 @@ namespace MiniBug
         /// </summary>
         public Issue()
         {
-            DateCreated = DateTime.Now;
-            DateModified = DateTime.Now;
+            ;
         }
 
         /// <summary>
@@ -116,7 +141,7 @@ namespace MiniBug
             clonedInstance.Description = this.Description;
             clonedInstance.Version = this.Version;
             clonedInstance.TargetVersion = this.TargetVersion;
-            clonedInstance.DateModified = DateTime.Now;
+            clonedInstance.DateCreated = clonedInstance.DateModified = DateTime.Now;
         }
     }
 }

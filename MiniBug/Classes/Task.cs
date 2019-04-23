@@ -25,6 +25,25 @@ namespace MiniBug
     /// </summary>
     public enum TaskPriority { None = 0, Low, Normal, High, Urgent, Immediate };
 
+    /// <summary>
+    /// Fields used on the user interface (in a DataGridView and on a form) to represent a task.
+    /// </summary>
+    public enum TaskFieldsUI
+    {
+        ID = 0,
+        Priority,
+        Status,
+        TargetVersion,
+        [DescriptionAttribute("Date created")]
+        Summary,
+        Description,
+        [DescriptionAttribute("Target version")]
+        DateCreated,
+        [DescriptionAttribute("Date modified")]
+        DateModified
+    };
+
+    [Serializable]
     public class Task
     {
         /// <summary>
@@ -33,14 +52,19 @@ namespace MiniBug
         public int ID { get; set; }
 
         /// <summary>
+        /// Gets or sets the priority of this task.
+        /// </summary>
+        public TaskPriority Priority { get; set; }
+
+        /// <summary>
         /// Gets or sets the status of this task.
         /// </summary>
         public TaskStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the priority of this task.
+        /// Gets or sets the future version on which this task will be applied/finished.
         /// </summary>
-        public TaskPriority Priority { get; set; }
+        public string TargetVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the summary of this task.
@@ -53,14 +77,9 @@ namespace MiniBug
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the future version on which this task will be applied/finished.
+        /// Gets or sets the date/time this task was created.
         /// </summary>
-        public string TargetVersion { get; set; }
-
-        /// <summary>
-        /// Gets the date/time this task was created.
-        /// </summary>
-        public DateTime DateCreated { get; private set; }
+        public DateTime DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the date/time this task was modified.
@@ -72,8 +91,7 @@ namespace MiniBug
         /// </summary>
         public Task()
         {
-            DateCreated = DateTime.Now;
-            DateModified = DateTime.Now;
+            ;
         }
 
         /// <summary>
@@ -111,7 +129,7 @@ namespace MiniBug
             clonedInstance.Summary = this.Summary;
             clonedInstance.Description = this.Description;
             clonedInstance.TargetVersion = this.TargetVersion;
-            clonedInstance.DateModified = DateTime.Now;
+            clonedInstance.DateCreated = clonedInstance.DateModified = DateTime.Now;
         }
     }
 }

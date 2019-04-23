@@ -10,5 +10,6 @@ namespace MiniBug
 
     class HelperClass
     {
+
     }
 }

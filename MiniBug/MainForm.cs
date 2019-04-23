@@ -20,38 +20,83 @@ namespace MiniBug
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Icon = MiniBug.Properties.Resources.Minibug;
-            this.Text = "MiniBug Issue Tracker";
-            
+            // Start by retrieving the application settings
+            ApplicationSettings.Load();
+
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
 
-            /*Program.SoftwareProject = new MiniBug.Project("FlexBox Simulator");
-            Program.SoftwareProject.Filename = "MINIBUG-FlexBoxSimulator.json";*/
-
-            // *** temporário
-            //Program.SoftwareProject.Issues.Add(1, new Issue(1, IssueStatus.Verified, IssuePriority.Normal, "Código CSS gerado: inicialização não está a obter valor do color picker do background do container", string.Empty, "0.1", "1.0.0"));
-            //Program.SoftwareProject.Issues.Add(2, new Issue(2, IssueStatus.Verified, IssuePriority.Low, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
-            /*Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Unconfirmed, IssuePriority.Immediate, "Código CSS gerado: inicialização não está a obter valor do color picker do background do container", string.Empty, "0.1", "1.0.0"));
-            Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Confirmed, IssuePriority.Urgent, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
-            Program.SoftwareProject.AddIssue(new Issue(IssueStatus.InProgress, IssuePriority.High, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
-            Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Resolved, IssuePriority.Normal, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
-            Program.SoftwareProject.AddIssue(new Issue(IssueStatus.Closed, IssuePriority.Normal, "Labels com dimensões do container não mostram as dimensões durante resizing", string.Empty, "0.1", "1.0.0"));
-
-            Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.High, "Permitir trabalhar com vários projetos em simultâneo", "...", "2.0"));
-            Program.SoftwareProject.AddTask(new Task(TaskStatus.NotStarted, TaskPriority.Immediate, "Gravar settings da aplicação", "...", "1.0"));*/
+            this.Icon = MiniBug.Properties.Resources.Minibug;
+            this.Text = "MiniBug Issue Tracker";
+            this.MinimumSize = new Size(478, 303);
 
             InitializeTabControl();
+
+            // Initialization of the Issues and Tasks grids
             InitializeGridIssues();
-            PopulateGridIssues();
             InitializeGridTasks();
+
+            // Apply the settings to the Issues and Tasks grids
+            ApplySettingsToGrids();
+
+            // Populate the Issues and Tasks grids
+            PopulateGridIssues();
             PopulateGridTasks();
 
-            // ** experiência ***
             SetControlsState();
+
+            // Initialize the recent projects submenu
+            InitializeRecentProjects();
 
             // Resume the layout logic
             this.ResumeLayout();
+
+
+            // *** remover *** para testar feedback de exportação ***
+            /*ExportProjectResult Result = new ExportProjectResult(false, "ficheiro-issues.csv", false, "ficheiro-tasks.csv", FileSystemOperationStatus.ExportToCsvIOError, FileSystemOperationStatus.ExportToCsvErrorPathTooLong);
+            ExportFeedbackForm frmFeedback = new ExportFeedbackForm(Result);
+            frmFeedback.ShowDialog();
+            frmFeedback.Dispose();*/
+            // ****
+
+            // **** testar sort ****
+            /*ApplicationSettings.GridIssuesSort.FirstColumn = IssueFieldsUI.ID;
+            ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = SortOrder.Ascending;
+            ApplicationSettings.GridIssuesSort.SecondColumn= IssueFieldsUI.Status;
+            ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = SortOrder.Descending;*/
+            // ********************
+        }
+
+        /// <summary>
+        /// Initialize the recent projects submenu.
+        /// </summary>
+        private void InitializeRecentProjects()
+        {
+            // Initialize the settings for recent projects
+            if ((Properties.Settings.Default.RecentProjectsNames == null) || (Properties.Settings.Default.RecentProjectsPaths == null))
+            {
+                Properties.Settings.Default.RecentProjectsNames = new System.Collections.Specialized.StringCollection();
+                Properties.Settings.Default.RecentProjectsPaths = new System.Collections.Specialized.StringCollection();
+                Properties.Settings.Default.Save();
+
+                // Disable the recent projects menu item
+                recentProjectsToolStripMenuItem.Enabled = false;
+            }
+            else if ((Properties.Settings.Default.RecentProjectsNames.Count > 0) && (Properties.Settings.Default.RecentProjectsPaths.Count > 0))
+            {
+                // Load the recent projects from the application settings and insert them in the recent projects submenu
+                for (int i = 0; i <= Properties.Settings.Default.RecentProjectsNames.Count - 1; ++i)
+                {
+                    ToolStripMenuItem item = new ToolStripMenuItem(Properties.Settings.Default.RecentProjectsNames[i])
+                    {
+                        Tag = Properties.Settings.Default.RecentProjectsPaths[i]
+                    };
+                    recentProjectsToolStripMenuItem.DropDownItems.Add(item);
+
+                    // Add an event handler for the new menu item
+                    item.Click += new System.EventHandler(this.FileMenuRecentProjectItem_Click);
+                }
+            }
         }
 
         /// <summary>
@@ -80,6 +125,17 @@ namespace MiniBug
             // The user can edit the project settings only if the current project != null
             editProjectToolStripMenuItem.Enabled = (Program.SoftwareProject == null) ? false : true;
 
+            // The user can export the project only if the current project != null AND there are issues OR tasks
+            exportToolStripMenuItem.Enabled = false;
+            if (Program.SoftwareProject != null)
+            {
+                if (((Program.SoftwareProject.Issues != null) && (Program.SoftwareProject.Issues.Count > 0)) ||
+                    ((Program.SoftwareProject.Tasks != null) && (Program.SoftwareProject.Tasks.Count > 0)))
+                {
+                    exportToolStripMenuItem.Enabled = true;
+                }
+            }
+            
             if (TabControl.SelectedIndex == 0) // The tab 'Issues' is selected
             {
                 // The user can create a new issue only if the current project != null
@@ -118,7 +174,7 @@ namespace MiniBug
                 IconDeleteTask.Enabled = false;
                 IconCloneTask.Enabled = false;
             }
-            else if (TabControl.SelectedIndex == 1) //  // The tab 'Tasks' is selected
+            else if (TabControl.SelectedIndex == 1) // The tab 'Tasks' is selected
             {
                 // The user can create a new task only if the current project != null
                 newTaskToolStripMenuItem.Enabled = IconNewTask.Enabled = (Program.SoftwareProject == null) ? false : true;
@@ -158,39 +214,116 @@ namespace MiniBug
             }
         }
 
-        #region Project
+        /// <summary>
+        /// Handle closing of the main form.
+        /// </summary>
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseApplication();
+            e.Cancel = false;
+        }
 
+        /// <summary>
+        /// Perform cleanup or final operations when the application is about to close.
+        /// </summary>
+        private void CloseApplication()
+        {
+            // Save the order of the columns in the issues and tasks DataGridViews
+            ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
+        }
+
+        #region RecentProject
+        /// <summary>
+        /// Add a project to the recent projects submenu and to the application settings
+        /// </summary>
+        /// <param name="projectName">The project name.</param>
+        /// <param name="filename">The path and name of the file.</param>
+        private void AddRecentProject(string projectName, string filename)
+        {
+            recentProjectsToolStripMenuItem.Enabled = true;
+
+            ToolStripMenuItem item = new ToolStripMenuItem(projectName)
+            {
+                Tag = filename
+            };
+            
+            // Remove the last item in the menu when the maximum number of items is reached
+            if (recentProjectsToolStripMenuItem.DropDownItems.Count == ApplicationSettings.MaxRecentProjects)
+            {
+                recentProjectsToolStripMenuItem.DropDownItems.RemoveAt(recentProjectsToolStripMenuItem.DropDownItems.Count - 1);
+
+                Properties.Settings.Default.RecentProjectsNames.RemoveAt(Properties.Settings.Default.RecentProjectsNames.Count - 1);
+                Properties.Settings.Default.RecentProjectsPaths.RemoveAt(Properties.Settings.Default.RecentProjectsPaths.Count - 1);
+            }
+
+            // Add the new menu item to the top of the submenu
+            recentProjectsToolStripMenuItem.DropDownItems.Insert(0, item);
+
+            // Save the project name and path and filename in the application settings
+            Properties.Settings.Default.RecentProjectsNames.Insert(0, projectName);
+            Properties.Settings.Default.RecentProjectsPaths.Insert(0, filename);
+            Properties.Settings.Default.Save();
+
+            // Add an event handler for the new menu item
+            item.Click += new System.EventHandler(this.FileMenuRecentProjectItem_Click);
+        }
+
+        /// <summary>
+        /// Occurs when one the recent projects menu item is clicked.
+        /// </summary>
+        private void FileMenuRecentProjectItem_Click(object sender, EventArgs e)
+        {
+            OpenProject(((ToolStripMenuItem)sender).Tag.ToString());
+        }
+        #endregion
+
+        #region Project
         /// <summary>
         /// Create a new project.
         /// </summary>
         private void NewProject()
         {
-            FileOperationsStatus status = FileOperationsStatus.None;
+            FileSystemOperationStatus status = FileSystemOperationStatus.None;
             ProjectForm frmProject = new ProjectForm(OperationType.New);
 
-            if (frmProject.ShowDialog() == DialogResult.OK)
-            {
-                // Set the main form title bar text
-                this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
+            DialogResult result = frmProject.ShowDialog();
 
+            if (result == DialogResult.OK)
+            {
                 Program.SoftwareProject = null;
 
-                Program.SoftwareProject = new Project(frmProject.ProjectName);
-                Program.SoftwareProject.Filename = frmProject.ProjectFilename;
-                Program.SoftwareProject.Location = frmProject.ProjectLocation;
+                // Clear the issues and tasks grids
+                GridIssues.Rows.Clear();
+                GridTasks.Rows.Clear();
+
+                Program.SoftwareProject = new Project(frmProject.ProjectName)
+                {
+                    Filename = frmProject.ProjectFilename,
+                    Location = frmProject.ProjectLocation
+                };
 
                 status = ApplicationData.SaveProject(Program.SoftwareProject);
             }
-
+            
             frmProject.Dispose();
 
+            if (result == DialogResult.Cancel) return;
+
             // If there was an error creating the new project file, show feedback
-            if (status != FileOperationsStatus.Success)
+            if (status != FileSystemOperationStatus.OK)
             {
                 ShowProjectErrorFeedback(status);
 
                 // Abort the new project
                 Program.SoftwareProject = null;
+            }
+            else
+            {
+                // Set the main form title bar text
+                this.Text = $"{frmProject.ProjectName} - MiniBug Issue Tracker";
+
+                // Add this project to the recent projects submenu and application settings
+                AddRecentProject(Program.SoftwareProject.Name, System.IO.Path.Combine(Program.SoftwareProject.Location, Program.SoftwareProject.Filename));
             }
 
             SetControlsState();
@@ -199,28 +332,71 @@ namespace MiniBug
         /// <summary>
         /// Open an existing project.
         /// </summary>
-        private void OpenProject()
+        /// <param name="filename">(optional) The file to open. If present, the project file is opened directly.</param>
+        private void OpenProject(string filename = "")
         {
-            openFileDialog1.Title = "Open Project";
-            openFileDialog1.Multiselect = false;
-            openFileDialog1.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
-            openFileDialog1.FilterIndex = 0;
-            openFileDialog1.FileName = string.Empty;
+            bool flag = (filename != string.Empty) ? true : false;
 
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (filename == string.Empty)
             {
-                // Atualizar o nome de ficheiro do projeto
-                //Projeto1.NomeFicheiro = openFileDialog1.FileName;
+                openFileDialog1.Title = "Open Project";
+                openFileDialog1.Multiselect = false;
+                openFileDialog1.Filter = "JSON files (*.json)|*.json";
+                openFileDialog1.FilterIndex = 0;
+                openFileDialog1.FileName = string.Empty;
 
-                // Limpar a gridview
-                //gvwCampos.Rows.Clear();
-
-                // Abrir o projeto
-                //FicheiroProjeto Ficheiro = new FicheiroProjeto(Projeto1, Projeto1.NomeFicheiro);
-                //Ficheiro.Abrir();
-
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    filename = openFileDialog1.FileName;
+                    flag = true;
+                }
             }
 
+            if (flag)
+            {
+                FileSystemOperationStatus status = FileSystemOperationStatus.None;
+                Project newProject = new Project();
+
+                // *** ??? o que é a linha seguinte, comentada? remover ??
+                //status = ApplicationData.LoadProject(filename, out Program.SoftwareProject);
+                status = ApplicationData.LoadProject(filename, out newProject);
+
+                // If there was an error loading the new project file, show feedback
+                if (status != FileSystemOperationStatus.OK)
+                {
+                    ShowProjectErrorFeedback(status);
+
+                    // Abort the new project
+                    //Program.SoftwareProject = null;
+                    newProject = null;
+                }
+                else
+                {
+                    Program.SoftwareProject = null;
+                    Program.SoftwareProject = newProject;
+
+                    // Suspend the layout logic for the form, while the application is initializing
+                    this.SuspendLayout();
+
+                    // Set the main form title bar text
+                    this.Text = $"{Program.SoftwareProject.Name} - MiniBug Issue Tracker";
+
+                    // Clear the issues and tasks grids
+                    GridIssues.Rows.Clear();
+                    GridTasks.Rows.Clear();
+
+                    PopulateGridIssues();
+                    PopulateGridTasks();
+
+                    // Add this project to the recent projects submenu and application settings
+                    AddRecentProject(Program.SoftwareProject.Name, System.IO.Path.Combine(Program.SoftwareProject.Location, Program.SoftwareProject.Filename));
+
+                    // Resume the layout logic
+                    this.ResumeLayout();
+                }
+            }
+
+            SetControlsState();
         }
 
         /// <summary>
@@ -228,13 +404,13 @@ namespace MiniBug
         /// </summary>
         private void EditProject()
         {
-            FileOperationsStatus status = FileOperationsStatus.None;
+            FileSystemOperationStatus status = FileSystemOperationStatus.None;
             ProjectForm frmProject = new ProjectForm(OperationType.Edit, Program.SoftwareProject.Name, Program.SoftwareProject.Filename, Program.SoftwareProject.Location);
 
             if (frmProject.ShowDialog() == DialogResult.OK)
             {
                 // Set the main form title bar text
-                this.Text = frmProject.ProjectName + " - MiniBug Issue Tracker";
+                this.Text = $"{frmProject.ProjectName} - MiniBug Issue Tracker";
 
                 Program.SoftwareProject.Name = frmProject.ProjectName;
                 Program.SoftwareProject.Filename = frmProject.ProjectFilename;
@@ -246,13 +422,70 @@ namespace MiniBug
             frmProject.Dispose();
 
             // If there was an error creating the new project file, show feedback
-            if (status != FileOperationsStatus.Success)
+            if (status != FileSystemOperationStatus.OK)
             {
                 ShowProjectErrorFeedback(status);
 
-                // **** reverter alterações
+                // **** TODO: reverter alterações ****
                 // Abort the new project
                 //Program.SoftwareProject = null;
+            }
+        }
+
+        /// <summary>
+        /// Export the current project.
+        /// </summary>
+        private void ExportProject()
+        {
+            DialogResult FrmExportResult = DialogResult.None;
+            ExportForm frmExport = new ExportForm();
+
+            // Show the export to CSV form
+            FrmExportResult = frmExport.ShowDialog();
+            frmExport.Dispose();
+
+            if (FrmExportResult == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            // Export the project
+            //ExportProjectResult Result = ApplicationData.ExportProject(frmExport.IssuesFilename, frmExport.TasksFilename, Program.SoftwareProject);
+            ExportProjectResult Result = Program.SoftwareProject.Export(frmExport.IssuesFilename, frmExport.TasksFilename);
+
+            // Show feedback about the project export operation
+            ExportFeedbackForm frmFeedback = new ExportFeedbackForm(Result);
+            frmFeedback.ShowDialog();
+            frmFeedback.Dispose();
+
+                /*FileSystemOperationStatus status = ApplicationData.ExportProject(frmExport.IssuesFilename, frmExport.TasksFilename, Program.SoftwareProject);
+
+                if (status == FileSystemOperationStatus.ExportOK)
+                {
+                    MessageBox.Show("The export operation was successfull.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    ShowProjectErrorFeedback(status);
+                }*/
+            
+
+        }
+
+        /// <summary>
+        /// Saves the current project. Every operation that modifies the current project must call this method after modifying the data.
+        /// </summary>
+        /// <param name="context"></param>
+        //private void SaveProject(OperationContext context)
+        private void SaveProject()
+        {
+           FileSystemOperationStatus status = FileSystemOperationStatus.None;
+            status = ApplicationData.SaveProject(Program.SoftwareProject);
+
+            // If there was an error saving the project file, show feedback
+            if (status != FileSystemOperationStatus.OK)
+            {
+                ShowProjectErrorFeedback(status);
             }
         }
 
@@ -260,44 +493,19 @@ namespace MiniBug
         /// Show feedback when an error occurs, when saving the project file.
         /// </summary>
         /// <param name="status"></param>
-        private void ShowProjectErrorFeedback(FileOperationsStatus status)
+        private void ShowProjectErrorFeedback(FileSystemOperationStatus status)
         {
-            FeedbackForm frmFeedback = new FeedbackForm();
-            frmFeedback.FormCaption = "Project Save Error";
-
-            switch (status)
+            if (status != FileSystemOperationStatus.None)
             {
-                case FileOperationsStatus.DirectoryNotFound:
-                    frmFeedback.MessageTitle = "Error Saving Project File: Directory Not Found";
-                    frmFeedback.Message = "The specified directory does not exist.\n\nProject directory: " + Program.SoftwareProject.Location + "\n\nPlease try creating a new project in a different directory.";
-                    frmFeedback.FormImage = MiniBug.Properties.Resources.FolderError_64x64;
-                    break;
-
-                case FileOperationsStatus.IOError:
-                    frmFeedback.MessageTitle = "Error Saving Project File: I/O Error";
-                    frmFeedback.Message = "There was a general input/output error while saving this project.\n\nPlease try creating a new project in a different drive/device.";
-                    frmFeedback.FormImage = MiniBug.Properties.Resources.CriticalError_64x64;
-                    break;
-
-                case FileOperationsStatus.PathTooLong:
-                    frmFeedback.MessageTitle = "Error Saving Project File: Path Too Long";
-                    frmFeedback.Message = "The specified path, filename or both are too long.\n\nPlease try creating a new project with a shorter path and/or shorter filename.\n\nProject directory: " + Program.SoftwareProject.Location + "\nProject filename: " + Program.SoftwareProject.Filename;
-                    frmFeedback.FormImage = MiniBug.Properties.Resources.FileError_64x64;
-                    break;
-
-                default:
-                    frmFeedback.Dispose();
-                    return;
+                FeedbackForm frmFeedback = new FeedbackForm();
+                frmFeedback.ComposeMessage(status);
+                frmFeedback.ShowDialog();
+                frmFeedback.Dispose();
             }
-
-            frmFeedback.ShowDialog();
-            frmFeedback.Dispose();
         }
-
         #endregion
 
         #region Menu
-
         /// <summary>
         /// Create a new project.
         /// </summary>
@@ -323,7 +531,30 @@ namespace MiniBug
         }
 
         /// <summary>
-        /// Exit this application.
+        /// Export the current project issues and tasks to a file.
+        /// </summary>
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportProject();
+        }
+
+        /// <summary>
+        /// Change the application settings.
+        /// </summary>
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsForm frmSettings = new SettingsForm();
+
+            if (frmSettings.ShowDialog() == DialogResult.OK)
+            {
+                ApplySettingsToGrids();
+            }
+
+            frmSettings.Dispose();
+        }
+
+        /// <summary>
+        /// Close the application.
         /// </summary>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -475,7 +706,80 @@ namespace MiniBug
 
         #endregion
 
+        /// <summary>
+        ///  Apply the settings to the Issues and Tasks grids.
+        /// </summary>
+        private void ApplySettingsToGrids()
+        {
+            // Apply settings to the Issues grid
+
+            // Grid Font
+            GridIssues.Font = ApplicationSettings.GridFont;
+            GridIssues.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+
+            // Grid borders
+            if (ApplicationSettings.GridShowBorders)
+            {
+                GridIssues.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+                GridIssues.GridColor = ApplicationSettings.GridBorderColor;
+            }
+            else
+            {
+                GridIssues.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            }
+
+            // Selection color
+            GridIssues.DefaultCellStyle.SelectionBackColor = ApplicationSettings.GridSelectionBackColor;
+            GridIssues.DefaultCellStyle.SelectionForeColor = ApplicationSettings.GridSelectionForeColor;
+
+            // Alternating row colors
+            GridIssues.RowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
+            if (ApplicationSettings.GridAlternatingRowColor)
+            {
+                GridIssues.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridAlternateRowBackColor;
+            }
+            else
+            {
+                GridIssues.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
+            }
+
+            // (end Issues grid)
+
+            // Apply settings to the Tasks grid
+
+            // Grid Font
+            GridTasks.Font = ApplicationSettings.GridFont;
+            GridTasks.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+
+            // Grid borders
+            if (ApplicationSettings.GridShowBorders)
+            {
+                GridTasks.GridColor = ApplicationSettings.GridBorderColor;
+            }
+            else
+            {
+                GridTasks.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            }
+
+            // Selection color
+            GridTasks.DefaultCellStyle.SelectionBackColor = ApplicationSettings.GridSelectionBackColor;
+            GridTasks.DefaultCellStyle.SelectionForeColor = ApplicationSettings.GridSelectionForeColor;
+
+            // Alternating row colors
+            GridTasks.RowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
+            if (ApplicationSettings.GridAlternatingRowColor)
+            {
+                GridTasks.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridAlternateRowBackColor;
+            }
+
+            // (end Tasks grid)
+        }
+
+
         #region Tasks
+        /// <summary>
+        /// Initialize the tasks DataGridView.
+        /// </summary>
         private void InitializeGridTasks()
         {
             GridTasks.BackgroundColor = TabControl.DefaultBackColor;
@@ -483,19 +787,21 @@ namespace MiniBug
             GridTasks.Dock = DockStyle.Fill;
 
             GridTasks.AllowUserToAddRows = false;
+            GridTasks.AllowUserToDeleteRows = false;
             GridTasks.AllowUserToOrderColumns = true;
             GridTasks.AllowUserToResizeColumns = true;
             GridTasks.AllowUserToResizeRows = false;
             GridTasks.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             GridTasks.ColumnHeadersVisible = true;
             GridTasks.RowHeadersVisible = false;
-            GridTasks.GridColor = ColorTranslator.FromHtml("#ececec");
             GridTasks.ReadOnly = true;
             GridTasks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             GridTasks.MultiSelect = true;
             GridTasks.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            GridTasks.ShowCellToolTips = true;
 
-            // Add columns to the issues grid
+
+            // Add columns to the tasks grid
             GridTasks.Columns.Add("id", "ID");
             GridTasks.Columns["id"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridTasks.Columns["id"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -515,6 +821,14 @@ namespace MiniBug
             GridTasks.Columns.Add("status", "Status");
             GridTasks.Columns["status"].Resizable = DataGridViewTriState.False;
             GridTasks.Columns["status"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            GridTasks.Columns["status"].DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
+
+            GridTasks.Columns.Add("target", "Target"); // novo
+            GridTasks.Columns["target"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridTasks.Columns["target"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridTasks.Columns["target"].Resizable = DataGridViewTriState.False;
+            GridTasks.Columns["target"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            GridTasks.Columns["target"].HeaderCell.ToolTipText = "Target Version";
 
             GridTasks.Columns.Add("summary", "Summary");
             GridTasks.Columns.Add("created", "Created");
@@ -529,7 +843,7 @@ namespace MiniBug
         /// </summary>
         private void PopulateGridTasks()
         {
-            if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Issues != null))
+            if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Tasks != null))
             { 
                 foreach (KeyValuePair<int, Task> item in Program.SoftwareProject.Tasks)
                 {
@@ -543,6 +857,15 @@ namespace MiniBug
         /// </summary>
         private void GridTasks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
+
+            // Text color of finished tasks
+            if (Program.SoftwareProject.Tasks[key].Status == TaskStatus.Finished)
+            {
+                e.CellStyle.ForeColor = ApplicationSettings.GridClosedItem;
+                e.CellStyle.SelectionForeColor = ApplicationSettings.GridClosedItem;
+            }
+
             // Configure/format the "priority" column's cells
             if (GridTasks.Columns[e.ColumnIndex].Name == "priority")
             {
@@ -554,8 +877,13 @@ namespace MiniBug
                 }
                 else
                 {
-                    // Set the tooltip for this cell
-                    int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
+                    // Set the tooltip for this cell, but only if the project has tasks
+                    if ((Program.SoftwareProject.Tasks == null) || (Program.SoftwareProject.Tasks.Count == 0))
+                    {
+                        return;
+                    }
+
+                    //int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
                     string s = string.Empty;
 
                     switch (Program.SoftwareProject.Tasks[key].Priority)
@@ -585,7 +913,41 @@ namespace MiniBug
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Advanced formatting of cells.
+        /// </summary>
+        private void GridTasks_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            e.PaintBackground(e.ClipBounds, true);
+            e.PaintContent(e.ClipBounds);
+
+            // Draw a filled rectangle in the "Status" column
+            if (GridTasks.Columns[e.ColumnIndex].Name == "status")
+            {
+                int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
+                Brush fillColor;
+
+                // Set the color for the rectangle, according to the Task status
+                fillColor = ApplicationSettings.TaskStatusColors[Program.SoftwareProject.Tasks[key].Status];
+
+                if (fillColor != Brushes.Transparent)
+                {
+                    int size = ApplicationSettings.GridStatusRectangleSize;
+                    Rectangle rect = new Rectangle(e.CellBounds.Location.X + 4, e.CellBounds.Location.Y + (e.CellBounds.Height / 2) - (size / 2), size, size);
+                    e.Graphics.FillRectangle(fillColor, rect);
+                    e.PaintContent(rect);
+                }
+            }
+
+            e.Handled = true;
+        }
+
         /// <summary>
         /// Returns a bitmap image corresponding to a given task priority.
         /// </summary>
@@ -615,7 +977,7 @@ namespace MiniBug
         /// <param name="newTask">The task to add to the grid.</param>
         private void AddTaskToGrid(Task newTask)
         {
-            GridTasks.Rows.Add(new object[] { newTask.ID.ToString(), GetTaskPriorityImage(newTask.Priority), newTask.Status.ToDescription(), newTask.Summary, newTask.DateCreated.ToString() });
+            GridTasks.Rows.Add(new object[] { newTask.ID.ToString(), GetTaskPriorityImage(newTask.Priority), newTask.Status.ToDescription(), newTask.TargetVersion, newTask.Summary, newTask.DateCreated.ToString() });
         }
 
         /// <summary>
@@ -627,6 +989,7 @@ namespace MiniBug
         {
             GridTasks.Rows[rowIndex].Cells["priority"].Value = GetTaskPriorityImage(Program.SoftwareProject.Tasks[taskID].Priority);
             GridTasks.Rows[rowIndex].Cells["status"].Value = Program.SoftwareProject.Tasks[taskID].Status.ToDescription();
+            GridTasks.Rows[rowIndex].Cells["target"].Value = Program.SoftwareProject.Tasks[taskID].TargetVersion;
             GridTasks.Rows[rowIndex].Cells["summary"].Value = Program.SoftwareProject.Tasks[taskID].Summary;
             GridTasks.Rows[rowIndex].Cells["created"].Value = Program.SoftwareProject.Tasks[taskID].DateCreated.ToString();
         }
@@ -653,6 +1016,12 @@ namespace MiniBug
 
                 // Select the last row (the one which was added)
                 GridTasks.Rows[GridTasks.Rows.Count - 1].Selected = true;
+
+                // Save the project file
+                SaveProject();
+
+                // Refresh the UI controls
+                SetControlsState();
             }
 
             frmTask.Dispose();
@@ -673,7 +1042,15 @@ namespace MiniBug
                 if (frmTask.ShowDialog() == DialogResult.OK)
                 {
                     Program.SoftwareProject.Tasks[id] = frmTask.CurrentTask;
+
+                    // Refresh the task information in the grid
                     RefreshTaskInGrid(GridTasks.SelectedRows[0].Index, id);
+
+                    // Save the project file
+                    SaveProject();
+
+                    // Refresh the UI controls
+                    SetControlsState();
                 }
 
                 frmTask.Dispose();
@@ -707,6 +1084,12 @@ namespace MiniBug
                         // Remove the row from the grid
                         GridTasks.Rows.RemoveAt(i);
                     }
+
+                    // Save the project file
+                    SaveProject();
+
+                    // Refresh the UI controls
+                    SetControlsState();
                 }
             }
         }
@@ -727,6 +1110,12 @@ namespace MiniBug
 
                 // Add the new task to the grid
                 AddTaskToGrid(newTask);
+
+                // Save the project file
+                SaveProject();
+
+                // Refresh the UI controls
+                SetControlsState();
             }
         }
 
@@ -735,21 +1124,7 @@ namespace MiniBug
         /// </summary>
         private void GridTasks_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (GridTasks.SelectedRows.Count == 1)
-            {
-                // Get the key of the task in the selected row 
-                int id = Int32.Parse(GridTasks.Rows[e.RowIndex].Cells["id"].Value.ToString());
-
-                TaskForm frmTask = new TaskForm(OperationType.Edit, Program.SoftwareProject.Tasks[id]);
-
-                if (frmTask.ShowDialog() == DialogResult.OK)
-                {
-                    Program.SoftwareProject.Tasks[id] = frmTask.CurrentTask;
-                    RefreshTaskInGrid(GridTasks.SelectedRows[0].Index, id);
-                }
-
-                frmTask.Dispose();
-            }
+            EditTask();
         }
 
         /// <summary>
@@ -760,44 +1135,169 @@ namespace MiniBug
             if (GridTasks.SelectedRows.Count == 1)
             {
                 IconEditTask.Enabled = true;
-                //DeleteTask.Enabled = true;
                 IconCloneTask.Enabled = true;
             }
             else
             {
                 IconEditTask.Enabled = false;
-                //DeleteTask.Enabled = false;
                 IconCloneTask.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Delete the selected tasks when the user clicks the Delete key.
+        /// </summary>
+        private void GridTasks_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                e.Handled = true;
+                DeleteTask();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                EditTask();
             }
         }
         #endregion
 
         #region Issues
+        /// <summary>
+        /// Initialize the issues DataGridView.
+        /// </summary>
         private void InitializeGridIssues()
         {
             GridIssues.BackgroundColor = TabControl.DefaultBackColor;
             GridIssues.BorderStyle = BorderStyle.None;
             GridIssues.Dock = DockStyle.Fill;
 
-            // *** adapt **
-            //GridIssues.StandardTab = true;
             GridIssues.AllowUserToAddRows = false;
-            //remove this? *** GridIssues.AllowUserToDeleteRows = false;
+            GridIssues.AllowUserToDeleteRows = false;
             GridIssues.AllowUserToOrderColumns = true;
             GridIssues.AllowUserToResizeColumns = true;
             GridIssues.AllowUserToResizeRows = false;
             GridIssues.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             GridIssues.ColumnHeadersVisible = true;
             GridIssues.RowHeadersVisible = false;
-            //GridIssues.GridColor = UnicodeViewer.Settings.GRID_BORDER_COLOR;
-            GridIssues.GridColor = ColorTranslator.FromHtml("#ececec");
             GridIssues.ReadOnly = true;
             GridIssues.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             GridIssues.MultiSelect = true;
             GridIssues.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
-            //GridIssues.Font = new Font(cboFonts.SelectedItem.ToString(), UnicodeViewer.Settings.GRID_DEFAULT_FONT_SIZE);
             GridIssues.ShowCellToolTips = true;
 
+            // Add columns to the issues grid
+            DataGridViewTextBoxColumn column = null;
+            GridColumn Col;
+
+            // ID
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.ID];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridIssues.Columns.Add(column);
+
+            // Priority
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Priority];
+            DataGridViewImageColumn imageColumn = new DataGridViewImageColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 32,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridIssues.Columns.Add(imageColumn);
+
+            // Status
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Status];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.HeaderCell.Style.Padding = new Padding(15, 0, 6, 0);
+            GridIssues.Columns.Add(column);
+
+            // Version
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Version];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridIssues.Columns.Add(column);
+
+            // Target version
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.TargetVersion];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridIssues.Columns.Add(column);
+
+            // Summary
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Summary];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridIssues.Columns.Add(column);
+
+            // Date created
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateCreated];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridIssues.Columns.Add(column);
+
+            // Date modified
+            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateModified];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridIssues.Columns.Add(column);
+            
+
+            /* *** VERSÂO ANTIGA *** remover
             // Add columns to the issues grid
             GridIssues.Columns.Add("id", "ID");
             GridIssues.Columns["id"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -810,27 +1310,30 @@ namespace MiniBug
                 HeaderText = string.Empty,
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 32
-               
+                MinimumWidth = 32               
             };
             GridIssues.Columns.Add(imageColumn);
 
             GridIssues.Columns.Add("status", "Status");
             GridIssues.Columns["status"].Resizable = DataGridViewTriState.False;
             GridIssues.Columns["status"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            GridIssues.Columns["status"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridIssues.Columns["status"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             GridIssues.Columns["status"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridIssues.Columns["status"].DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
 
             GridIssues.Columns.Add("version", "Version");
             GridIssues.Columns["version"].Resizable = DataGridViewTriState.False;
             GridIssues.Columns["version"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             GridIssues.Columns.Add("summary", "Summary");
+
             GridIssues.Columns.Add("created", "Created");
             GridIssues.Columns["created"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            */
 
             GridIssues.Columns["priority"].DisplayIndex = 0;
             GridIssues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            
         }
 
         /// <summary>
@@ -848,10 +1351,34 @@ namespace MiniBug
         }
 
         /// <summary>
+        /// Updates the visibility of the issues grid columns, according to the current settings.
+        /// </summary>
+        private void UpdateColumnsVisibilityGridIssues()
+        {
+            GridIssues.SuspendLayout();
+
+            foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
+            {
+                GridIssues.Columns[item.Value.Name].Visible = item.Value.Visible;
+            }
+
+            GridIssues.ResumeLayout();
+        }
+
+        /// <summary>
         /// Advanced formatting of cells.
         /// </summary>
         private void GridIssues_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
+
+            // Text color of closed issues
+            if (Program.SoftwareProject.Issues[key].Status == IssueStatus.Closed)
+            {
+                e.CellStyle.ForeColor = ApplicationSettings.GridClosedItem;
+                e.CellStyle.SelectionForeColor = ApplicationSettings.GridClosedItem;
+            }
+
             // Configure/format the "priority" column's cells
             if (GridIssues.Columns[e.ColumnIndex].Name == "priority")
             {
@@ -860,12 +1387,18 @@ namespace MiniBug
                 {
                     // Assign a 1x1 bitmap so that a "missing image" icon is not displayed
                     e.Value = new Bitmap(1, 1);
+
+                    // Assign an empty tooltip
+                    GridIssues[e.ColumnIndex, e.RowIndex].ToolTipText = string.Empty;
                 }
                 else
                 {
-                    // Set the tooltip for this cell
+                    // Set the tooltip for this cell, but only if the project has issues
+                    if ((Program.SoftwareProject.Issues == null) || (Program.SoftwareProject.Issues.Count == 0))
+                    {
+                        return;
+                    }
 
-                    int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
                     string s = string.Empty;
 
                     switch (Program.SoftwareProject.Issues[key].Priority)
@@ -894,38 +1427,39 @@ namespace MiniBug
                     GridIssues[e.ColumnIndex, e.RowIndex].ToolTipText = s;
                 }
             }
-            else if (GridIssues.Columns[e.ColumnIndex].Name == "status")
+        }
+
+        // ***** atualizar este método
+        /// <summary>
+        /// Advanced formatting of cells.
+        /// </summary>
+        private void GridIssues_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            e.PaintBackground(e.ClipBounds, true);
+            e.PaintContent(e.ClipBounds);
+
+            // Draw a filled rectangle in the "Status" column
+            if (GridIssues.Columns[e.ColumnIndex].Name == "status")
             {
-                // Set the background color for the "status" cell
-
                 int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
-                Color backColor = Color.White;
+                Brush fillColor;
 
-                switch (Program.SoftwareProject.Issues[key].Status)
+                // Set the color for the rectangle, according to the Issue status
+                fillColor = ApplicationSettings.IssueStatusColors[Program.SoftwareProject.Issues[key].Status];
+
+                if (fillColor != Brushes.Transparent)
                 {
-                    case IssueStatus.Unconfirmed:
-                        backColor = Color.WhiteSmoke;
-                        break;
-
-                    case IssueStatus.Confirmed:
-                        backColor = Color.WhiteSmoke;
-                        break;
-
-                    case IssueStatus.InProgress:
-                        backColor = Color.LightBlue;
-                        break;
-
-                    case IssueStatus.Resolved:
-                        backColor = Color.LightGreen;
-                        break;
-
-                    case IssueStatus.Closed:
-                        backColor = Color.DarkSeaGreen;
-                        break;
+                    int size = ApplicationSettings.GridStatusRectangleSize;
+                    Rectangle rect = new Rectangle(e.CellBounds.Location.X + 4, e.CellBounds.Location.Y + (e.CellBounds.Height / 2) - (size / 2), size, size);
+                    e.Graphics.FillRectangle(fillColor, rect);
+                    e.PaintContent(rect);
                 }
-
-                e.CellStyle.BackColor = backColor;
             }
+
+            e.Handled = true;
         }
 
         /// <summary>
@@ -957,7 +1491,19 @@ namespace MiniBug
         /// <param name="newIssue">The issue to add to the grid.</param>
         private void AddIssueToGrid(Issue newIssue)
         {
-            GridIssues.Rows.Add(new object[] { newIssue.ID.ToString(), GetIssuePriorityImage(newIssue.Priority), newIssue.Status.ToDescription(), newIssue.Version, newIssue.Summary, newIssue.DateCreated.ToString() });
+            GridIssues.Rows.Add(new object[] {
+                newIssue.ID.ToString(),
+                GetIssuePriorityImage(newIssue.Priority),
+                newIssue.Status.ToDescription(),
+                newIssue.Version,
+                newIssue.TargetVersion,
+                newIssue.Summary,
+                newIssue.DateCreated.ToString(),
+                newIssue.DateModified.ToString()
+            });
+
+            // Versão antiga (que funciona) **** remover ****
+            //GridIssues.Rows.Add(new object[] { newIssue.ID.ToString(), GetIssuePriorityImage(newIssue.Priority), newIssue.Status.ToDescription(), newIssue.Version, newIssue.Summary, newIssue.DateCreated.ToString() });
         }
 
         /// <summary>
@@ -967,11 +1513,39 @@ namespace MiniBug
         /// <param name="issueID">The id of the issue (the issue key in the collection of issues).</param>
         private void RefreshIssueInGrid(int rowIndex, int issueID)
         {
-            GridIssues.Rows[rowIndex].Cells["priority"].Value = GetIssuePriorityImage(Program.SoftwareProject.Issues[issueID].Priority);
+            string key = string.Empty;
+
+            key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Priority].Name;
+            GridIssues.Rows[rowIndex].Cells[key].Value = GetIssuePriorityImage(Program.SoftwareProject.Issues[issueID].Priority);
+
+            key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Status].Name;
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].Status.ToDescription();
+
+            key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Version].Name;
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].Version;
+
+            key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.TargetVersion].Name;
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].TargetVersion;
+
+            key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Summary].Name;
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].Summary;
+
+            key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateCreated].Name;
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].DateCreated.ToString();
+
+            key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateModified].Name;
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].DateModified;
+
+
+            // *** remover
+            /*GridIssues.Rows[rowIndex].Cells["priority"].Value = GetIssuePriorityImage(Program.SoftwareProject.Issues[issueID].Priority);
             GridIssues.Rows[rowIndex].Cells["status"].Value = Program.SoftwareProject.Issues[issueID].Status.ToDescription();
             GridIssues.Rows[rowIndex].Cells["version"].Value = Program.SoftwareProject.Issues[issueID].Version;
+            GridIssues.Rows[rowIndex].Cells["target"].Value = Program.SoftwareProject.Issues[issueID].TargetVersion;
             GridIssues.Rows[rowIndex].Cells["summary"].Value = Program.SoftwareProject.Issues[issueID].Summary;
             GridIssues.Rows[rowIndex].Cells["created"].Value = Program.SoftwareProject.Issues[issueID].DateCreated.ToString();
+            GridIssues.Rows[rowIndex].Cells["modified"].Value = Program.SoftwareProject.Issues[issueID].DateModified;
+            */
         }
 
         /// <summary>
@@ -996,6 +1570,12 @@ namespace MiniBug
 
                 // Select the last row (the one which was added)
                 GridIssues.Rows[GridIssues.Rows.Count - 1].Selected = true;
+
+                // Save the project file
+                SaveProject();
+
+                // Refresh the UI controls
+                SetControlsState();
             }
 
             frmIssue.Dispose();
@@ -1016,7 +1596,15 @@ namespace MiniBug
                 if (frmIssue.ShowDialog() == DialogResult.OK)
                 {
                     Program.SoftwareProject.Issues[id] = frmIssue.CurrentIssue;
+
+                    // Refresh the issue information in the grid
                     RefreshIssueInGrid(GridIssues.SelectedRows[0].Index, id);
+
+                    // Save the project file
+                    SaveProject();
+
+                    // Refresh the UI controls
+                    SetControlsState();
                 }
 
                 frmIssue.Dispose();
@@ -1050,6 +1638,12 @@ namespace MiniBug
                         // Remove the row from the grid
                         GridIssues.Rows.RemoveAt(i);
                     }
+
+                    // Save the project file
+                    SaveProject();
+
+                    // Refresh the UI controls
+                    SetControlsState();
                 }
             }
         }
@@ -1070,6 +1664,12 @@ namespace MiniBug
 
                 // Add the new issue to the grid
                 AddIssueToGrid(newIssue);
+
+                // Save the project file
+                SaveProject();
+
+                // Refresh the UI controls
+                SetControlsState();
             }
         }
 
@@ -1097,7 +1697,57 @@ namespace MiniBug
                 IconCloneIssue.Enabled = false;
             }
         }
+
+        /// <summary>
+        /// Delete the selected issues when the user clicks the Delete key.
+        /// </summary>
+        private void GridIssues_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                e.Handled = true;
+                DeleteIssue();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                EditIssue();
+            }
+        }
+
+        /// <summary>
+        /// Handle changing the column order in the issues grid.
+        /// </summary>
+        private void GridIssues_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            GridColumn Col = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
+
+            // Update the column order
+            if (Col != null)
+            {
+                Col.DisplayIndex = e.Column.DisplayIndex;
+            }
+        }
         #endregion
 
+        /// <summary>
+        /// **** em desenvolvimento ****
+        /// </summary>
+        private void IconConfigureView_Click(object sender, EventArgs e)
+        {
+            // *** experiência sort
+            //GridIssues.Sort(GridIssues.Columns["summary"], ListSortDirection.Descending);
+            //GridTasks.Sort(GridTasks.Columns["status"], ListSortDirection.Ascending);
+
+            ConfigureViewForm frmConfigureView = new ConfigureViewForm();
+
+            if (frmConfigureView.ShowDialog() == DialogResult.OK)
+            {
+                UpdateColumnsVisibilityGridIssues();
+                ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
+            }
+
+            frmConfigureView.Dispose();
+        }
     }
 }

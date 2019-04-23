@@ -161,6 +161,16 @@ namespace MiniBug.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Info_64x64 {
+            get {
+                object obj = ResourceManager.GetObject("Info_64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon Minibug {
@@ -246,6 +256,46 @@ namespace MiniBug.Properties {
         internal static System.Drawing.Bitmap Priority_Urgent {
             get {
                 object obj = ResourceManager.GetObject("Priority_Urgent", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Settings_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Settings_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusCriticalError_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("StatusCriticalError_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusOK_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("StatusOK_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusWarning_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("StatusWarning_16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblFormTextBig = new System.Windows.Forms.Label();
+            this.lblFormTitle = new System.Windows.Forms.Label();
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -44,17 +44,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // lblFormTextBig
+            // lblFormTitle
             // 
-            this.lblFormTextBig.BackColor = System.Drawing.Color.White;
-            this.lblFormTextBig.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFormTextBig.Location = new System.Drawing.Point(0, 0);
-            this.lblFormTextBig.Name = "lblFormTextBig";
-            this.lblFormTextBig.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.lblFormTextBig.Size = new System.Drawing.Size(611, 63);
-            this.lblFormTextBig.TabIndex = 0;
-            this.lblFormTextBig.Text = "Project";
-            this.lblFormTextBig.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFormTitle.BackColor = System.Drawing.Color.White;
+            this.lblFormTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFormTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblFormTitle.Name = "lblFormTitle";
+            this.lblFormTitle.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblFormTitle.Size = new System.Drawing.Size(611, 63);
+            this.lblFormTitle.TabIndex = 0;
+            this.lblFormTitle.Text = "Project";
+            this.lblFormTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btOk
             // 
@@ -175,7 +175,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOk);
-            this.Controls.Add(this.lblFormTextBig);
+            this.Controls.Add(this.lblFormTitle);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -193,7 +193,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblFormTextBig;
+        private System.Windows.Forms.Label lblFormTitle;
         private System.Windows.Forms.Button btOk;
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Label label1;

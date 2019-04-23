@@ -73,9 +73,10 @@ namespace MiniBug
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
 
+            this.Icon = MiniBug.Properties.Resources.Minibug;
             this.AcceptButton = btOk;
             this.CancelButton = btCancel;
-            this.MinimumSize = new Size(644, 351);
+            this.MinimumSize = new Size(685, 351);
 
             txtDescription.AcceptsReturn = true;
             txtDescription.ScrollBars = ScrollBars.Vertical;
@@ -143,6 +144,11 @@ namespace MiniBug
                 CurrentIssue.Version = txtVersion.Text;
                 CurrentIssue.TargetVersion = txtTargetVersion.Text;
                 CurrentIssue.Description = txtDescription.Text;
+
+                if (Operation == OperationType.New)
+                {
+                    CurrentIssue.DateCreated = DateTime.Now;
+                }
 
                 CurrentIssue.DateModified = DateTime.Now;
 

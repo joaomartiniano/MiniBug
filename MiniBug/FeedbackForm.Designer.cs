@@ -47,11 +47,11 @@
             // 
             // lblMessageTitle
             // 
-            this.lblMessageTitle.AutoSize = true;
+            this.lblMessageTitle.AutoEllipsis = true;
             this.lblMessageTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessageTitle.Location = new System.Drawing.Point(91, 23);
             this.lblMessageTitle.Name = "lblMessageTitle";
-            this.lblMessageTitle.Size = new System.Drawing.Size(155, 32);
+            this.lblMessageTitle.Size = new System.Drawing.Size(605, 32);
             this.lblMessageTitle.TabIndex = 1;
             this.lblMessageTitle.Text = "MessageTitle";
             // 
@@ -90,10 +90,9 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FeedbackForm";
-            this.Load += new System.EventHandler(this.ErrorForm_Load);
+            this.Load += new System.EventHandler(this.FeedbackForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

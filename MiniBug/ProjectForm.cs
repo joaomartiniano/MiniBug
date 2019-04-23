@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MiniBug
 {
@@ -55,20 +56,22 @@ namespace MiniBug
             this.AcceptButton = btOk;
             this.CancelButton = btCancel;
 
-            lblFormTextBig.Width = this.ClientRectangle.Width;
+            lblFormTitle.Width = this.ClientRectangle.Width;
+
+            txtName.MaxLength = 255;
 
             // Make initializations based on the type of operation
             if (Operation == OperationType.New)
             {
                 this.Text = "New Project";
-                lblFormTextBig.Text = "Create a new project";
+                lblFormTitle.Text = "Create a new project";
 
                 btOk.Enabled = false;
             }
             else if (Operation == OperationType.Edit)
             {
                 this.Text = "Edit Project";
-                lblFormTextBig.Text = "Edit the current project";
+                lblFormTitle.Text = "Edit the current project";
 
                 // Populate the controls
                 txtName.Text = ProjectName;
@@ -81,7 +84,7 @@ namespace MiniBug
         }
 
         /// <summary>
-        /// Browse for the location where the project will be saved.
+        /// Browse the location where the project will be saved.
         /// </summary>
         private void btBrowse_Click(object sender, EventArgs e)
         {
@@ -101,7 +104,7 @@ namespace MiniBug
         /// </summary>
         private void btOk_Click(object sender, EventArgs e)
         {
-            if ((txtName.Text != string.Empty) && (txtLocation.Text != string.Empty))
+            if ((!string.IsNullOrWhiteSpace(txtName.Text)) && (!string.IsNullOrWhiteSpace(txtLocation.Text)))
             {
                 ProjectName = txtName.Text;
                 ProjectFilename = txtFilename.Text;
@@ -126,9 +129,9 @@ namespace MiniBug
         /// </summary>
         private void txtName_TextChanged(object sender, EventArgs e)
         {
-            if (txtName.Text != string.Empty)
+            if (!string.IsNullOrWhiteSpace(txtName.Text))
             {
-                txtFilename.Text = "minibug-" + txtName.Text + ".json";
+                txtFilename.Text = $"minibug-{txtName.Text}.json";
 
                 if (txtLocation.Text != string.Empty)
                 {
