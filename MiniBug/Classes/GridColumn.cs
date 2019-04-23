@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace MiniBug
 {
-    //** atenção: esta classe irá substituir GridIssuesColumn e GridTasksColumn
     /// <summary>
     /// A column in the issues or tasks DataGridView.
     /// </summary>

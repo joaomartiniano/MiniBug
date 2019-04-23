@@ -96,7 +96,6 @@
     <Compile Include="Classes\DataGridViewRowComparer.cs" />
     <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Classes\GridColumn.cs" />
-    <Compile Include="Classes\GridTasksColumn.cs" />
     <Compile Include="Classes\HelperClass.cs" />
     <Compile Include="Classes\GridIssuesSortSettings.cs" />
     <Compile Include="Classes\Project.cs" />
@@ -126,7 +125,6 @@
     <Compile Include="FeedbackForm.Designer.cs">
       <DependentUpon>FeedbackForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\GridIssuesColumn.cs" />
     <Compile Include="IssueForm.cs">
       <SubType>Form</SubType>
     </Compile>
