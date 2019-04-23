@@ -1492,10 +1492,10 @@ namespace MiniBug
             GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].Summary;
 
             key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateCreated].Name;
-            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].DateCreated.ToString();
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].DateCreated.ToString("g");
 
             key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateModified].Name;
-            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].DateModified;
+            GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].DateModified.ToString("g");
         }
 
         /// <summary>
