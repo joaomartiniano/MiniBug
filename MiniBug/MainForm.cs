@@ -1295,45 +1295,9 @@ namespace MiniBug
                 DisplayIndex = Col.DisplayIndex
             };
             GridIssues.Columns.Add(column);
-            
-
-            /* *** VERSÂO ANTIGA *** remover
-            // Add columns to the issues grid
-            GridIssues.Columns.Add("id", "ID");
-            GridIssues.Columns["id"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridIssues.Columns["id"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridIssues.Columns["id"].Resizable = DataGridViewTriState.False;
-            GridIssues.Columns["id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            DataGridViewImageColumn imageColumn = new DataGridViewImageColumn {
-                Name = "priority",
-                HeaderText = string.Empty,
-                Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 32               
-            };
-            GridIssues.Columns.Add(imageColumn);
-
-            GridIssues.Columns.Add("status", "Status");
-            GridIssues.Columns["status"].Resizable = DataGridViewTriState.False;
-            GridIssues.Columns["status"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            GridIssues.Columns["status"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            GridIssues.Columns["status"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridIssues.Columns["status"].DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
-
-            GridIssues.Columns.Add("version", "Version");
-            GridIssues.Columns["version"].Resizable = DataGridViewTriState.False;
-            GridIssues.Columns["version"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            GridIssues.Columns.Add("summary", "Summary");
-
-            GridIssues.Columns.Add("created", "Created");
-            GridIssues.Columns["created"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            */
 
             GridIssues.Columns["priority"].DisplayIndex = 0;
             GridIssues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            
         }
 
         /// <summary>
@@ -1501,9 +1465,6 @@ namespace MiniBug
                 newIssue.DateCreated.ToString("g"),
                 newIssue.DateModified.ToString("g")
             });
-
-            // Versão antiga (que funciona) **** remover ****
-            //GridIssues.Rows.Add(new object[] { newIssue.ID.ToString(), GetIssuePriorityImage(newIssue.Priority), newIssue.Status.ToDescription(), newIssue.Version, newIssue.Summary, newIssue.DateCreated.ToString() });
         }
 
         /// <summary>
@@ -1535,17 +1496,6 @@ namespace MiniBug
 
             key = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateModified].Name;
             GridIssues.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Issues[issueID].DateModified;
-
-
-            // *** remover
-            /*GridIssues.Rows[rowIndex].Cells["priority"].Value = GetIssuePriorityImage(Program.SoftwareProject.Issues[issueID].Priority);
-            GridIssues.Rows[rowIndex].Cells["status"].Value = Program.SoftwareProject.Issues[issueID].Status.ToDescription();
-            GridIssues.Rows[rowIndex].Cells["version"].Value = Program.SoftwareProject.Issues[issueID].Version;
-            GridIssues.Rows[rowIndex].Cells["target"].Value = Program.SoftwareProject.Issues[issueID].TargetVersion;
-            GridIssues.Rows[rowIndex].Cells["summary"].Value = Program.SoftwareProject.Issues[issueID].Summary;
-            GridIssues.Rows[rowIndex].Cells["created"].Value = Program.SoftwareProject.Issues[issueID].DateCreated.ToString();
-            GridIssues.Rows[rowIndex].Cells["modified"].Value = Program.SoftwareProject.Issues[issueID].DateModified;
-            */
         }
 
         /// <summary>
