@@ -143,23 +143,45 @@ namespace MiniBug.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public int[] GridIssuesColumnOrder {
-            get {
-                return ((int[])(this["GridIssuesColumnOrder"]));
-            }
-            set {
-                this["GridIssuesColumnOrder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public int[] GridIssuesSort {
             get {
                 return ((int[])(this["GridIssuesSort"]));
             }
             set {
                 this["GridIssuesSort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection GridIssuesColumnsSettings {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["GridIssuesColumnsSettings"]));
+            }
+            set {
+                this["GridIssuesColumnsSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int[] GridTasksSort {
+            get {
+                return ((int[])(this["GridTasksSort"]));
+            }
+            set {
+                this["GridTasksSort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection GridTasksColumnsSettings {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["GridTasksColumnsSettings"]));
+            }
+            set {
+                this["GridTasksColumnsSettings"] = value;
             }
         }
     }

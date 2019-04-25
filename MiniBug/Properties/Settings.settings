@@ -32,10 +32,16 @@
     <Setting Name="GridAlternateRowBackColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">White</Value>
     </Setting>
-    <Setting Name="GridIssuesColumnOrder" Type="System.Int32[]" Scope="User">
+    <Setting Name="GridIssuesSort" Type="System.Int32[]" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GridIssuesSort" Type="System.Int32[]" Scope="User">
+    <Setting Name="GridIssuesColumnsSettings" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="GridTasksSort" Type="System.Int32[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="GridTasksColumnsSettings" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

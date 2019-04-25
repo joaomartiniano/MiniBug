@@ -800,8 +800,106 @@ namespace MiniBug
             GridTasks.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
             GridTasks.ShowCellToolTips = true;
 
-
             // Add columns to the tasks grid
+            DataGridViewTextBoxColumn column = null;
+            GridColumn Col;
+
+            // ID
+            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.ID];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridTasks.Columns.Add(column);
+
+            // Priority
+            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Priority];
+            DataGridViewImageColumn imageColumn = new DataGridViewImageColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 32,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridTasks.Columns.Add(imageColumn);
+
+            // Status
+            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Status];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            column.DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
+            GridTasks.Columns.Add(column);
+
+            // Target version
+            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.TargetVersion];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridTasks.Columns.Add(column);
+
+            // Summary
+            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Summary];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridTasks.Columns.Add(column);
+
+            // Date created
+            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateCreated];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridTasks.Columns.Add(column);
+
+            // Date modified
+            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateModified];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = Col.Name,
+                HeaderText = Col.HeaderText,
+                Visible = Col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DisplayIndex = Col.DisplayIndex
+            };
+            GridTasks.Columns.Add(column);
+
+            GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            /*
             GridTasks.Columns.Add("id", "ID");
             GridTasks.Columns["id"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridTasks.Columns["id"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -835,7 +933,7 @@ namespace MiniBug
             GridTasks.Columns["created"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             GridTasks.Columns["priority"].DisplayIndex = 0;
-            GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;*/
         }
 
         /// <summary>
@@ -853,10 +951,27 @@ namespace MiniBug
         }
 
         /// <summary>
+        /// Updates the visibility of the tasks grid columns, according to the current settings.
+        /// </summary>
+        private void UpdateColumnsVisibilityGridTasks()
+        {
+            GridTasks.SuspendLayout();
+
+            foreach (KeyValuePair<TaskFieldsUI, GridColumn> item in ApplicationSettings.GridTasksColumns)
+            {
+                GridTasks.Columns[item.Value.Name].Visible = item.Value.Visible;
+            }
+
+            GridTasks.ResumeLayout();
+        }
+
+        /// <summary>
         /// Advanced formatting of cells.
         /// </summary>
         private void GridTasks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            // ***** adaptar este método **
+
             int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
 
             // Text color of finished tasks
@@ -977,9 +1092,20 @@ namespace MiniBug
         /// <param name="newTask">The task to add to the grid.</param>
         private void AddTaskToGrid(Task newTask)
         {
-            GridTasks.Rows.Add(new object[] { newTask.ID.ToString(), GetTaskPriorityImage(newTask.Priority), newTask.Status.ToDescription(), newTask.TargetVersion, newTask.Summary, newTask.DateCreated.ToString() });
+            GridTasks.Rows.Add(new object[] {
+                newTask.ID.ToString(),
+                GetTaskPriorityImage(newTask.Priority),
+                newTask.Status.ToDescription(),
+                newTask.TargetVersion,
+                newTask.Summary,
+                newTask.DateCreated.ToString("g"),
+                newTask.DateModified.ToString("g")
+            });
+            
+            //GridTasks.Rows.Add(new object[] { newTask.ID.ToString(), GetTaskPriorityImage(newTask.Priority), newTask.Status.ToDescription(), newTask.TargetVersion, newTask.Summary, newTask.DateCreated.ToString() });
         }
 
+        // ***** testar
         /// <summary>
         /// Refresh task's data in the tasks grid.
         /// </summary>
@@ -987,11 +1113,31 @@ namespace MiniBug
         /// <param name="taskID">The id of the task (the task key in the collection of tasks).</param>
         private void RefreshTaskInGrid(int rowIndex, int taskID)
         {
-            GridTasks.Rows[rowIndex].Cells["priority"].Value = GetTaskPriorityImage(Program.SoftwareProject.Tasks[taskID].Priority);
+            string key = string.Empty;
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Priority].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = GetTaskPriorityImage(Program.SoftwareProject.Tasks[taskID].Priority);
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Status].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].Status.ToDescription();
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.TargetVersion].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].TargetVersion;
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Summary].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].Summary;
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateCreated].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].DateCreated.ToString("g");
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateModified].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].DateModified.ToString("g");
+
+            /*GridTasks.Rows[rowIndex].Cells["priority"].Value = GetTaskPriorityImage(Program.SoftwareProject.Tasks[taskID].Priority);
             GridTasks.Rows[rowIndex].Cells["status"].Value = Program.SoftwareProject.Tasks[taskID].Status.ToDescription();
             GridTasks.Rows[rowIndex].Cells["target"].Value = Program.SoftwareProject.Tasks[taskID].TargetVersion;
             GridTasks.Rows[rowIndex].Cells["summary"].Value = Program.SoftwareProject.Tasks[taskID].Summary;
-            GridTasks.Rows[rowIndex].Cells["created"].Value = Program.SoftwareProject.Tasks[taskID].DateCreated.ToString();
+            GridTasks.Rows[rowIndex].Cells["created"].Value = Program.SoftwareProject.Tasks[taskID].DateCreated.ToString();*/
         }
 
         /// <summary>
@@ -1160,6 +1306,21 @@ namespace MiniBug
                 EditTask();
             }
         }
+
+        /// <summary>
+        /// Handle changing the column order in the tasks grid.
+        /// </summary>
+        private void GridTasks_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            // Get the Task instance with the specified column name
+            GridColumn Col = ApplicationSettings.GridTasksColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
+
+            // Update the column order
+            if (Col != null)
+            {
+                Col.DisplayIndex = e.Column.DisplayIndex;
+            }
+        }
         #endregion
 
         #region Issues
@@ -1230,9 +1391,9 @@ namespace MiniBug
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
                 DisplayIndex = Col.DisplayIndex
             };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            column.HeaderCell.Style.Padding = new Padding(15, 0, 6, 0);
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            column.DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
             GridIssues.Columns.Add(column);
 
             // Version
@@ -1296,7 +1457,6 @@ namespace MiniBug
             };
             GridIssues.Columns.Add(column);
 
-            GridIssues.Columns["priority"].DisplayIndex = 0;
             GridIssues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
@@ -1334,6 +1494,8 @@ namespace MiniBug
         /// </summary>
         private void GridIssues_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            // ***** adaptar este método **
+
             int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
 
             // Text color of closed issues
@@ -1670,6 +1832,7 @@ namespace MiniBug
         /// </summary>
         private void GridIssues_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
         {
+            // Get the Issue instance with the specified column name
             GridColumn Col = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
 
             // Update the column order

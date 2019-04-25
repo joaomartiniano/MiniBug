@@ -100,10 +100,10 @@ namespace MiniBug
         public static Dictionary<IssueFieldsUI, GridColumn> GridIssuesColumns = new Dictionary<IssueFieldsUI, GridColumn>()
         {
             { IssueFieldsUI.ID,
-                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 0, Description = "Unique numerical code of the issue" } },
+                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 1, Description = "Unique numerical code of the issue" } },
 
             { IssueFieldsUI.Priority,
-                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 1, Description = "Priority of an issue" } },
+                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 0, Description = "Priority of an issue" } },
 
             { IssueFieldsUI.Status,
                 new GridColumn { Name = "status", HeaderText = "Status", Visible = true, DisplayIndex = 2, Description = "Current status of the issue" } },
@@ -130,16 +130,16 @@ namespace MiniBug
         public static Dictionary<TaskFieldsUI, GridColumn> GridTasksColumns = new Dictionary<TaskFieldsUI, GridColumn>()
         {
             { TaskFieldsUI.ID,
-                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 0, Description = "Unique numerical code of the task" } },
+                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 1, Description = "Unique numerical code of the task" } },
 
             { TaskFieldsUI.Priority,
-                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 1, Description = "Priority of a task" } },
+                new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 0, Description = "Priority of a task" } },
 
             { TaskFieldsUI.Status,
                 new GridColumn { Name = "status", HeaderText = "Status", Visible = true, DisplayIndex = 2, Description = "Current status of the task" } },
 
             { TaskFieldsUI.TargetVersion,
-                new GridColumn { Name = "target", HeaderText = "Target", Visible = false, DisplayIndex = 3, Description = "Version where the task must be resolved" } },
+                new GridColumn { Name = "target", HeaderText = "Target", Visible = true, DisplayIndex = 3, Description = "Version where the task must be resolved" } },
 
             { TaskFieldsUI.Summary,
                 new GridColumn { Name = "summary", HeaderText = "Summary", Visible = true, DisplayIndex = 4, Description = "Brief summary of the task" } },
@@ -156,7 +156,10 @@ namespace MiniBug
         /// </summary>
         public static GridIssuesSortSettings GridIssuesSort = new GridIssuesSortSettings(IssueFieldsUI.ID, System.Windows.Forms.SortOrder.Ascending, null, null);
 
-        // *** incluir sort settings para as tasks ***
+        /// <summary>
+        /// Sort settings for the tasks DataGridView.
+        /// </summary>
+        public static GridTasksSortSettings GridTasksSort = new GridTasksSortSettings(TaskFieldsUI.ID, System.Windows.Forms.SortOrder.Ascending, null, null);
 
         /// <summary>
         /// Determines which settings to save.
@@ -185,13 +188,88 @@ namespace MiniBug
             GridAlternateRowBackColor = Properties.Settings.Default.GridAlternateRowBackColor;
             GridFont = Properties.Settings.Default.GridFont;
 
+            // Load the settings for the issues DataGridView columns
+            if (Properties.Settings.Default.GridIssuesColumnsSettings != null)
+            {
+                IssueFieldsUI Col;
+
+                foreach (string item in Properties.Settings.Default.GridIssuesColumnsSettings)
+                {
+                    string[] s = item.Split(',');
+
+                    Col = (IssueFieldsUI)Convert.ToInt32(s[0]);
+                    ApplicationSettings.GridIssuesColumns[Col].Visible = Convert.ToBoolean(s[1]);
+                    ApplicationSettings.GridIssuesColumns[Col].DisplayIndex = Convert.ToInt32(s[2]);
+                }                
+            }
+
+            // Load the settings for the tasks DataGridView columns
+            if (Properties.Settings.Default.GridTasksColumnsSettings != null)
+            {
+                TaskFieldsUI Col;
+
+                foreach (string item in Properties.Settings.Default.GridTasksColumnsSettings)
+                {
+                    string[] s = item.Split(',');
+
+                    Col = (TaskFieldsUI)Convert.ToInt32(s[0]);
+                    ApplicationSettings.GridTasksColumns[Col].Visible = Convert.ToBoolean(s[1]);
+                    ApplicationSettings.GridTasksColumns[Col].DisplayIndex = Convert.ToInt32(s[2]);
+                }
+            }
+
             // Load the issues DataGridView sort settings
             if (Properties.Settings.Default.GridIssuesSort != null)
             {
                 GridIssuesSort.FirstColumn = (IssueFieldsUI)Properties.Settings.Default.GridIssuesSort[0];
                 GridIssuesSort.FirstColumnSortOrder = (System.Windows.Forms.SortOrder)Properties.Settings.Default.GridIssuesSort[1];
-                GridIssuesSort.SecondColumn = (IssueFieldsUI)Properties.Settings.Default.GridIssuesSort[2];
-                GridIssuesSort.SecondColumnSortOrder = (System.Windows.Forms.SortOrder)Properties.Settings.Default.GridIssuesSort[3];
+
+                // If the setting has the value -1, it is null
+                if (Properties.Settings.Default.GridIssuesSort[2] != -1)
+                {
+                    GridIssuesSort.SecondColumn = (IssueFieldsUI)Properties.Settings.Default.GridIssuesSort[2];
+                }
+                else
+                {
+                    GridIssuesSort.SecondColumn = null;
+                }
+
+                // If the setting has the value -1, it is null
+                if (Properties.Settings.Default.GridIssuesSort[3] != -1)
+                {
+                    GridIssuesSort.SecondColumnSortOrder = (System.Windows.Forms.SortOrder)Properties.Settings.Default.GridIssuesSort[3];
+                }
+                else
+                {
+                    GridIssuesSort.SecondColumnSortOrder = null;
+                }
+            }
+
+            // Load the tasks DataGridView sort settings
+            if (Properties.Settings.Default.GridTasksSort != null)
+            {
+                GridTasksSort.FirstColumn = (TaskFieldsUI)Properties.Settings.Default.GridTasksSort[0];
+                GridTasksSort.FirstColumnSortOrder = (System.Windows.Forms.SortOrder)Properties.Settings.Default.GridTasksSort[1];
+
+                // If the setting has the value -1, it is null
+                if (Properties.Settings.Default.GridTasksSort[2] != -1)
+                {
+                    GridTasksSort.SecondColumn = (TaskFieldsUI)Properties.Settings.Default.GridTasksSort[2];
+                }
+                else
+                {
+                    GridTasksSort.SecondColumn = null;
+                }
+
+                // If the setting has the value -1, it is null
+                if (Properties.Settings.Default.GridTasksSort[3] != -1)
+                {
+                    GridTasksSort.SecondColumnSortOrder = (System.Windows.Forms.SortOrder)Properties.Settings.Default.GridTasksSort[3];
+                }
+                else
+                {
+                    GridTasksSort.SecondColumnSortOrder = null;
+                }
             }
         }
 
@@ -213,34 +291,50 @@ namespace MiniBug
                 Properties.Settings.Default.GridFont = GridFont;
             }
 
-            // Issues and tasks DataGridViews column order
-            // *** (testar melhor, quando o refactoring e o sort estiverem concluídos)
-            /*if ((settingsSelection == SaveSettings.All) || (settingsSelection == SaveSettings.ColumnOrder))
+            // Save some settings for the issues and tasks DataGridView columns
+            if ((settingsSelection == SaveSettings.All) || (settingsSelection == SaveSettings.ColumnOrderSort))
             {
-                int i = 0;
-                int[] order = new int[ApplicationSettings.GridIssuesColumns.Count()];
+                string s  = string.Empty;
 
-                // ********* em edição
-                // *** falta: obter ordenados pela DisplayIndex???
+                // The settings are saved as a string collection, in the following format:
+                //    "column ID,visibility,display index"
+                Properties.Settings.Default.GridIssuesColumnsSettings = new System.Collections.Specialized.StringCollection();
+
                 foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
                 {
-                    order[i++] = Convert.ToInt32(item.Key);
+                    s = $"{Convert.ToInt32(item.Key).ToString()},{item.Value.Visible.ToString()},{item.Value.DisplayIndex.ToString()}";
+                    Properties.Settings.Default.GridIssuesColumnsSettings.Add(s);                    
                 }
 
-                Properties.Settings.Default.GridIssuesColumnOrder = new int[ApplicationSettings.GridIssuesColumns.Count()];
-                Properties.Settings.Default.GridIssuesColumnOrder = order;
-            }*/
+                s = string.Empty;
+
+                // The settings are saved as a string collection, in the following format:
+                //    "column ID,visibility,display index"
+                Properties.Settings.Default.GridTasksColumnsSettings = new System.Collections.Specialized.StringCollection();
+
+                foreach (KeyValuePair<TaskFieldsUI, GridColumn> item in ApplicationSettings.GridTasksColumns)
+                {
+                    s = $"{Convert.ToInt32(item.Key).ToString()},{item.Value.Visible.ToString()},{item.Value.DisplayIndex.ToString()}";
+                    Properties.Settings.Default.GridTasksColumnsSettings.Add(s);
+                }
+            }
 
             // Save the issues and tasks DataGridView sort settings
             if ((settingsSelection == SaveSettings.All) || (settingsSelection == SaveSettings.ColumnOrderSort))
             {
+                // Issues
                 Properties.Settings.Default.GridIssuesSort = new int[4];
                 Properties.Settings.Default.GridIssuesSort[0] = (int)GridIssuesSort.FirstColumn;
                 Properties.Settings.Default.GridIssuesSort[1] = (int)GridIssuesSort.FirstColumnSortOrder;
-                Properties.Settings.Default.GridIssuesSort[2] = (int)GridIssuesSort.SecondColumn;
-                Properties.Settings.Default.GridIssuesSort[3] = (int)GridIssuesSort.SecondColumnSortOrder;
+                Properties.Settings.Default.GridIssuesSort[2] = (GridIssuesSort.SecondColumn != null) ? (int)GridIssuesSort.SecondColumn : -1;
+                Properties.Settings.Default.GridIssuesSort[3] = (GridIssuesSort.SecondColumnSortOrder != null) ? (int)GridIssuesSort.SecondColumnSortOrder : -1;
 
-                // *** gravar para tasks
+                // Tasks
+                Properties.Settings.Default.GridTasksSort = new int[4];
+                Properties.Settings.Default.GridTasksSort[0] = (int)GridTasksSort.FirstColumn;
+                Properties.Settings.Default.GridTasksSort[1] = (int)GridTasksSort.FirstColumnSortOrder;
+                Properties.Settings.Default.GridTasksSort[2] = (GridTasksSort.SecondColumn != null) ? (int)GridTasksSort.SecondColumn : -1;
+                Properties.Settings.Default.GridTasksSort[3] = (GridTasksSort.SecondColumnSortOrder != null) ? (int)GridTasksSort.SecondColumnSortOrder : -1;
             }
 
             Properties.Settings.Default.Save();

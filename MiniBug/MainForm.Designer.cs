@@ -141,6 +141,7 @@
             this.GridTasks.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridTasks_CellDoubleClick);
             this.GridTasks.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.GridTasks_CellFormatting);
             this.GridTasks.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.GridTasks_CellPainting);
+            this.GridTasks.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.GridTasks_ColumnDisplayIndexChanged);
             this.GridTasks.SelectionChanged += new System.EventHandler(this.GridTasks_SelectionChanged);
             this.GridTasks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GridTasks_KeyDown);
             // 
