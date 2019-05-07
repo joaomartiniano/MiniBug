@@ -31,12 +31,15 @@ namespace MiniBug
             this.CancelButton = btCancel;
 
             // Populate the font combo box, with the fonts installed in the system
-            InstalledFontCollection Fonts = new InstalledFontCollection();
-            FontFamily[] FontFamilies = Fonts.Families;
-            foreach (FontFamily Font in FontFamilies)
+            InstalledFontCollection fonts = new InstalledFontCollection();
+
+            FontFamily[] fontFamilies = fonts.Families;
+
+            foreach (FontFamily font in fontFamilies)
             {
-                cboFont.Items.Add(Font.Name);
+                cboFont.Items.Add(font.Name);
             }
+
             cboFont.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cboFont.AutoCompleteSource = AutoCompleteSource.ListItems;
             cboFont.DropDownStyle = ComboBoxStyle.DropDownList;
