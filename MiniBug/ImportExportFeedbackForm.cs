@@ -15,6 +15,9 @@ namespace MiniBug
 {
     public partial class ImportExportFeedbackForm : Form
     {
+        /// <summary>
+        /// The operation (import or export) to show feedback about.
+        /// </summary>
         public ImportExportOperation Operation = ImportExportOperation.None;
 
         public ImportExportFeedbackForm(ImportExportOperation operation)
@@ -52,11 +55,10 @@ namespace MiniBug
                 this.Text = "Export Project";
                 lblFormTitle.Text = "Export Project To CSV";
 
-                /* The success of the export operation:
-                 * Possible values:
-                 * 0 -> error
-                 * 1 -> success + error
-                 * 2 -> success
+                /* The success of the export operation. Possible values:
+                 *  0 -> error
+                 *  1 -> success + error
+                 *  2 -> success
                  */
                 int success = 0;               
 	            
