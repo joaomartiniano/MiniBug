@@ -35,9 +35,6 @@ namespace MiniBug
         /// </summary>
         public Image FormImage { get; set; } = null;
 
-        // *****
-        //public FileSystemOperationStatus MessageType { get; set; } = FileSystemOperationStatus.None;
-
         public FeedbackForm()
         {
             InitializeComponent();
@@ -149,15 +146,6 @@ namespace MiniBug
                     Message += "\n\nSolution: choose a different drive/device to save the project file.";
                     FormImage = MiniBug.Properties.Resources.CriticalError_64x64;
                     break;
-
-                // Export
-
-                case FileSystemOperationStatus.ExportOK:
-                    FormCaption = "Export";
-                    MessageTitle = "Export Successful";
-                    FormImage = MiniBug.Properties.Resources.Info_64x64;
-                    break;
-
             }
 
             // Update the user interface
