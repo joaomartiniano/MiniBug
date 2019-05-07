@@ -110,12 +110,6 @@
     <Compile Include="ConfigureViewForm.Designer.cs">
       <DependentUpon>ConfigureViewForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExportFeedbackForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExportFeedbackForm.Designer.cs">
-      <DependentUpon>ExportFeedbackForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,9 +165,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigureViewForm.resx">
       <DependentUpon>ConfigureViewForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExportFeedbackForm.resx">
-      <DependentUpon>ExportFeedbackForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
