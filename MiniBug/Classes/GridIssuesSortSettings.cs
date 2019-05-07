@@ -10,12 +10,29 @@ using System.Windows.Forms;
 
 namespace MiniBug
 {
+    /// <summary>
+    /// Sort settings for the issues DataGridView.
+    /// </summary>
     public class GridIssuesSortSettings : IEquatable<GridIssuesSortSettings>
     {
+        /// <summary>
+        /// First, sort by this column.
+        /// </summary>
         public IssueFieldsUI FirstColumn { get; set; }
+
+        /// <summary>
+        /// Sort order for the first sort column.
+        /// </summary>
         public SortOrder FirstColumnSortOrder { get; set; }
 
+        /// <summary>
+        /// Then, sort by this column.
+        /// </summary>
         public IssueFieldsUI? SecondColumn { get; set; }
+
+        /// <summary>
+        /// Sort order for the second sort column.
+        /// </summary>
         public SortOrder? SecondColumnSortOrder { get; set; }
 
         public GridIssuesSortSettings(IssueFieldsUI firstColumn, SortOrder firstColumnSortOrder, IssueFieldsUI? secondColumn, SortOrder? secondColumnOrder)
