@@ -34,10 +34,13 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.GridIssues = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.GridTasks = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GridIssues)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GridTasks)).BeginInit();
             this.SuspendLayout();
             // 
             // btOK
@@ -64,7 +67,7 @@
             // 
             this.TabControl.Controls.Add(this.tabPage1);
             this.TabControl.Controls.Add(this.tabPage2);
-            this.TabControl.Location = new System.Drawing.Point(12, 43);
+            this.TabControl.Location = new System.Drawing.Point(12, 44);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
             this.TabControl.Size = new System.Drawing.Size(736, 236);
@@ -94,6 +97,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.GridTasks);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -102,14 +106,26 @@
             this.tabPage2.Text = "Tasks";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // GridTasks
+            // 
+            this.GridTasks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.GridTasks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GridTasks.Location = new System.Drawing.Point(3, 3);
+            this.GridTasks.Name = "GridTasks";
+            this.GridTasks.Size = new System.Drawing.Size(722, 204);
+            this.GridTasks.TabIndex = 0;
+            this.GridTasks.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridTasks_CellContentClick);
+            this.GridTasks.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.GridTasks_CellPainting);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(361, 13);
+            this.label1.Size = new System.Drawing.Size(510, 13);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Select which columns to show and which columns to use for sorting:";
+            this.label1.Text = "Select which columns to show and which columns to use for sorting in the Issues a" +
+    "nd Tasks grids:";
             // 
             // ConfigureViewForm
             // 
@@ -131,6 +147,8 @@
             this.TabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.GridIssues)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.GridTasks)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,5 +162,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView GridIssues;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView GridTasks;
     }
 }

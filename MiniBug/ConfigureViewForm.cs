@@ -19,18 +19,20 @@ namespace MiniBug
 
         private void ConfigureViewForm_Load(object sender, EventArgs e)
         {
-            // Suspend the layout logic for the issues DataGridView, while initializing
-           GridIssues.SuspendLayout();
+            // Suspend the layout logic for the issues and tasks DataGridView, while initializing
+            GridIssues.SuspendLayout();
+            GridTasks.SuspendLayout();
 
             // Initialization of the Issues and Tasks grids
             InitializeGridIssues();
-            //InitializeGridTasks();
+            InitializeGridTasks();
 
             // Populate the Issues and Tasks grids
             PopulateGridIssues();
-            //PopulateGridTasks();
+            PopulateGridTasks();
 
             // Resume the layout logic
+            GridTasks.ResumeLayout();
             GridIssues.ResumeLayout();
         }
 
@@ -57,7 +59,8 @@ namespace MiniBug
             GridIssues.MultiSelect = false;
             GridIssues.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
             GridIssues.ShowCellToolTips = false;
-            
+            GridIssues.BackgroundColor = TabControl.DefaultBackColor;
+
             // Colors of selected cells
             GridIssues.DefaultCellStyle.SelectionBackColor = GridIssues.DefaultCellStyle.BackColor;
             GridIssues.DefaultCellStyle.SelectionForeColor = GridIssues.DefaultCellStyle.ForeColor;
@@ -325,6 +328,298 @@ namespace MiniBug
         }
         #endregion
 
+        #region "Tasks"
+        /// <summary>
+        /// Initialize the tasks DataGridView.
+        /// </summary>
+        private void InitializeGridTasks()
+        {
+            GridTasks.BorderStyle = BorderStyle.None;
+            GridTasks.Dock = DockStyle.Fill;
+
+            GridTasks.ReadOnly = false;
+            GridTasks.Enabled = true;
+            GridTasks.AllowUserToAddRows = false;
+            GridTasks.AllowUserToDeleteRows = false;
+            GridTasks.AllowUserToOrderColumns = false;
+            GridTasks.AllowUserToResizeColumns = false;
+            GridTasks.AllowUserToResizeRows = false;
+            GridTasks.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            GridTasks.ColumnHeadersVisible = true;
+            GridTasks.RowHeadersVisible = false;
+            GridTasks.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            GridTasks.MultiSelect = false;
+            GridTasks.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            GridTasks.ShowCellToolTips = false;
+            GridTasks.BackgroundColor = TabControl.DefaultBackColor;
+
+            // Colors of selected cells
+            GridTasks.DefaultCellStyle.SelectionBackColor = GridTasks.DefaultCellStyle.BackColor;
+            GridTasks.DefaultCellStyle.SelectionForeColor = GridTasks.DefaultCellStyle.ForeColor;
+
+            // Name
+            GridTasks.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "name",
+                HeaderText = "Name",
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                Width = 90,
+                ReadOnly = true
+            });
+
+            // Visible
+            GridTasks.Columns.Add(new DataGridViewCheckBoxColumn()
+            {
+                Name = "visible",
+                HeaderText = "Visible",
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                ReadOnly = false,
+                ThreeState = false
+            });
+            GridTasks.Columns["visible"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Sort by first field
+            GridTasks.Columns.Add(new DataGridViewCheckBoxColumn()
+            {
+                Name = "sort1",
+                HeaderText = "Sort By",
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                ReadOnly = false,
+                ThreeState = false
+            });
+            GridTasks.Columns["sort1"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Sort by second field
+            GridTasks.Columns.Add(new DataGridViewCheckBoxColumn()
+            {
+                Name = "sort2",
+                HeaderText = "And By",
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                ReadOnly = false,
+                ThreeState = false
+            });
+            GridTasks.Columns["sort2"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Sort order
+            GridTasks.Columns.Add(new DataGridViewComboBoxColumn()
+            {
+                Name = "sortOrder",
+                HeaderText = "Sort Order",
+                DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton,
+                FlatStyle = FlatStyle.Flat,
+                DataSource = new string[] { "Ascending", "Descending" },
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+            GridTasks.Columns["sortOrder"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Description
+            GridTasks.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "description",
+                HeaderText = "Description",
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                ReadOnly = true
+            });
+
+            GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        /// <summary>
+        /// Populate the tasks DataGridView.
+        /// </summary>
+        private void PopulateGridTasks()
+        {
+            int i = 0;
+
+            foreach (KeyValuePair<TaskFieldsUI, GridColumn> item in ApplicationSettings.GridTasksColumns)
+            {
+                i = GridTasks.Rows.Add(new object[] {
+                    (item.Key == TaskFieldsUI.Priority) ? "Priority" : item.Value.HeaderText,
+                    item.Value.Visible,
+                    (ApplicationSettings.GridTasksSort.FirstColumn == item.Key) ? true : false,
+                    (ApplicationSettings.GridTasksSort.SecondColumn == item.Key) ? true : false,
+                    string.Empty,
+                    item.Value.Description
+                });
+
+                // Sort order
+                if (ApplicationSettings.GridTasksSort.FirstColumn == item.Key)
+                {
+                    GridTasks["sortOrder", i].Value = (ApplicationSettings.GridTasksSort.FirstColumnSortOrder == SortOrder.Ascending) ? "Ascending" : "Descending";
+                }
+                else if (ApplicationSettings.GridTasksSort.SecondColumn == item.Key)
+                {
+                    if (ApplicationSettings.GridTasksSort.SecondColumnSortOrder != null)
+                    {
+                        GridTasks["sortOrder", i].Value = (ApplicationSettings.GridTasksSort.SecondColumnSortOrder == SortOrder.Ascending) ? "Ascending" : "Descending";
+                    }
+                }
+
+                GridTasks.Rows[i].Tag = (int)item.Key;
+
+                // Disable the sort checkboxes if the column is not visible
+                if (!item.Value.Visible)
+                {
+                    GridTasks["sort1", i].ReadOnly = true;
+                    GridTasks["sort2", i].ReadOnly = true;
+                }
+
+                // Disable the sort order combobox if the column is not visible
+                if ((!item.Value.Visible) || ((ApplicationSettings.GridTasksSort.FirstColumn != item.Key) && (ApplicationSettings.GridTasksSort.SecondColumn != item.Key)))
+                {
+                    GridTasks["sortOrder", i].ReadOnly = true;
+                }
+            }
+
+            // Disable the visibility checkbox for the ID column
+            GridTasks["visible", 0].ReadOnly = true;
+
+            GridTasks.Columns["sortOrder"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+        }
+
+        /// <summary>
+        /// Advanced formatting of cells in the tasks DataGridView.
+        /// </summary>
+        private void GridTasks_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            // Disable the Visible column for the ID field
+            if ((e.ColumnIndex == GridTasks.Columns["visible"].Index) && (e.RowIndex == 0))
+            {
+                e.PaintBackground(e.CellBounds, true);
+                Rectangle r = e.CellBounds;
+                r.Width = 15;
+                r.Height = 15;
+                r.X += (e.CellBounds.Width / 2) - (r.Width / 2) - 1;
+                r.Y += (e.CellBounds.Height / 2) - (r.Height / 2) - 1;
+                ControlPaint.DrawCheckBox(e.Graphics, r, ButtonState.Inactive | ButtonState.Flat | ButtonState.Checked);
+                e.Handled = true;
+            }
+
+            if (((e.ColumnIndex == GridTasks.Columns["sort1"].Index) || (e.ColumnIndex == GridTasks.Columns["sort2"].Index)) &&
+            (e.RowIndex > -1) &&
+            (e.RowIndex != GridTasks.NewRowIndex))
+            {
+                if (e.State.HasFlag(DataGridViewElementStates.ReadOnly))
+                {
+                    e.PaintBackground(e.CellBounds, true);
+                    Rectangle r = e.CellBounds;
+                    r.Width = 15;
+                    r.Height = 15;
+                    r.X += (e.CellBounds.Width / 2) - (r.Width / 2) - 1;
+                    r.Y += (e.CellBounds.Height / 2) - (r.Height / 2) - 1;
+                    ControlPaint.DrawCheckBox(e.Graphics, r, ButtonState.Inactive | ButtonState.Flat);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handle clicks on the checkboxes of the tasks DataGridView.
+        /// </summary>
+        private void GridTasks_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            bool FlagClickSort = false;
+
+            // Control the visibility of columns (the visibility of the ID column cannot be modified)
+            if ((e.ColumnIndex == GridTasks.Columns["visible"].Index) && (e.RowIndex > 0))
+            {
+                // If the user hides a column, then uncheck the sort checkboxes and disable them
+                if (!Boolean.Parse(GridTasks["visible", e.RowIndex].EditedFormattedValue.ToString()))
+                {
+                    GridTasks["sort1", e.RowIndex].Value = false;
+                    GridTasks["sort1", e.RowIndex].ReadOnly = true;
+                    GridTasks["sort2", e.RowIndex].Value = false;
+                    GridTasks["sort2", e.RowIndex].ReadOnly = true;
+                    GridTasks["sortOrder", e.RowIndex].Value = string.Empty;
+                    GridTasks["sortOrder", e.RowIndex].ReadOnly = true;
+                }
+                else
+                {
+                    // Re-enable the sort checkboxes because the column is visible again
+                    GridTasks["sort1", e.RowIndex].ReadOnly = false;
+                    GridTasks["sort2", e.RowIndex].ReadOnly = false;
+                }
+
+                GridTasks.Refresh();
+            }
+            else if ((e.ColumnIndex == GridTasks.Columns["sort1"].Index) && (e.RowIndex != -1))
+            {
+                // Only change the controls state if the cell is not readonly
+                if (!GridTasks["sort1", e.RowIndex].ReadOnly)
+                {
+                    if (Boolean.Parse(GridTasks["sort1", e.RowIndex].EditedFormattedValue.ToString()))
+                    {
+                        GridTasks["sort2", e.RowIndex].Value = false;
+
+                        // Uncheck any other fields in the same column
+                        for (int i = 0; i < GridTasks.Rows.Count; ++i)
+                        {
+                            if (i != e.RowIndex)
+                            {
+                                if (Boolean.Parse(GridTasks["sort1", i].Value.ToString()))
+                                {
+                                    GridTasks["sort1", i].Value = false;
+                                    GridTasks["sortOrder", i].Value = string.Empty;
+                                }
+                            }
+                        }
+
+                        // Enable the sort order combobox
+                        GridTasks["sortOrder", e.RowIndex].ReadOnly = false;
+                        GridTasks["sortOrder", e.RowIndex].Value = "Ascending";
+                    }
+
+                    // Signal that the user clicked on one of the sort checkboxes
+                    FlagClickSort = true;
+                }
+            }
+            else if ((e.ColumnIndex == GridTasks.Columns["sort2"].Index) && (e.RowIndex != -1))
+            {
+                // Only change the controls state if the cell is not readonly
+                if (!GridTasks["sort2", e.RowIndex].ReadOnly)
+                {
+                    if (Boolean.Parse(GridTasks["visible", e.RowIndex].EditedFormattedValue.ToString()))
+                    {
+                        GridTasks["sort1", e.RowIndex].Value = false;
+
+                        // Uncheck any other fields in the same column
+                        for (int i = 0; i < GridTasks.Rows.Count; ++i)
+                        {
+                            if (i != e.RowIndex)
+                            {
+                                if (Boolean.Parse(GridTasks["sort2", i].Value.ToString()))
+                                {
+                                    GridTasks["sort2", i].Value = false;
+                                    GridTasks["sortOrder", i].Value = string.Empty;
+                                }
+                            }
+                        }
+
+                        // Enable the sort order combobox
+                        GridTasks["sortOrder", e.RowIndex].ReadOnly = false;
+                        GridTasks["sortOrder", e.RowIndex].Value = "Ascending";
+                    }
+
+                    // Signal that the user clicked on one of the sort checkboxes
+                    FlagClickSort = true;
+                }
+            }
+
+            // If the user unchecked both sort checkboxes
+            if ((FlagClickSort) &&
+                ((!Boolean.Parse(GridTasks["sort1", e.RowIndex].EditedFormattedValue.ToString())) &&
+                (!Boolean.Parse(GridTasks["sort2", e.RowIndex].EditedFormattedValue.ToString()))))
+            {
+                GridTasks["sortOrder", e.RowIndex].ReadOnly = true;
+                GridTasks["sortOrder", e.RowIndex].Value = string.Empty;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// Persist the changes made and close this form.
         /// </summary>
@@ -332,7 +627,7 @@ namespace MiniBug
         {
             bool FlagSort1 = true, FlagSort2 = true;
 
-            // Traverse the DataGridView rows, checking the checkboxes
+            // Traverse the issues DataGridView rows, checking the checkboxes
             for (int i = 0; i < GridIssues.Rows.Count; ++i)
             {
                 ApplicationSettings.GridIssuesColumns[(IssueFieldsUI)GridIssues.Rows[i].Tag].Visible = Boolean.Parse(GridIssues["visible", i].Value.ToString());
@@ -364,6 +659,43 @@ namespace MiniBug
             {
                 ApplicationSettings.GridIssuesSort.SecondColumn = null;
                 ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = null;
+            }
+
+            FlagSort1 = true;
+            FlagSort2 = true;
+
+            // Traverse the tasks DataGridView rows, checking the checkboxes
+            for (int i = 0; i < GridTasks.Rows.Count; ++i)
+            {
+                ApplicationSettings.GridTasksColumns[(TaskFieldsUI)GridTasks.Rows[i].Tag].Visible = Boolean.Parse(GridTasks["visible", i].Value.ToString());
+
+                if ((FlagSort1) && (Boolean.Parse(GridTasks["sort1", i].Value.ToString())))
+                {
+                    ApplicationSettings.GridTasksSort.FirstColumn = (TaskFieldsUI)GridTasks.Rows[i].Tag;
+                    ApplicationSettings.GridTasksSort.FirstColumnSortOrder = (GridTasks["sortOrder", i].Value.ToString() == "Ascending") ? SortOrder.Ascending : SortOrder.Descending;
+                    FlagSort1 = false;
+                }
+
+                if ((FlagSort2) && (Boolean.Parse(GridTasks["sort2", i].Value.ToString())))
+                {
+                    ApplicationSettings.GridTasksSort.SecondColumn = (TaskFieldsUI)GridTasks.Rows[i].Tag;
+                    ApplicationSettings.GridTasksSort.SecondColumnSortOrder = (GridTasks["sortOrder", i].Value.ToString() == "Ascending") ? SortOrder.Ascending : SortOrder.Descending;
+                    FlagSort2 = false;
+                }
+            }
+
+            // Set defaults if the user did not choose the first column to sort
+            if (FlagSort1)
+            {
+                ApplicationSettings.GridTasksSort.FirstColumn = TaskFieldsUI.ID;
+                ApplicationSettings.GridTasksSort.FirstColumnSortOrder = SortOrder.Ascending;
+            }
+
+            // Set defaults if the user did not choose the second column to sort
+            if (FlagSort2)
+            {
+                ApplicationSettings.GridTasksSort.SecondColumn = null;
+                ApplicationSettings.GridTasksSort.SecondColumnSortOrder = null;
             }
 
             this.DialogResult = DialogResult.OK;

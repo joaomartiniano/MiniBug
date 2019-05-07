@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright(c) João Martiniano. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +13,12 @@ using CsvHelper;
 
 namespace MiniBug
 {
+    /// <summary>
+    /// Identify which grid to reference of performe some operation.
+    /// </summary>
+    public enum GridType { None = 0, All, Issues, Tasks }
+
+
     public struct ExportProjectResult
     {
         /// <summary>If true, indicates that the project issues where exported successfully.</summary>

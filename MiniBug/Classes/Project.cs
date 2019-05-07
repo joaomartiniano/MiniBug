@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright(c) João Martiniano. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,6 +64,16 @@ namespace MiniBug
         public Dictionary<int, Task> Tasks { get; set; } = new Dictionary<int, Task>();
 
         /// <summary>
+        /// Information about the result of the last import operation that was executed.
+        /// </summary>
+        public ImportExportResult ImportResult { get; set; } = null;
+
+        /// <summary>
+        /// Information about the result of the last export operation that was executed.
+        /// </summary>
+        public ImportExportResult ExportResult { get; set; } = null;
+
+        /// <summary>
         /// Creates a new project.
         /// </summary>
         public Project()
@@ -113,29 +126,25 @@ namespace MiniBug
         /// <summary>
         /// Export the issues and tasks of a project to a file.
         /// </summary>
-        public ExportProjectResult Export(string fileNameIssues, string fileNameTasks)
+        public void Export(string fileNameIssues, string fileNameTasks)
         {
-            ExportProjectResult Result = new ExportProjectResult(true, fileNameIssues, true, fileNameTasks, FileSystemOperationStatus.None, FileSystemOperationStatus.None);
+            ExportResult = new ImportExportResult(ImportExportOperation.Export);
 
             // Export the issues
-            if (Issues != null)
+            if ((Issues != null) && (Issues.Count > 0))
             {
-                if ((Result.IssuesError = ExportIssues(fileNameIssues)) != FileSystemOperationStatus.ExportOK)
-                {
-                    Result.IssuesOK = false;
-                }
+                ExportResult.Issues.Result = ExportIssues(fileNameIssues);
+                ExportResult.Issues.FileName = System.IO.Path.GetFileName(fileNameIssues);
+                ExportResult.Issues.Path = System.IO.Path.GetDirectoryName(fileNameIssues);
             }
 
             // Export the tasks
-            if (Tasks != null)
+            if ((Tasks != null) && (Tasks.Count > 0))
             {
-                if ((Result.TasksError = ExportTasks(fileNameTasks)) != FileSystemOperationStatus.ExportOK)
-                {
-                    Result.TasksOK = false;
-                }
+                ExportResult.Tasks.Result = ExportTasks(fileNameTasks);
+                ExportResult.Tasks.FileName = System.IO.Path.GetFileName(fileNameTasks);
+                ExportResult.Tasks.Path = System.IO.Path.GetDirectoryName(fileNameTasks);
             }
-
-            return Result;
         }
 
         /// <summary>

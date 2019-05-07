@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright(c) João Martiniano. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -193,6 +196,9 @@ namespace MiniBug
             {
                 IssueFieldsUI Col;
 
+                // *** debug
+                Console.WriteLine("1: ApplicationSettings.cs: Read from Windows settings...");
+
                 foreach (string item in Properties.Settings.Default.GridIssuesColumnsSettings)
                 {
                     string[] s = item.Split(',');
@@ -200,8 +206,20 @@ namespace MiniBug
                     Col = (IssueFieldsUI)Convert.ToInt32(s[0]);
                     ApplicationSettings.GridIssuesColumns[Col].Visible = Convert.ToBoolean(s[1]);
                     ApplicationSettings.GridIssuesColumns[Col].DisplayIndex = Convert.ToInt32(s[2]);
-                }                
+
+                    // *** debug
+                    Console.WriteLine("Item: {0} - Display index: {1}", Col.ToString(), s[2]);
+                }
             }
+
+            // *** debug
+            /*Console.WriteLine("2: ApplicationSettings.cs: What's stored in ApplicationSettings...");
+            foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
+            {
+                Console.WriteLine("Item: {0} - Display index: {1}", item.Value.Name, item.Value.DisplayIndex);
+            }*/
+            HelperClass.DebugDisplayIndex("2: ApplicationSettings.cs: ApplicationSettings.GridIssuesColumns");
+
 
             // Load the settings for the tasks DataGridView columns
             if (Properties.Settings.Default.GridTasksColumnsSettings != null)
@@ -303,7 +321,10 @@ namespace MiniBug
                 foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
                 {
                     s = $"{Convert.ToInt32(item.Key).ToString()},{item.Value.Visible.ToString()},{item.Value.DisplayIndex.ToString()}";
-                    Properties.Settings.Default.GridIssuesColumnsSettings.Add(s);                    
+                    Properties.Settings.Default.GridIssuesColumnsSettings.Add(s);
+
+                    // *** debug
+                    Console.WriteLine("Item: {0} - Display index: {1}", item.Key.ToString(), item.Value.DisplayIndex);
                 }
 
                 s = string.Empty;

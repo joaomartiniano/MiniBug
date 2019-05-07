@@ -13,6 +13,16 @@ namespace MiniBug
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// If true, signals that the issues grid is initializing.
+        /// </summary>
+        private bool initializingGridIssues = false;
+
+        /// <summary>
+        /// If true, signals that the tasks grid is initializing.
+        /// </summary>
+        private bool initializingGridTasks = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -23,6 +33,9 @@ namespace MiniBug
             // Start by retrieving the application settings
             ApplicationSettings.Load();
 
+            // *** debug
+            HelperClass.DebugDisplayIndex("3: MainForm.cs: ApplicationSettings.GridIssuesColumns");
+
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
 
@@ -32,16 +45,22 @@ namespace MiniBug
 
             InitializeTabControl();
 
+            // *** debug
+            HelperClass.DebugDisplayIndex("4: MainForm.cs: antes de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
+
             // Initialization of the Issues and Tasks grids
             InitializeGridIssues();
             InitializeGridTasks();
+
+            // *** debug
+            HelperClass.DebugDisplayIndex("5: MainForm.cs: após InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
 
             // Apply the settings to the Issues and Tasks grids
             ApplySettingsToGrids();
 
             // Populate the Issues and Tasks grids
             PopulateGridIssues();
-            PopulateGridTasks();
+            PopulateGridTasks();            
 
             SetControlsState();
 
@@ -51,20 +70,28 @@ namespace MiniBug
             // Resume the layout logic
             this.ResumeLayout();
 
+            // Set the sort glyph for the issues and tasks DataGridViews
+            SetGridSortGlyph(GridType.All);
 
-            // *** remover *** para testar feedback de exportação ***
-            /*ExportProjectResult Result = new ExportProjectResult(false, "ficheiro-issues.csv", false, "ficheiro-tasks.csv", FileSystemOperationStatus.ExportToCsvIOError, FileSystemOperationStatus.ExportToCsvErrorPathTooLong);
-            ExportFeedbackForm frmFeedback = new ExportFeedbackForm(Result);
-            frmFeedback.ShowDialog();
-            frmFeedback.Dispose();*/
-            // ****
 
-            // **** testar sort ****
-            /*ApplicationSettings.GridIssuesSort.FirstColumn = IssueFieldsUI.ID;
-            ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = SortOrder.Ascending;
-            ApplicationSettings.GridIssuesSort.SecondColumn= IssueFieldsUI.Status;
-            ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = SortOrder.Descending;*/
-            // ********************
+            // *** display index
+
+            // *** debug
+            /*Console.WriteLine("3: MainForm.cs: What's stored in ApplicationSettings...");
+            foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
+            {
+                Console.WriteLine("Item: {0} - Display index: {1}", item.Value.Name, item.Value.DisplayIndex);
+            }*/
+            HelperClass.DebugDisplayIndex("FINAL: MainForm.cs: ApplicationSettings.GridIssuesColumns");
+
+
+            /*GridIssues.Refresh();
+            foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
+            {
+                GridIssues.Columns[item.Value.Name].DisplayIndex = item.Value.DisplayIndex;
+            }
+            GridIssues.Refresh();
+            GridIssues.Columns["priority"].DisplayIndex = 7;*/
         }
 
         /// <summary>
@@ -72,6 +99,8 @@ namespace MiniBug
         /// </summary>
         private void InitializeRecentProjects()
         {
+            bool flag = false;
+
             // Initialize the settings for recent projects
             if ((Properties.Settings.Default.RecentProjectsNames == null) || (Properties.Settings.Default.RecentProjectsPaths == null))
             {
@@ -79,8 +108,7 @@ namespace MiniBug
                 Properties.Settings.Default.RecentProjectsPaths = new System.Collections.Specialized.StringCollection();
                 Properties.Settings.Default.Save();
 
-                // Disable the recent projects menu item
-                recentProjectsToolStripMenuItem.Enabled = false;
+                flag = true;
             }
             else if ((Properties.Settings.Default.RecentProjectsNames.Count > 0) && (Properties.Settings.Default.RecentProjectsPaths.Count > 0))
             {
@@ -97,6 +125,20 @@ namespace MiniBug
                     item.Click += new System.EventHandler(this.FileMenuRecentProjectItem_Click);
                 }
             }
+            else
+            {
+                flag = true;
+            }
+
+            // If there are no recent projects, disable menu items
+            if (flag)
+            {
+                // Disable the recent projects menu item
+                recentProjectsToolStripMenuItem.Enabled = false;
+
+                // Disable the clear recent projects list menu item
+                clearRecentProjectsListToolStripMenuItem.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -107,6 +149,7 @@ namespace MiniBug
             TabControl.Left = this.ClientRectangle.Left;
             TabControl.Width = this.ClientRectangle.Width + 3;
             TabControl.Height = this.ClientRectangle.Height - toolStrip1.Height;
+            // *** TabControl.Dock = DockStyle.
         }
 
         /// <summary>
@@ -228,6 +271,8 @@ namespace MiniBug
         /// </summary>
         private void CloseApplication()
         {
+            GridTasksGetDisplayIndexForAll();
+
             // Save the order of the columns in the issues and tasks DataGridViews
             ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
         }
@@ -238,14 +283,33 @@ namespace MiniBug
         /// </summary>
         /// <param name="projectName">The project name.</param>
         /// <param name="filename">The path and name of the file.</param>
-        private void AddRecentProject(string projectName, string filename)
+        private void AddRecentProject(string projectName, string fileName)
         {
             recentProjectsToolStripMenuItem.Enabled = true;
+            clearRecentProjectsListToolStripMenuItem.Enabled = true;
 
-            ToolStripMenuItem item = new ToolStripMenuItem(projectName)
+            // Determine if the project already exists in the Recent Projects submenu
+            for (int i = 0, c = recentProjectsToolStripMenuItem.DropDownItems.Count; i < c; ++i)
             {
-                Tag = filename
-            };
+                if (recentProjectsToolStripMenuItem.DropDownItems[i].Text == projectName)
+                {
+                    // If the project is already at the top of the list, do nothing
+                    if (i == 0)
+                    {
+                        return;
+                    }
+
+                    // Remove the item from its current position
+                    recentProjectsToolStripMenuItem.DropDownItems.RemoveAt(i);
+                    Properties.Settings.Default.RecentProjectsNames.RemoveAt(i);
+                    Properties.Settings.Default.RecentProjectsPaths.RemoveAt(i);
+
+                    // Insert at the top of the list
+                    AddRecentProjectItem(projectName, fileName);
+
+                    return;
+                }
+            }
             
             // Remove the last item in the menu when the maximum number of items is reached
             if (recentProjectsToolStripMenuItem.DropDownItems.Count == ApplicationSettings.MaxRecentProjects)
@@ -257,11 +321,27 @@ namespace MiniBug
             }
 
             // Add the new menu item to the top of the submenu
+            AddRecentProjectItem(projectName, fileName);
+        }
+
+        /// <summary>
+        /// Add the recent project item details to the top of the submenu and to the application settings.
+        /// </summary>
+        /// <param name="projectName"></param>
+        /// <param name="fileName"></param>
+        private void AddRecentProjectItem(string projectName, string fileName)
+        {
+            ToolStripMenuItem item = new ToolStripMenuItem(projectName)
+            {
+                Tag = fileName
+            };
+
+            // Add the new menu item to the top of the submenu
             recentProjectsToolStripMenuItem.DropDownItems.Insert(0, item);
 
             // Save the project name and path and filename in the application settings
             Properties.Settings.Default.RecentProjectsNames.Insert(0, projectName);
-            Properties.Settings.Default.RecentProjectsPaths.Insert(0, filename);
+            Properties.Settings.Default.RecentProjectsPaths.Insert(0, fileName);
             Properties.Settings.Default.Save();
 
             // Add an event handler for the new menu item
@@ -269,7 +349,27 @@ namespace MiniBug
         }
 
         /// <summary>
-        /// Occurs when one the recent projects menu item is clicked.
+        /// Clear the recent projects list.
+        /// </summary>
+        private void ClearRecentProjects()
+        {
+            // Clear the recent projects submenu
+            recentProjectsToolStripMenuItem.DropDownItems.Clear();
+
+            // Clear the recent projects (file names and paths) in the application settings
+            Properties.Settings.Default.RecentProjectsNames = new System.Collections.Specialized.StringCollection();
+            Properties.Settings.Default.RecentProjectsPaths = new System.Collections.Specialized.StringCollection();
+            Properties.Settings.Default.Save();
+
+            // Disable the recent projects menu item
+            recentProjectsToolStripMenuItem.Enabled = false;
+
+            // Disable the clear recent projects list menu item
+            clearRecentProjectsListToolStripMenuItem.Enabled = false;
+        }
+
+        /// <summary>
+        /// Occurs when one of the recent projects menu item is clicked.
         /// </summary>
         private void FileMenuRecentProjectItem_Click(object sender, EventArgs e)
         {
@@ -294,7 +394,9 @@ namespace MiniBug
 
                 // Clear the issues and tasks grids
                 GridIssues.Rows.Clear();
+                GridIssues.Refresh();
                 GridTasks.Rows.Clear();
+                GridTasks.Refresh();
 
                 Program.SoftwareProject = new Project(frmProject.ProjectName)
                 {
@@ -375,15 +477,17 @@ namespace MiniBug
                     Program.SoftwareProject = null;
                     Program.SoftwareProject = newProject;
 
-                    // Suspend the layout logic for the form, while the application is initializing
-                    this.SuspendLayout();
-
                     // Set the main form title bar text
                     this.Text = $"{Program.SoftwareProject.Name} - MiniBug Issue Tracker";
 
                     // Clear the issues and tasks grids
                     GridIssues.Rows.Clear();
+                    GridIssues.Refresh();
                     GridTasks.Rows.Clear();
+                    GridTasks.Refresh();
+
+                    // Suspend the layout logic for the form, while the application is initializing
+                    this.SuspendLayout();
 
                     PopulateGridIssues();
                     PopulateGridTasks();
@@ -450,26 +554,15 @@ namespace MiniBug
             }
 
             // Export the project
-            //ExportProjectResult Result = ApplicationData.ExportProject(frmExport.IssuesFilename, frmExport.TasksFilename, Program.SoftwareProject);
-            ExportProjectResult Result = Program.SoftwareProject.Export(frmExport.IssuesFilename, frmExport.TasksFilename);
+            Program.SoftwareProject.Export(frmExport.IssuesFilename, frmExport.TasksFilename);
 
             // Show feedback about the project export operation
-            ExportFeedbackForm frmFeedback = new ExportFeedbackForm(Result);
+            ImportExportFeedbackForm frmFeedback = new ImportExportFeedbackForm(ImportExportOperation.Export);
             frmFeedback.ShowDialog();
             frmFeedback.Dispose();
 
-                /*FileSystemOperationStatus status = ApplicationData.ExportProject(frmExport.IssuesFilename, frmExport.TasksFilename, Program.SoftwareProject);
-
-                if (status == FileSystemOperationStatus.ExportOK)
-                {
-                    MessageBox.Show("The export operation was successfull.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    ShowProjectErrorFeedback(status);
-                }*/
-            
-
+            // Clear the export result information
+            Program.SoftwareProject.ExportResult = null;
         }
 
         /// <summary>
@@ -551,6 +644,14 @@ namespace MiniBug
             }
 
             frmSettings.Dispose();
+        }
+
+        /// <summary>
+        /// Clear the recent projects list.
+        /// </summary>
+        private void clearRecentProjectsListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClearRecentProjects();
         }
 
         /// <summary>
@@ -775,6 +876,61 @@ namespace MiniBug
             // (end Tasks grid)
         }
 
+        /// <summary>
+        /// Display the sort glyph, in the sort columns of the issues or tasks DataGridViews.
+        /// </summary>
+        /// <param name="grid">The DataGridView to apply the sort glyph.</param>
+        private void SetGridSortGlyph(GridType grid)
+        {
+            if ((grid == GridType.All) || (grid == GridType.Issues))
+            {
+                GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridIssuesSort.FirstColumnSortOrder;
+
+                if (ApplicationSettings.GridIssuesSort.SecondColumn != null)
+                {
+                    GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridIssuesSort.SecondColumnSortOrder.Value;
+                }
+            }
+
+            if ((grid == GridType.All) || (grid == GridType.Tasks))
+            {
+                GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridTasksSort.FirstColumnSortOrder;
+
+                if (ApplicationSettings.GridTasksSort.SecondColumn != null)
+                {
+                    GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridTasksSort.SecondColumnSortOrder.Value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Remove the sort glyph, in the specificied columns, of the issues and/or tasks DataGridView.
+        /// </summary>
+        /// <param name="grid">The DataGridView(s) to remove the sort glyph.</param>
+        /// <param name="issuesSortSettings">Contains the columns to remove the glyph in the issues DataGridView.</param>
+        /// <param name="tasksSortSettings">Contains the columns to remove the glyph in the tasks DataGridView.</param>
+        private void RemoveGridSortGlyph(GridType grid, GridIssuesSortSettings issuesSortSettings, GridTasksSortSettings tasksSortSettings)
+        {
+            if ((issuesSortSettings != null) && ((grid == GridType.All) || (grid == GridType.Issues)))
+            {
+                GridIssues.Columns[ApplicationSettings.GridIssuesColumns[issuesSortSettings.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+
+                if (issuesSortSettings.SecondColumn != null)
+                {
+                    GridIssues.Columns[ApplicationSettings.GridIssuesColumns[issuesSortSettings.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+                }
+            }
+
+            if ((tasksSortSettings != null) && ((grid == GridType.All) || (grid == GridType.Tasks)))
+            {
+                GridTasks.Columns[ApplicationSettings.GridTasksColumns[tasksSortSettings.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+
+                if (tasksSortSettings.SecondColumn != null)
+                {
+                    GridTasks.Columns[ApplicationSettings.GridTasksColumns[tasksSortSettings.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+                }
+            }
+        }
 
         #region Tasks
         /// <summary>
@@ -782,6 +938,8 @@ namespace MiniBug
         /// </summary>
         private void InitializeGridTasks()
         {
+            initializingGridTasks = true;
+
             GridTasks.BackgroundColor = TabControl.DefaultBackColor;
             GridTasks.BorderStyle = BorderStyle.None;
             GridTasks.Dock = DockStyle.Fill;
@@ -860,6 +1018,7 @@ namespace MiniBug
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
                 DisplayIndex = Col.DisplayIndex
             };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridTasks.Columns.Add(column);
 
             // Summary
@@ -899,41 +1058,13 @@ namespace MiniBug
 
             GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            /*
-            GridTasks.Columns.Add("id", "ID");
-            GridTasks.Columns["id"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridTasks.Columns["id"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridTasks.Columns["id"].Resizable = DataGridViewTriState.False;
-            GridTasks.Columns["id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            DataGridViewImageColumn imageColumn = new DataGridViewImageColumn
+            // Set each of the columns in programmatic sort mode.
+            foreach (DataGridViewColumn c in GridTasks.Columns)
             {
-                Name = "priority",
-                HeaderText = string.Empty,
-                Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 32
-            };
-            GridTasks.Columns.Add(imageColumn);
+                c.SortMode = DataGridViewColumnSortMode.Programmatic;
+            }
 
-            GridTasks.Columns.Add("status", "Status");
-            GridTasks.Columns["status"].Resizable = DataGridViewTriState.False;
-            GridTasks.Columns["status"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            GridTasks.Columns["status"].DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
-
-            GridTasks.Columns.Add("target", "Target"); // novo
-            GridTasks.Columns["target"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridTasks.Columns["target"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridTasks.Columns["target"].Resizable = DataGridViewTriState.False;
-            GridTasks.Columns["target"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            GridTasks.Columns["target"].HeaderCell.ToolTipText = "Target Version";
-
-            GridTasks.Columns.Add("summary", "Summary");
-            GridTasks.Columns.Add("created", "Created");
-            GridTasks.Columns["created"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            GridTasks.Columns["priority"].DisplayIndex = 0;
-            GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;*/
+            initializingGridTasks = false;
         }
 
         /// <summary>
@@ -948,6 +1079,9 @@ namespace MiniBug
                     AddTaskToGrid(item.Value);
                 }
             }
+
+            // Sort the contents according to the sort criteria
+            GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
         }
 
         /// <summary>
@@ -971,6 +1105,11 @@ namespace MiniBug
         private void GridTasks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // ***** adaptar este método **
+
+            if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Tasks.Count == 0))
+            {
+                return;
+            }
 
             int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
 
@@ -1101,8 +1240,6 @@ namespace MiniBug
                 newTask.DateCreated.ToString("g"),
                 newTask.DateModified.ToString("g")
             });
-            
-            //GridTasks.Rows.Add(new object[] { newTask.ID.ToString(), GetTaskPriorityImage(newTask.Priority), newTask.Status.ToDescription(), newTask.TargetVersion, newTask.Summary, newTask.DateCreated.ToString() });
         }
 
         // ***** testar
@@ -1132,12 +1269,6 @@ namespace MiniBug
 
             key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateModified].Name;
             GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].DateModified.ToString("g");
-
-            /*GridTasks.Rows[rowIndex].Cells["priority"].Value = GetTaskPriorityImage(Program.SoftwareProject.Tasks[taskID].Priority);
-            GridTasks.Rows[rowIndex].Cells["status"].Value = Program.SoftwareProject.Tasks[taskID].Status.ToDescription();
-            GridTasks.Rows[rowIndex].Cells["target"].Value = Program.SoftwareProject.Tasks[taskID].TargetVersion;
-            GridTasks.Rows[rowIndex].Cells["summary"].Value = Program.SoftwareProject.Tasks[taskID].Summary;
-            GridTasks.Rows[rowIndex].Cells["created"].Value = Program.SoftwareProject.Tasks[taskID].DateCreated.ToString();*/
         }
 
         /// <summary>
@@ -1168,6 +1299,9 @@ namespace MiniBug
 
                 // Refresh the UI controls
                 SetControlsState();
+
+                // Sort the contents according to the sort criteria
+                GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
             }
 
             frmTask.Dispose();
@@ -1197,6 +1331,9 @@ namespace MiniBug
 
                     // Refresh the UI controls
                     SetControlsState();
+
+                    // Sort the contents according to the sort criteria
+                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
                 }
 
                 frmTask.Dispose();
@@ -1236,6 +1373,9 @@ namespace MiniBug
 
                     // Refresh the UI controls
                     SetControlsState();
+
+                    // Sort the contents according to the sort criteria
+                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
                 }
             }
         }
@@ -1262,6 +1402,9 @@ namespace MiniBug
 
                 // Refresh the UI controls
                 SetControlsState();
+
+                // Sort the contents according to the sort criteria
+                GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
             }
         }
 
@@ -1312,13 +1455,25 @@ namespace MiniBug
         /// </summary>
         private void GridTasks_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            // Get the Task instance with the specified column name
-            GridColumn Col = ApplicationSettings.GridTasksColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
-
-            // Update the column order
-            if (Col != null)
+            if (!this.initializingGridTasks)
             {
-                Col.DisplayIndex = e.Column.DisplayIndex;
+                // Get the Task instance with the specified column name
+                GridColumn Col = ApplicationSettings.GridTasksColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
+
+                // Update the column order
+                if (Col != null)
+                {
+                    Col.DisplayIndex = e.Column.DisplayIndex;
+                }
+            }
+        }
+
+        // *** em implementação ***
+        private void GridTasksGetDisplayIndexForAll()
+        {
+            foreach (KeyValuePair<TaskFieldsUI, GridColumn> item in ApplicationSettings.GridTasksColumns)
+            {
+                item.Value.DisplayIndex = GridTasks.Columns[item.Value.Name].DisplayIndex;
             }
         }
         #endregion
@@ -1329,6 +1484,8 @@ namespace MiniBug
         /// </summary>
         private void InitializeGridIssues()
         {
+            initializingGridIssues = true;
+
             GridIssues.BackgroundColor = TabControl.DefaultBackColor;
             GridIssues.BorderStyle = BorderStyle.None;
             GridIssues.Dock = DockStyle.Fill;
@@ -1347,9 +1504,15 @@ namespace MiniBug
             GridIssues.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
             GridIssues.ShowCellToolTips = true;
 
+            GridIssues.AutoGenerateColumns = false;
+
+
             // Add columns to the issues grid
             DataGridViewTextBoxColumn column = null;
             GridColumn Col;
+
+            // *** debug
+            HelperClass.DebugDisplayIndex("4.1: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
 
             // ID
             Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.ID];
@@ -1359,8 +1522,8 @@ namespace MiniBug
                 HeaderText = Col.HeaderText,
                 Visible = Col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
+                //DisplayIndex = Col.DisplayIndex
             };
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -1375,8 +1538,8 @@ namespace MiniBug
                 Visible = Col.Visible,
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 32,
-                DisplayIndex = Col.DisplayIndex
+                MinimumWidth = 32//,
+                //DisplayIndex = Col.DisplayIndex
             };
             GridIssues.Columns.Add(imageColumn);
 
@@ -1388,8 +1551,8 @@ namespace MiniBug
                 HeaderText = Col.HeaderText,
                 Visible = Col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
+                //DisplayIndex = Col.DisplayIndex
             };
             column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -1404,9 +1567,10 @@ namespace MiniBug
                 HeaderText = Col.HeaderText,
                 Visible = Col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
+                //DisplayIndex = Col.DisplayIndex
             };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Target version
@@ -1417,9 +1581,10 @@ namespace MiniBug
                 HeaderText = Col.HeaderText,
                 Visible = Col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
+                //DisplayIndex = Col.DisplayIndex
             };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Summary
@@ -1428,8 +1593,8 @@ namespace MiniBug
             {
                 Name = Col.Name,
                 HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                DisplayIndex = Col.DisplayIndex
+                Visible = Col.Visible//,
+                //DisplayIndex = Col.DisplayIndex
             };
             GridIssues.Columns.Add(column);
 
@@ -1440,8 +1605,8 @@ namespace MiniBug
                 Name = Col.Name,
                 HeaderText = Col.HeaderText,
                 Visible = Col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
+                //DisplayIndex = Col.DisplayIndex
             };
             GridIssues.Columns.Add(column);
 
@@ -1452,12 +1617,42 @@ namespace MiniBug
                 Name = Col.Name,
                 HeaderText = Col.HeaderText,
                 Visible = Col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
+                //DisplayIndex = Col.DisplayIndex
             };
             GridIssues.Columns.Add(column);
 
+            // *** debug
+            HelperClass.DebugDisplayIndex("4.2: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
+
             GridIssues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // *** Set the display order of the columns
+            /*foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
+            {
+                GridIssues.Columns[item.Value.Name].DisplayIndex = item.Value.DisplayIndex;
+            }*/
+            foreach (DataGridViewColumn dgvwColumn in GridIssues.Columns)
+            {
+                GridColumn issueCol = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == dgvwColumn.Name).FirstOrDefault().Value;
+                dgvwColumn.DisplayIndex = issueCol.DisplayIndex;
+            }
+            // ***
+
+            // *** debug
+            HelperClass.DebugDisplayIndex("4.3: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
+
+
+            // Set each of the columns in programmatic sort mode.
+            foreach (DataGridViewColumn c in GridIssues.Columns)
+            {
+                c.SortMode = DataGridViewColumnSortMode.Programmatic;
+            }
+
+            // *** debug
+            HelperClass.DebugDisplayIndex("4.4: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
+
+            initializingGridIssues = false;
         }
 
         /// <summary>
@@ -1472,6 +1667,9 @@ namespace MiniBug
                     AddIssueToGrid(item.Value);
                 }
             }
+
+            // Sort the contents according to the sort criteria
+            GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
         }
 
         /// <summary>
@@ -1495,6 +1693,11 @@ namespace MiniBug
         private void GridIssues_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // ***** adaptar este método **
+
+            if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Issues.Count == 0))
+            {
+                return;
+            }
 
             int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
 
@@ -1562,7 +1765,9 @@ namespace MiniBug
         private void GridIssues_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0)
+            {
                 return;
+            }
 
             e.PaintBackground(e.ClipBounds, true);
             e.PaintContent(e.ClipBounds);
@@ -1688,6 +1893,9 @@ namespace MiniBug
 
                 // Refresh the UI controls
                 SetControlsState();
+
+                // Sort the contents according to the sort criteria
+                GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
             }
 
             frmIssue.Dispose();
@@ -1717,6 +1925,9 @@ namespace MiniBug
 
                     // Refresh the UI controls
                     SetControlsState();
+
+                    // Sort the contents according to the sort criteria
+                    GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
                 }
 
                 frmIssue.Dispose();
@@ -1756,6 +1967,9 @@ namespace MiniBug
 
                     // Refresh the UI controls
                     SetControlsState();
+
+                    // Sort the contents according to the sort criteria
+                    GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
                 }
             }
         }
@@ -1782,6 +1996,9 @@ namespace MiniBug
 
                 // Refresh the UI controls
                 SetControlsState();
+
+                // Sort the contents according to the sort criteria
+                GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
             }
         }
 
@@ -1832,13 +2049,16 @@ namespace MiniBug
         /// </summary>
         private void GridIssues_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            // Get the Issue instance with the specified column name
-            GridColumn Col = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
-
-            // Update the column order
-            if (Col != null)
+            if (!this.initializingGridIssues)
             {
-                Col.DisplayIndex = e.Column.DisplayIndex;
+                // Get the Issue instance with the specified column name
+                GridColumn Col = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
+
+                // Update the column order
+                if (Col != null)
+                {
+                    Col.DisplayIndex = e.Column.DisplayIndex;
+                }
             }
         }
         #endregion
@@ -1848,19 +2068,174 @@ namespace MiniBug
         /// </summary>
         private void IconConfigureView_Click(object sender, EventArgs e)
         {
-            // *** experiência sort
-            //GridIssues.Sort(GridIssues.Columns["summary"], ListSortDirection.Descending);
-            //GridTasks.Sort(GridTasks.Columns["status"], ListSortDirection.Ascending);
+            // Store the current sort settings
+            GridIssuesSortSettings GridIssuesSortOld = new GridIssuesSortSettings(ApplicationSettings.GridIssuesSort.FirstColumn, ApplicationSettings.GridIssuesSort.FirstColumnSortOrder, ApplicationSettings.GridIssuesSort.SecondColumn, ApplicationSettings.GridIssuesSort.SecondColumnSortOrder);
+            GridTasksSortSettings GridTasksSortOld = new GridTasksSortSettings(ApplicationSettings.GridTasksSort.FirstColumn, ApplicationSettings.GridTasksSort.FirstColumnSortOrder, ApplicationSettings.GridTasksSort.SecondColumn, ApplicationSettings.GridTasksSort.SecondColumnSortOrder);
 
             ConfigureViewForm frmConfigureView = new ConfigureViewForm();
 
             if (frmConfigureView.ShowDialog() == DialogResult.OK)
             {
+                // Apply the new visibility settings
                 UpdateColumnsVisibilityGridIssues();
+                UpdateColumnsVisibilityGridTasks();
+
                 ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
+
+                // Apply the new sort settings, if there were changes
+                if (!GridIssuesSortOld.Equals(ApplicationSettings.GridIssuesSort))
+                {
+                    // Remove the sort glyph from the old sort columns
+                    RemoveGridSortGlyph(GridType.Issues, GridIssuesSortOld, null);
+
+                    GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
+
+                    // Set the sort glyph
+                    SetGridSortGlyph(GridType.Issues);
+                }
+
+                // Apply the new sort settings, if there were changes
+                if (!GridTasksSortOld.Equals(ApplicationSettings.GridTasksSort))
+                {
+                    // Remove the sort glyph from the old sort columns
+                    RemoveGridSortGlyph(GridType.Tasks, null, GridTasksSortOld);
+
+                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+
+                    // Set the sort glyph
+                    SetGridSortGlyph(GridType.Tasks);
+                }
             }
 
-            frmConfigureView.Dispose();
+            frmConfigureView.Dispose();            
+        }
+
+        /// <summary>
+        /// Handle clicks on the header cells in the issues DataGridView: sort by the clicked column.
+        /// </summary>
+        private void GridIssues_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // Is the clicked column header the first sort column?
+            if (GridIssues.Columns[e.ColumnIndex].Name == ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.FirstColumn].Name)
+            {
+                // Reverse the sort order
+                if (ApplicationSettings.GridIssuesSort.FirstColumnSortOrder == SortOrder.Ascending)
+                {
+                    ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = SortOrder.Descending;
+                }
+                else
+                {
+                    ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = SortOrder.Ascending;
+                }
+
+                // Remove the sort glyph from the second sort column (if it is not null)
+                if (ApplicationSettings.GridIssuesSort.SecondColumn != null)
+                {
+                    GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+                }
+                // Set the second sort column to null
+                ApplicationSettings.GridIssuesSort.SecondColumn = null;
+                ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = null;
+            }
+            else if ((ApplicationSettings.GridIssuesSort.SecondColumn != null) && (GridIssues.Columns[e.ColumnIndex].Name == ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.SecondColumn.Value].Name))
+            {
+                // Is the clicked column header the second sort column?
+
+                // Remove the sort glyph from the first sort column
+                GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+
+                // This is now the first sort column
+                ApplicationSettings.GridIssuesSort.FirstColumn = ApplicationSettings.GridIssuesSort.SecondColumn.Value;
+                // Reverse the sort order
+                ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = (ApplicationSettings.GridIssuesSort.SecondColumnSortOrder.Value == SortOrder.Ascending) ? SortOrder.Descending : SortOrder.Ascending;
+
+                // Set the second sort column to null
+                ApplicationSettings.GridIssuesSort.SecondColumn = null;
+                ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = null;
+            }
+            else
+            {
+                // Remove the sort glyph from the old sort columns
+                RemoveGridSortGlyph(GridType.Issues, ApplicationSettings.GridIssuesSort, null);
+
+                // Get the issue field with the specified column name
+                IssueFieldsUI column = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == GridIssues.Columns[e.ColumnIndex].Name).FirstOrDefault().Key;
+
+                // Set the new sort settings
+                ApplicationSettings.GridIssuesSort.FirstColumn = column;
+                ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = SortOrder.Ascending;
+                ApplicationSettings.GridIssuesSort.SecondColumn = null;
+                ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = null;
+            }
+
+            GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
+
+            // Set the sort glyph
+            SetGridSortGlyph(GridType.Issues);
+        }
+
+        /// <summary>
+        /// Handle clicks on the header cells in the tasks DataGridView: sort by the clicked column.
+        /// </summary>
+        private void GridTasks_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // Is the clicked column header the first sort column?
+            if (GridTasks.Columns[e.ColumnIndex].Name == ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.FirstColumn].Name)
+            {
+                // Reverse the sort order
+                if (ApplicationSettings.GridTasksSort.FirstColumnSortOrder == SortOrder.Ascending)
+                {
+                    ApplicationSettings.GridTasksSort.FirstColumnSortOrder = SortOrder.Descending;
+                }
+                else
+                {
+                    ApplicationSettings.GridTasksSort.FirstColumnSortOrder = SortOrder.Ascending;
+                }
+
+                // Remove the sort glyph from the second sort column (if it is not null)
+                if (ApplicationSettings.GridTasksSort.SecondColumn != null)
+                {
+                    GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+                }
+                // Set the second sort column to null
+                ApplicationSettings.GridTasksSort.SecondColumn = null;
+                ApplicationSettings.GridTasksSort.SecondColumnSortOrder = null;
+            }
+            else if ((ApplicationSettings.GridTasksSort.SecondColumn != null) && (GridTasks.Columns[e.ColumnIndex].Name == ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.SecondColumn.Value].Name))
+            {
+                // Is the clicked column header the second sort column?
+
+                // Remove the sort glyph from the first sort column
+                GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+
+                // This is now the first sort column
+                ApplicationSettings.GridTasksSort.FirstColumn = ApplicationSettings.GridTasksSort.SecondColumn.Value;
+                // Reverse the sort order
+                ApplicationSettings.GridTasksSort.FirstColumnSortOrder = (ApplicationSettings.GridTasksSort.SecondColumnSortOrder.Value == SortOrder.Ascending) ? SortOrder.Descending : SortOrder.Ascending;
+
+                // Set the second sort column to null
+                ApplicationSettings.GridTasksSort.SecondColumn = null;
+                ApplicationSettings.GridTasksSort.SecondColumnSortOrder = null;
+            }
+            else
+            {
+                // Remove the sort glyph from the old sort columns
+                RemoveGridSortGlyph(GridType.Tasks, null, ApplicationSettings.GridTasksSort);
+
+                // Get the task field with the specified column name
+                TaskFieldsUI column = ApplicationSettings.GridTasksColumns.Where(z => z.Value.Name == GridTasks.Columns[e.ColumnIndex].Name).FirstOrDefault().Key;
+
+                // Set the new sort settings
+                ApplicationSettings.GridTasksSort.FirstColumn = column;
+                ApplicationSettings.GridTasksSort.FirstColumnSortOrder = SortOrder.Ascending;
+                ApplicationSettings.GridTasksSort.SecondColumn = null;
+                ApplicationSettings.GridTasksSort.SecondColumnSortOrder = null;
+            }
+
+            GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+
+            // Set the sort glyph
+            SetGridSortGlyph(GridType.Tasks);
         }
     }
 }

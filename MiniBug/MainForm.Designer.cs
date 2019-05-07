@@ -56,6 +56,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.recentProjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearRecentProjectsListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.issuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,6 +83,9 @@
             // 
             // GridIssues
             // 
+            this.GridIssues.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GridIssues.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.GridIssues.Location = new System.Drawing.Point(6, 6);
             this.GridIssues.Name = "GridIssues";
@@ -91,6 +95,7 @@
             this.GridIssues.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.GridIssues_CellFormatting);
             this.GridIssues.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.GridIssues_CellPainting);
             this.GridIssues.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.GridIssues_ColumnDisplayIndexChanged);
+            this.GridIssues.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.GridIssues_ColumnHeaderMouseClick);
             this.GridIssues.SelectionChanged += new System.EventHandler(this.GridIssues_SelectionChanged);
             this.GridIssues.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GridIssues_KeyDown);
             // 
@@ -142,6 +147,7 @@
             this.GridTasks.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.GridTasks_CellFormatting);
             this.GridTasks.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.GridTasks_CellPainting);
             this.GridTasks.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.GridTasks_ColumnDisplayIndexChanged);
+            this.GridTasks.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.GridTasks_ColumnHeaderMouseClick);
             this.GridTasks.SelectionChanged += new System.EventHandler(this.GridTasks_SelectionChanged);
             this.GridTasks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GridTasks_KeyDown);
             // 
@@ -276,11 +282,12 @@
             // IconConfigureView
             // 
             this.IconConfigureView.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.IconConfigureView.Image = ((System.Drawing.Image)(resources.GetObject("IconConfigureView.Image")));
+            this.IconConfigureView.Image = global::MiniBug.Properties.Resources.ConfigureView_32x32;
             this.IconConfigureView.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.IconConfigureView.Name = "IconConfigureView";
             this.IconConfigureView.Size = new System.Drawing.Size(36, 49);
             this.IconConfigureView.Text = "toolStripButton1";
+            this.IconConfigureView.ToolTipText = "Column settings";
             this.IconConfigureView.Click += new System.EventHandler(this.IconConfigureView_Click);
             // 
             // menuStrip1
@@ -307,6 +314,7 @@
             this.settingsToolStripMenuItem,
             this.toolStripSeparator4,
             this.recentProjectsToolStripMenuItem,
+            this.clearRecentProjectsListToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -317,7 +325,7 @@
             // 
             this.newProjectToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewProject_32x32;
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.newProjectToolStripMenuItem.Text = "New Project...";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
@@ -325,57 +333,65 @@
             // 
             this.openProjectToolStripMenuItem.Image = global::MiniBug.Properties.Resources.OpenProject_32x32;
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project...";
             this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
             // editProjectToolStripMenuItem
             // 
             this.editProjectToolStripMenuItem.Name = "editProjectToolStripMenuItem";
-            this.editProjectToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.editProjectToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.editProjectToolStripMenuItem.Text = "Project Settings...";
             this.editProjectToolStripMenuItem.Click += new System.EventHandler(this.editProjectToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.exportToolStripMenuItem.Text = "Export...";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(162, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(203, 6);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Image = global::MiniBug.Properties.Resources.Settings_32x32;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.settingsToolStripMenuItem.Text = "Settings...";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(162, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(203, 6);
             // 
             // recentProjectsToolStripMenuItem
             // 
             this.recentProjectsToolStripMenuItem.Name = "recentProjectsToolStripMenuItem";
-            this.recentProjectsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.recentProjectsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.recentProjectsToolStripMenuItem.Text = "Recent Projects";
+            // 
+            // clearRecentProjectsListToolStripMenuItem
+            // 
+            this.clearRecentProjectsListToolStripMenuItem.Image = global::MiniBug.Properties.Resources.Delete_32x32;
+            this.clearRecentProjectsListToolStripMenuItem.Name = "clearRecentProjectsListToolStripMenuItem";
+            this.clearRecentProjectsListToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.clearRecentProjectsListToolStripMenuItem.Text = "Clear Recent Projects";
+            this.clearRecentProjectsListToolStripMenuItem.Click += new System.EventHandler(this.clearRecentProjectsListToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(162, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(203, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -557,6 +573,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton IconConfigureView;
+        private System.Windows.Forms.ToolStripMenuItem clearRecentProjectsListToolStripMenuItem;
     }
 }
 
