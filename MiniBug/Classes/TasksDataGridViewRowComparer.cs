@@ -91,7 +91,6 @@ namespace MiniBug
                 default:
                     return 0;
             }
-
         }
 
         private object GetValueForField(TaskFieldsUI column, int id)

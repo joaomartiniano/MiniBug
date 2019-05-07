@@ -92,7 +92,6 @@ namespace MiniBug
                 default:
                     return 0;
             }
-
         }
 
         private object GetValueForField(IssueFieldsUI column, int id)
