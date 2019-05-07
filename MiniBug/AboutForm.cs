@@ -27,7 +27,7 @@ namespace MiniBug
 
             pictureBox1.Left = (lblApplicationName.Left / 2) - (pictureBox1.Width / 2);
 
-            lblVersion.Text += " " + Application.ProductVersion.ToString();
+            lblVersion.Text = $"Version {Application.ProductVersion.ToString()}";
         }
 
         /// <summary>
