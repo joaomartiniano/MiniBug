@@ -233,7 +233,7 @@ namespace MiniBug
         /// </summary>
         private void GridIssues_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            bool FlagClickSort = false;
+            bool flagClickSort = false;
 
             // Control the visibility of columns (the visibility of the ID column cannot be modified)
             if ((e.ColumnIndex == GridIssues.Columns["visible"].Index) && (e.RowIndex > 0))
@@ -285,7 +285,7 @@ namespace MiniBug
                     }
 
                     // Signal that the user clicked on one of the sort checkboxes
-                    FlagClickSort = true;
+                    flagClickSort = true;
                 }
             }
             else if ((e.ColumnIndex == GridIssues.Columns["sort2"].Index) && (e.RowIndex != -1))
@@ -316,12 +316,12 @@ namespace MiniBug
                     }
 
                     // Signal that the user clicked on one of the sort checkboxes
-                    FlagClickSort = true;
+                    flagClickSort = true;
                 }
             }
 
             // If the user unchecked both sort checkboxes
-            if ((FlagClickSort) &&
+            if ((flagClickSort) &&
                 ((!Boolean.Parse(GridIssues["sort1", e.RowIndex].EditedFormattedValue.ToString())) &&
                 (!Boolean.Parse(GridIssues["sort2", e.RowIndex].EditedFormattedValue.ToString()))))
             {
@@ -525,7 +525,7 @@ namespace MiniBug
         /// </summary>
         private void GridTasks_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            bool FlagClickSort = false;
+            bool flagClickSort = false;
 
             // Control the visibility of columns (the visibility of the ID column cannot be modified)
             if ((e.ColumnIndex == GridTasks.Columns["visible"].Index) && (e.RowIndex > 0))
@@ -577,7 +577,7 @@ namespace MiniBug
                     }
 
                     // Signal that the user clicked on one of the sort checkboxes
-                    FlagClickSort = true;
+                    flagClickSort = true;
                 }
             }
             else if ((e.ColumnIndex == GridTasks.Columns["sort2"].Index) && (e.RowIndex != -1))
@@ -608,12 +608,12 @@ namespace MiniBug
                     }
 
                     // Signal that the user clicked on one of the sort checkboxes
-                    FlagClickSort = true;
+                    flagClickSort = true;
                 }
             }
 
             // If the user unchecked both sort checkboxes
-            if ((FlagClickSort) &&
+            if ((flagClickSort) &&
                 ((!Boolean.Parse(GridTasks["sort1", e.RowIndex].EditedFormattedValue.ToString())) &&
                 (!Boolean.Parse(GridTasks["sort2", e.RowIndex].EditedFormattedValue.ToString()))))
             {
@@ -628,74 +628,74 @@ namespace MiniBug
         /// </summary>
         private void btOK_Click(object sender, EventArgs e)
         {
-            bool FlagSort1 = true, FlagSort2 = true;
+            bool flagSort1 = true, flagSort2 = true;
 
             // Traverse the issues DataGridView rows, checking the checkboxes
-            for (int i = 0; i < GridIssues.Rows.Count; ++i)
+            for (int i = 0, n = GridIssues.Rows.Count; i < n; ++i)
             {
                 ApplicationSettings.GridIssuesColumns[(IssueFieldsUI)GridIssues.Rows[i].Tag].Visible = Boolean.Parse(GridIssues["visible", i].Value.ToString());
 
-                if ((FlagSort1) && (Boolean.Parse(GridIssues["sort1", i].Value.ToString())))
+                if ((flagSort1) && (Boolean.Parse(GridIssues["sort1", i].Value.ToString())))
                 {
                     ApplicationSettings.GridIssuesSort.FirstColumn = (IssueFieldsUI)GridIssues.Rows[i].Tag;
                     ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = (GridIssues["sortOrder", i].Value.ToString() == "Ascending") ? SortOrder.Ascending : SortOrder.Descending;
-                    FlagSort1 = false;
+                    flagSort1 = false;
                 }
 
-                if ((FlagSort2) && (Boolean.Parse(GridIssues["sort2", i].Value.ToString())))
+                if ((flagSort2) && (Boolean.Parse(GridIssues["sort2", i].Value.ToString())))
                 {
                     ApplicationSettings.GridIssuesSort.SecondColumn = (IssueFieldsUI)GridIssues.Rows[i].Tag;
                     ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = (GridIssues["sortOrder", i].Value.ToString() == "Ascending") ? SortOrder.Ascending : SortOrder.Descending;
-                    FlagSort2 = false;
+                    flagSort2 = false;
                 }
             }
 
             // Set defaults if the user did not choose the first column to sort
-            if (FlagSort1)
+            if (flagSort1)
             {
                 ApplicationSettings.GridIssuesSort.FirstColumn = IssueFieldsUI.ID;
                 ApplicationSettings.GridIssuesSort.FirstColumnSortOrder = SortOrder.Ascending;
             }
 
             // Set defaults if the user did not choose the second column to sort
-            if (FlagSort2)
+            if (flagSort2)
             {
                 ApplicationSettings.GridIssuesSort.SecondColumn = null;
                 ApplicationSettings.GridIssuesSort.SecondColumnSortOrder = null;
             }
 
-            FlagSort1 = true;
-            FlagSort2 = true;
+            flagSort1 = true;
+            flagSort2 = true;
 
             // Traverse the tasks DataGridView rows, checking the checkboxes
-            for (int i = 0; i < GridTasks.Rows.Count; ++i)
+            for (int i = 0, n = GridTasks.Rows.Count; i < n; ++i)
             {
                 ApplicationSettings.GridTasksColumns[(TaskFieldsUI)GridTasks.Rows[i].Tag].Visible = Boolean.Parse(GridTasks["visible", i].Value.ToString());
 
-                if ((FlagSort1) && (Boolean.Parse(GridTasks["sort1", i].Value.ToString())))
+                if ((flagSort1) && (Boolean.Parse(GridTasks["sort1", i].Value.ToString())))
                 {
                     ApplicationSettings.GridTasksSort.FirstColumn = (TaskFieldsUI)GridTasks.Rows[i].Tag;
                     ApplicationSettings.GridTasksSort.FirstColumnSortOrder = (GridTasks["sortOrder", i].Value.ToString() == "Ascending") ? SortOrder.Ascending : SortOrder.Descending;
-                    FlagSort1 = false;
+                    flagSort1 = false;
                 }
 
-                if ((FlagSort2) && (Boolean.Parse(GridTasks["sort2", i].Value.ToString())))
+                if ((flagSort2) && (Boolean.Parse(GridTasks["sort2", i].Value.ToString())))
                 {
                     ApplicationSettings.GridTasksSort.SecondColumn = (TaskFieldsUI)GridTasks.Rows[i].Tag;
                     ApplicationSettings.GridTasksSort.SecondColumnSortOrder = (GridTasks["sortOrder", i].Value.ToString() == "Ascending") ? SortOrder.Ascending : SortOrder.Descending;
-                    FlagSort2 = false;
+                    flagSort2 = false;
                 }
             }
 
             // Set defaults if the user did not choose the first column to sort
-            if (FlagSort1)
+            if (flagSort1)
             {
                 ApplicationSettings.GridTasksSort.FirstColumn = TaskFieldsUI.ID;
                 ApplicationSettings.GridTasksSort.FirstColumnSortOrder = SortOrder.Ascending;
             }
 
             // Set defaults if the user did not choose the second column to sort
-            if (FlagSort2)
+            if (flagSort2)
             {
                 ApplicationSettings.GridTasksSort.SecondColumn = null;
                 ApplicationSettings.GridTasksSort.SecondColumnSortOrder = null;
