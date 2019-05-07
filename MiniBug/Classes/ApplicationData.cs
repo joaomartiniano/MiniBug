@@ -13,6 +13,8 @@ using CsvHelper;
 
 namespace MiniBug
 {
+    public enum OperationType { None = 0, New, Edit, Delete };
+
     /// <summary>
     /// Identify which grid to reference of performe some operation.
     /// </summary>

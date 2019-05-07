@@ -98,7 +98,6 @@
     <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Classes\GridColumn.cs" />
     <Compile Include="Classes\GridTasksSortSettings.cs" />
-    <Compile Include="Classes\HelperClass.cs" />
     <Compile Include="Classes\GridIssuesSortSettings.cs" />
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\Issue.cs" />

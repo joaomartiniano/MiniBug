@@ -36,9 +36,6 @@ namespace MiniBug
             // Start by retrieving the application settings
             ApplicationSettings.Load();
 
-            // *** debug
-            HelperClass.DebugDisplayIndex("3: MainForm.cs: ApplicationSettings.GridIssuesColumns");
-
             // Suspend the layout logic for the form, while the application is initializing
             this.SuspendLayout();
 
@@ -48,15 +45,9 @@ namespace MiniBug
 
             InitializeTabControl();
 
-            // *** debug
-            HelperClass.DebugDisplayIndex("4: MainForm.cs: antes de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
-
             // Initialization of the Issues and Tasks grids
             InitializeGridIssues();
             InitializeGridTasks();
-
-            // *** debug
-            HelperClass.DebugDisplayIndex("5: MainForm.cs: após InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
 
             // Apply the settings to the Issues and Tasks grids
             ApplySettingsToGrids();
@@ -75,26 +66,6 @@ namespace MiniBug
 
             // Set the sort glyph for the issues and tasks DataGridViews
             SetGridSortGlyph(GridType.All);
-
-
-            // *** display index
-
-            // *** debug
-            /*Console.WriteLine("3: MainForm.cs: What's stored in ApplicationSettings...");
-            foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
-            {
-                Console.WriteLine("Item: {0} - Display index: {1}", item.Value.Name, item.Value.DisplayIndex);
-            }*/
-            HelperClass.DebugDisplayIndex("FINAL: MainForm.cs: ApplicationSettings.GridIssuesColumns");
-
-
-            /*GridIssues.Refresh();
-            foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
-            {
-                GridIssues.Columns[item.Value.Name].DisplayIndex = item.Value.DisplayIndex;
-            }
-            GridIssues.Refresh();
-            GridIssues.Columns["priority"].DisplayIndex = 7;*/
         }
 
         /// <summary>
@@ -116,7 +87,7 @@ namespace MiniBug
             else if ((Properties.Settings.Default.RecentProjectsNames.Count > 0) && (Properties.Settings.Default.RecentProjectsPaths.Count > 0))
             {
                 // Load the recent projects from the application settings and insert them in the recent projects submenu
-                for (int i = 0; i <= Properties.Settings.Default.RecentProjectsNames.Count - 1; ++i)
+                for (int i = 0, n = Properties.Settings.Default.RecentProjectsNames.Count - 1; i <= n; ++i)
                 {
                     ToolStripMenuItem item = new ToolStripMenuItem(Properties.Settings.Default.RecentProjectsNames[i])
                     {
@@ -274,13 +245,11 @@ namespace MiniBug
         /// </summary>
         private void CloseApplication()
         {
-            GridTasksGetDisplayIndexForAll();
-
             // Save the order of the columns in the issues and tasks DataGridViews
             ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
         }
 
-        #region RecentProject
+        #region "RecentProject"
         /// <summary>
         /// Add a project to the recent projects submenu and to the application settings
         /// </summary>
@@ -292,7 +261,7 @@ namespace MiniBug
             clearRecentProjectsListToolStripMenuItem.Enabled = true;
 
             // Determine if the project already exists in the Recent Projects submenu
-            for (int i = 0, c = recentProjectsToolStripMenuItem.DropDownItems.Count; i < c; ++i)
+            for (int i = 0, n = recentProjectsToolStripMenuItem.DropDownItems.Count; i < n; ++i)
             {
                 if (recentProjectsToolStripMenuItem.DropDownItems[i].Text == projectName)
                 {
@@ -380,7 +349,7 @@ namespace MiniBug
         }
         #endregion
 
-        #region Project
+        #region "Project"
         /// <summary>
         /// Create a new project.
         /// </summary>
@@ -544,14 +513,14 @@ namespace MiniBug
         /// </summary>
         private void ExportProject()
         {
-            DialogResult FrmExportResult = DialogResult.None;
+            DialogResult frmExportResult = DialogResult.None;
             ExportForm frmExport = new ExportForm();
 
             // Show the export to CSV form
-            FrmExportResult = frmExport.ShowDialog();
+            frmExportResult = frmExport.ShowDialog();
             frmExport.Dispose();
 
-            if (FrmExportResult == DialogResult.Cancel)
+            if (frmExportResult == DialogResult.Cancel)
             {
                 return;
             }
@@ -575,7 +544,7 @@ namespace MiniBug
         //private void SaveProject(OperationContext context)
         private void SaveProject()
         {
-           FileSystemOperationStatus status = FileSystemOperationStatus.None;
+            FileSystemOperationStatus status = FileSystemOperationStatus.None;
             status = ApplicationData.SaveProject(Program.SoftwareProject);
 
             // If there was an error saving the project file, show feedback
@@ -601,7 +570,7 @@ namespace MiniBug
         }
         #endregion
 
-        #region Menu
+        #region "Menu"
         /// <summary>
         /// Create a new project.
         /// </summary>
@@ -737,13 +706,11 @@ namespace MiniBug
             AboutForm frmAbout = new AboutForm();
 
             frmAbout.ShowDialog();
-
             frmAbout.Dispose();
         }
         #endregion
 
-        #region Toolbar
-
+        #region "Toolbar"
         /// <summary>
         /// Create a new issue.
         /// </summary>
@@ -807,681 +774,9 @@ namespace MiniBug
         {
             CloneTask();
         }
-
         #endregion
 
-        /// <summary>
-        ///  Apply the settings to the Issues and Tasks grids.
-        /// </summary>
-        private void ApplySettingsToGrids()
-        {
-            // Apply settings to the Issues grid
-
-            // Grid Font
-            GridIssues.Font = ApplicationSettings.GridFont;
-            GridIssues.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
-
-            // Grid borders
-            if (ApplicationSettings.GridShowBorders)
-            {
-                GridIssues.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-                GridIssues.GridColor = ApplicationSettings.GridBorderColor;
-            }
-            else
-            {
-                GridIssues.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            }
-
-            // Selection color
-            GridIssues.DefaultCellStyle.SelectionBackColor = ApplicationSettings.GridSelectionBackColor;
-            GridIssues.DefaultCellStyle.SelectionForeColor = ApplicationSettings.GridSelectionForeColor;
-
-            // Alternating row colors
-            GridIssues.RowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
-            if (ApplicationSettings.GridAlternatingRowColor)
-            {
-                GridIssues.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridAlternateRowBackColor;
-            }
-            else
-            {
-                GridIssues.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
-            }
-
-            // (end Issues grid)
-
-            // Apply settings to the Tasks grid
-
-            // Grid Font
-            GridTasks.Font = ApplicationSettings.GridFont;
-            GridTasks.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
-
-            // Grid borders
-            if (ApplicationSettings.GridShowBorders)
-            {
-                GridTasks.GridColor = ApplicationSettings.GridBorderColor;
-            }
-            else
-            {
-                GridTasks.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            }
-
-            // Selection color
-            GridTasks.DefaultCellStyle.SelectionBackColor = ApplicationSettings.GridSelectionBackColor;
-            GridTasks.DefaultCellStyle.SelectionForeColor = ApplicationSettings.GridSelectionForeColor;
-
-            // Alternating row colors
-            GridTasks.RowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
-            if (ApplicationSettings.GridAlternatingRowColor)
-            {
-                GridTasks.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridAlternateRowBackColor;
-            }
-
-            // (end Tasks grid)
-        }
-
-        /// <summary>
-        /// Display the sort glyph, in the sort columns of the issues or tasks DataGridViews.
-        /// </summary>
-        /// <param name="grid">The DataGridView to apply the sort glyph.</param>
-        private void SetGridSortGlyph(GridType grid)
-        {
-            if ((grid == GridType.All) || (grid == GridType.Issues))
-            {
-                GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridIssuesSort.FirstColumnSortOrder;
-
-                if (ApplicationSettings.GridIssuesSort.SecondColumn != null)
-                {
-                    GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridIssuesSort.SecondColumnSortOrder.Value;
-                }
-            }
-
-            if ((grid == GridType.All) || (grid == GridType.Tasks))
-            {
-                GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridTasksSort.FirstColumnSortOrder;
-
-                if (ApplicationSettings.GridTasksSort.SecondColumn != null)
-                {
-                    GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridTasksSort.SecondColumnSortOrder.Value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Remove the sort glyph, in the specificied columns, of the issues and/or tasks DataGridView.
-        /// </summary>
-        /// <param name="grid">The DataGridView(s) to remove the sort glyph.</param>
-        /// <param name="issuesSortSettings">Contains the columns to remove the glyph in the issues DataGridView.</param>
-        /// <param name="tasksSortSettings">Contains the columns to remove the glyph in the tasks DataGridView.</param>
-        private void RemoveGridSortGlyph(GridType grid, GridIssuesSortSettings issuesSortSettings, GridTasksSortSettings tasksSortSettings)
-        {
-            if ((issuesSortSettings != null) && ((grid == GridType.All) || (grid == GridType.Issues)))
-            {
-                GridIssues.Columns[ApplicationSettings.GridIssuesColumns[issuesSortSettings.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
-
-                if (issuesSortSettings.SecondColumn != null)
-                {
-                    GridIssues.Columns[ApplicationSettings.GridIssuesColumns[issuesSortSettings.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
-                }
-            }
-
-            if ((tasksSortSettings != null) && ((grid == GridType.All) || (grid == GridType.Tasks)))
-            {
-                GridTasks.Columns[ApplicationSettings.GridTasksColumns[tasksSortSettings.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
-
-                if (tasksSortSettings.SecondColumn != null)
-                {
-                    GridTasks.Columns[ApplicationSettings.GridTasksColumns[tasksSortSettings.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
-                }
-            }
-        }
-
-        #region Tasks
-        /// <summary>
-        /// Initialize the tasks DataGridView.
-        /// </summary>
-        private void InitializeGridTasks()
-        {
-            initializingGridTasks = true;
-
-            GridTasks.BackgroundColor = TabControl.DefaultBackColor;
-            GridTasks.BorderStyle = BorderStyle.None;
-            GridTasks.Dock = DockStyle.Fill;
-
-            GridTasks.AllowUserToAddRows = false;
-            GridTasks.AllowUserToDeleteRows = false;
-            GridTasks.AllowUserToOrderColumns = true;
-            GridTasks.AllowUserToResizeColumns = true;
-            GridTasks.AllowUserToResizeRows = false;
-            GridTasks.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            GridTasks.ColumnHeadersVisible = true;
-            GridTasks.RowHeadersVisible = false;
-            GridTasks.ReadOnly = true;
-            GridTasks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            GridTasks.MultiSelect = true;
-            GridTasks.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
-            GridTasks.ShowCellToolTips = true;
-
-            // Add columns to the tasks grid
-            DataGridViewTextBoxColumn column = null;
-            GridColumn Col;
-
-            // ID
-            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.ID];
-            column = new DataGridViewTextBoxColumn
-            {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
-            };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridTasks.Columns.Add(column);
-
-            // Priority
-            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Priority];
-            DataGridViewImageColumn imageColumn = new DataGridViewImageColumn
-            {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 32,
-                DisplayIndex = Col.DisplayIndex
-            };
-            GridTasks.Columns.Add(imageColumn);
-
-            // Status
-            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Status];
-            column = new DataGridViewTextBoxColumn
-            {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
-            };
-            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            column.DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
-            GridTasks.Columns.Add(column);
-
-            // Target version
-            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.TargetVersion];
-            column = new DataGridViewTextBoxColumn
-            {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
-            };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            GridTasks.Columns.Add(column);
-
-            // Summary
-            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Summary];
-            column = new DataGridViewTextBoxColumn
-            {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                DisplayIndex = Col.DisplayIndex
-            };
-            GridTasks.Columns.Add(column);
-
-            // Date created
-            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateCreated];
-            column = new DataGridViewTextBoxColumn
-            {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
-            };
-            GridTasks.Columns.Add(column);
-
-            // Date modified
-            Col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateModified];
-            column = new DataGridViewTextBoxColumn
-            {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                DisplayIndex = Col.DisplayIndex
-            };
-            GridTasks.Columns.Add(column);
-
-            GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            // Set each of the columns in programmatic sort mode.
-            foreach (DataGridViewColumn c in GridTasks.Columns)
-            {
-                c.SortMode = DataGridViewColumnSortMode.Programmatic;
-            }
-
-            initializingGridTasks = false;
-        }
-
-        /// <summary>
-        /// Populate the tasks grid.
-        /// </summary>
-        private void PopulateGridTasks()
-        {
-            if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Tasks != null))
-            { 
-                foreach (KeyValuePair<int, Task> item in Program.SoftwareProject.Tasks)
-                {
-                    AddTaskToGrid(item.Value);
-                }
-            }
-
-            // Sort the contents according to the sort criteria
-            GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
-        }
-
-        /// <summary>
-        /// Updates the visibility of the tasks grid columns, according to the current settings.
-        /// </summary>
-        private void UpdateColumnsVisibilityGridTasks()
-        {
-            GridTasks.SuspendLayout();
-
-            foreach (KeyValuePair<TaskFieldsUI, GridColumn> item in ApplicationSettings.GridTasksColumns)
-            {
-                GridTasks.Columns[item.Value.Name].Visible = item.Value.Visible;
-            }
-
-            GridTasks.ResumeLayout();
-        }
-
-        /// <summary>
-        /// Advanced formatting of cells.
-        /// </summary>
-        private void GridTasks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            // ***** adaptar este método **
-
-            if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Tasks.Count == 0))
-            {
-                return;
-            }
-
-            int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
-
-            // Text color of finished tasks
-            if (Program.SoftwareProject.Tasks[key].Status == TaskStatus.Finished)
-            {
-                e.CellStyle.ForeColor = ApplicationSettings.GridClosedItem;
-                e.CellStyle.SelectionForeColor = ApplicationSettings.GridClosedItem;
-            }
-
-            // Configure/format the "priority" column's cells
-            if (GridTasks.Columns[e.ColumnIndex].Name == "priority")
-            {
-                // Test if the cell has no image assigned
-                if (e.Value == null)
-                {
-                    // Assign a 1x1 bitmap so that a "missing image" icon is not displayed
-                    e.Value = new Bitmap(1, 1);
-                }
-                else
-                {
-                    // Set the tooltip for this cell, but only if the project has tasks
-                    if ((Program.SoftwareProject.Tasks == null) || (Program.SoftwareProject.Tasks.Count == 0))
-                    {
-                        return;
-                    }
-
-                    //int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
-                    string s = string.Empty;
-
-                    switch (Program.SoftwareProject.Tasks[key].Priority)
-                    {
-                        case TaskPriority.Low:
-                            s = "Low priority";
-                            break;
-
-                        case TaskPriority.Normal:
-                            s = "Normal priority";
-                            break;
-
-                        case TaskPriority.High:
-                            s = "High priority";
-                            break;
-
-                        case TaskPriority.Urgent:
-                            s = "Urgent priority";
-                            break;
-
-                        case TaskPriority.Immediate:
-                            s = "Immediate priority";
-                            break;
-                    }
-
-                    GridTasks[e.ColumnIndex, e.RowIndex].ToolTipText = s;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Advanced formatting of cells.
-        /// </summary>
-        private void GridTasks_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            if (e.RowIndex < 0)
-            {
-                return;
-            }
-
-            e.PaintBackground(e.ClipBounds, true);
-            e.PaintContent(e.ClipBounds);
-
-            // Draw a filled rectangle in the "Status" column
-            if (GridTasks.Columns[e.ColumnIndex].Name == "status")
-            {
-                int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
-                Brush fillColor;
-
-                // Set the color for the rectangle, according to the Task status
-                fillColor = ApplicationSettings.TaskStatusColors[Program.SoftwareProject.Tasks[key].Status];
-
-                if (fillColor != Brushes.Transparent)
-                {
-                    int size = ApplicationSettings.GridStatusRectangleSize;
-                    Rectangle rect = new Rectangle(e.CellBounds.Location.X + 4, e.CellBounds.Location.Y + (e.CellBounds.Height / 2) - (size / 2), size, size);
-                    e.Graphics.FillRectangle(fillColor, rect);
-                    e.PaintContent(rect);
-                }
-            }
-
-            e.Handled = true;
-        }
-
-        /// <summary>
-        /// Returns a bitmap image corresponding to a given task priority.
-        /// </summary>
-        /// <param name="priority">A task priority</param>
-        /// <returns>A bitmap image.</returns>
-        private object GetTaskPriorityImage(TaskPriority priority)
-        {
-            switch (priority)
-            {
-                case TaskPriority.High:
-                    return MiniBug.Properties.Resources.Priority_High;
-
-                case TaskPriority.Urgent:
-                    return MiniBug.Properties.Resources.Priority_Urgent;
-
-                case TaskPriority.Immediate:
-                    return MiniBug.Properties.Resources.Priority_Immediate;
-
-                default:
-                    return null;
-            }
-        }
-
-        /// <summary>
-        /// Add a new task to the grid.
-        /// </summary>
-        /// <param name="newTask">The task to add to the grid.</param>
-        private void AddTaskToGrid(Task newTask)
-        {
-            GridTasks.Rows.Add(new object[] {
-                newTask.ID.ToString(),
-                GetTaskPriorityImage(newTask.Priority),
-                newTask.Status.ToDescription(),
-                newTask.TargetVersion,
-                newTask.Summary,
-                newTask.DateCreated.ToString("g"),
-                newTask.DateModified.ToString("g")
-            });
-        }
-
-        // ***** testar
-        /// <summary>
-        /// Refresh task's data in the tasks grid.
-        /// </summary>
-        /// <param name="rowIndex">The row index in the task grid, that holds the data for the task.</param>
-        /// <param name="taskID">The id of the task (the task key in the collection of tasks).</param>
-        private void RefreshTaskInGrid(int rowIndex, int taskID)
-        {
-            string key = string.Empty;
-
-            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Priority].Name;
-            GridTasks.Rows[rowIndex].Cells[key].Value = GetTaskPriorityImage(Program.SoftwareProject.Tasks[taskID].Priority);
-
-            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Status].Name;
-            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].Status.ToDescription();
-
-            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.TargetVersion].Name;
-            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].TargetVersion;
-
-            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Summary].Name;
-            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].Summary;
-
-            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateCreated].Name;
-            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].DateCreated.ToString("g");
-
-            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateModified].Name;
-            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].DateModified.ToString("g");
-        }
-
-        /// <summary>
-        /// Create a new task.
-        /// </summary>
-        private void NewTask()
-        {
-            TaskForm frmTask = new TaskForm(OperationType.New);
-
-            if (frmTask.ShowDialog() == DialogResult.OK)
-            {
-                Program.SoftwareProject.AddTask(frmTask.CurrentTask);
-
-                // Add the new task to the grid
-                AddTaskToGrid(frmTask.CurrentTask);
-
-                // Unselect all the previously selected rows
-                foreach (DataGridViewRow row in GridTasks.SelectedRows)
-                {
-                    row.Selected = false;
-                }
-
-                // Select the last row (the one which was added)
-                GridTasks.Rows[GridTasks.Rows.Count - 1].Selected = true;
-
-                // Save the project file
-                SaveProject();
-
-                // Refresh the UI controls
-                SetControlsState();
-
-                // Sort the contents according to the sort criteria
-                GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
-            }
-
-            frmTask.Dispose();
-        }
-
-        /// <summary>
-        /// Edit the selected task.
-        /// </summary>
-        private void EditTask()
-        {
-            if (GridTasks.SelectedRows.Count == 1)
-            {
-                // Get the key of the task in the selected row 
-                int id = Int32.Parse(GridTasks.SelectedRows[0].Cells["id"].Value.ToString());
-
-                TaskForm frmTask = new TaskForm(OperationType.Edit, Program.SoftwareProject.Tasks[id]);
-
-                if (frmTask.ShowDialog() == DialogResult.OK)
-                {
-                    Program.SoftwareProject.Tasks[id] = frmTask.CurrentTask;
-
-                    // Refresh the task information in the grid
-                    RefreshTaskInGrid(GridTasks.SelectedRows[0].Index, id);
-
-                    // Save the project file
-                    SaveProject();
-
-                    // Refresh the UI controls
-                    SetControlsState();
-
-                    // Sort the contents according to the sort criteria
-                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
-                }
-
-                frmTask.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Delete the selected tasks.
-        /// </summary>
-        private void DeleteTask()
-        {
-            if (GridTasks.SelectedRows.Count > 0)
-            {
-                string msg = (GridTasks.SelectedRows.Count == 1) ? string.Empty : "s";
-
-                // Confirm this operation
-                if (MessageBox.Show("Are you sure you want to delete the selected task" + msg + "?", "Delete Task" + msg, MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
-                {
-                    // Iterate all the selected rows in the grid
-                    foreach (DataGridViewRow row in GridTasks.SelectedRows)
-                    {
-                        // Get the key of the task in the selected row 
-                        int key = Int32.Parse(row.Cells["id"].Value.ToString());
-
-                        // Get the index of the selected row
-                        int i = row.Index;
-
-                        // Remove the task from the collection
-                        Program.SoftwareProject.Tasks.Remove(key);
-
-                        // Remove the row from the grid
-                        GridTasks.Rows.RemoveAt(i);
-                    }
-
-                    // Save the project file
-                    SaveProject();
-
-                    // Refresh the UI controls
-                    SetControlsState();
-
-                    // Sort the contents according to the sort criteria
-                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Clone the selected task.
-        /// </summary>
-        private void CloneTask()
-        {
-            if (GridTasks.SelectedRows.Count == 1)
-            {
-                // Get the key of the task in the selected row 
-                int id = Int32.Parse(GridTasks.SelectedRows[0].Cells["id"].Value.ToString());
-
-                Task newTask = new Task();
-                Program.SoftwareProject.Tasks[id].Clone(ref newTask);
-                Program.SoftwareProject.AddTask(newTask);
-
-                // Add the new task to the grid
-                AddTaskToGrid(newTask);
-
-                // Save the project file
-                SaveProject();
-
-                // Refresh the UI controls
-                SetControlsState();
-
-                // Sort the contents according to the sort criteria
-                GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
-            }
-        }
-
-        /// <summary>
-        /// Handle a double-click on the tasks grid: edit a task.
-        /// </summary>
-        private void GridTasks_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            EditTask();
-        }
-
-        /// <summary>
-        /// When the selection changes in the tasks grid, enable/disable certain icons.
-        /// </summary>
-        private void GridTasks_SelectionChanged(object sender, EventArgs e)
-        {
-            if (GridTasks.SelectedRows.Count == 1)
-            {
-                IconEditTask.Enabled = true;
-                IconCloneTask.Enabled = true;
-            }
-            else
-            {
-                IconEditTask.Enabled = false;
-                IconCloneTask.Enabled = false;
-            }
-        }
-
-        /// <summary>
-        /// Delete the selected tasks when the user clicks the Delete key.
-        /// </summary>
-        private void GridTasks_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete)
-            {
-                e.Handled = true;
-                DeleteTask();
-            }
-            else if (e.KeyCode == Keys.Enter)
-            {
-                e.Handled = true;
-                EditTask();
-            }
-        }
-
-        /// <summary>
-        /// Handle changing the column order in the tasks grid.
-        /// </summary>
-        private void GridTasks_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            if (!this.initializingGridTasks)
-            {
-                // Get the Task instance with the specified column name
-                GridColumn Col = ApplicationSettings.GridTasksColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
-
-                // Update the column order
-                if (Col != null)
-                {
-                    Col.DisplayIndex = e.Column.DisplayIndex;
-                }
-            }
-        }
-
-        // *** em implementação ***
-        private void GridTasksGetDisplayIndexForAll()
-        {
-            foreach (KeyValuePair<TaskFieldsUI, GridColumn> item in ApplicationSettings.GridTasksColumns)
-            {
-                item.Value.DisplayIndex = GridTasks.Columns[item.Value.Name].DisplayIndex;
-            }
-        }
-        #endregion
-
-        #region Issues
+        #region "Issues"
         /// <summary>
         /// Initialize the issues DataGridView.
         /// </summary>
@@ -1509,53 +804,46 @@ namespace MiniBug
 
             GridIssues.AutoGenerateColumns = false;
 
-
             // Add columns to the issues grid
             DataGridViewTextBoxColumn column = null;
-            GridColumn Col;
-
-            // *** debug
-            HelperClass.DebugDisplayIndex("4.1: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
+            GridColumn col;
 
             // ID
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.ID];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.ID];
             column = new DataGridViewTextBoxColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
-                //DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Priority
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Priority];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Priority];
             DataGridViewImageColumn imageColumn = new DataGridViewImageColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                MinimumWidth = 32//,
-                //DisplayIndex = Col.DisplayIndex
+                MinimumWidth = 32
             };
             GridIssues.Columns.Add(imageColumn);
 
             // Status
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Status];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Status];
             column = new DataGridViewTextBoxColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
-                //DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
             column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -1563,97 +851,73 @@ namespace MiniBug
             GridIssues.Columns.Add(column);
 
             // Version
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Version];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Version];
             column = new DataGridViewTextBoxColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
-                //DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Target version
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.TargetVersion];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.TargetVersion];
             column = new DataGridViewTextBoxColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
-                //DisplayIndex = Col.DisplayIndex
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Summary
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Summary];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Summary];
             column = new DataGridViewTextBoxColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible//,
-                //DisplayIndex = Col.DisplayIndex
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible
             };
             GridIssues.Columns.Add(column);
 
             // Date created
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateCreated];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateCreated];
             column = new DataGridViewTextBoxColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
-                //DisplayIndex = Col.DisplayIndex
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
             GridIssues.Columns.Add(column);
 
             // Date modified
-            Col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateModified];
+            col = ApplicationSettings.GridIssuesColumns[IssueFieldsUI.DateModified];
             column = new DataGridViewTextBoxColumn
             {
-                Name = Col.Name,
-                HeaderText = Col.HeaderText,
-                Visible = Col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells//,
-                //DisplayIndex = Col.DisplayIndex
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
             GridIssues.Columns.Add(column);
 
-            // *** debug
-            HelperClass.DebugDisplayIndex("4.2: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
-
             GridIssues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // *** Set the display order of the columns
-            /*foreach (KeyValuePair<IssueFieldsUI, GridColumn> item in ApplicationSettings.GridIssuesColumns)
-            {
-                GridIssues.Columns[item.Value.Name].DisplayIndex = item.Value.DisplayIndex;
-            }*/
-            foreach (DataGridViewColumn dgvwColumn in GridIssues.Columns)
-            {
-                GridColumn issueCol = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == dgvwColumn.Name).FirstOrDefault().Value;
-                dgvwColumn.DisplayIndex = issueCol.DisplayIndex;
-            }
-            // ***
-
-            // *** debug
-            HelperClass.DebugDisplayIndex("4.3: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
-
-
-            // Set each of the columns in programmatic sort mode.
+            // Set the display order for each column and also programmatic sort mode
             foreach (DataGridViewColumn c in GridIssues.Columns)
             {
+                GridColumn issueCol = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == c.Name).FirstOrDefault().Value;
+                c.DisplayIndex = issueCol.DisplayIndex;
+
                 c.SortMode = DataGridViewColumnSortMode.Programmatic;
             }
-
-            // *** debug
-            HelperClass.DebugDisplayIndex("4.4: MainForm.cs: dentro de InitializeGridIssues(): ApplicationSettings.GridIssuesColumns");
 
             initializingGridIssues = false;
         }
@@ -1705,10 +969,13 @@ namespace MiniBug
             int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
 
             // Text color of closed issues
-            if (Program.SoftwareProject.Issues[key].Status == IssueStatus.Closed)
+            if (Program.SoftwareProject.Issues.ContainsKey(key))
             {
-                e.CellStyle.ForeColor = ApplicationSettings.GridClosedItem;
-                e.CellStyle.SelectionForeColor = ApplicationSettings.GridClosedItem;
+                if (Program.SoftwareProject.Issues[key].Status == IssueStatus.Closed)
+                {
+                    e.CellStyle.ForeColor = ApplicationSettings.GridClosedItem;
+                    e.CellStyle.SelectionForeColor = ApplicationSettings.GridClosedItem;
+                }
             }
 
             // Configure/format the "priority" column's cells
@@ -1947,7 +1214,7 @@ namespace MiniBug
                 string msg = (GridIssues.SelectedRows.Count == 1) ? string.Empty : "s";
 
                 // Confirm this operation
-                if (MessageBox.Show("Are you sure you want to delete the selected issue" + msg + "?", "Delete Issue" + msg, MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+                if (MessageBox.Show($"Are you sure you want to delete the selected issue{msg}?", $"Delete Issue{msg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
                 {
                     // Iterate all the selected rows in the grid
                     foreach (DataGridViewRow row in GridIssues.SelectedRows)
@@ -2055,62 +1322,14 @@ namespace MiniBug
             if (!this.initializingGridIssues)
             {
                 // Get the Issue instance with the specified column name
-                GridColumn Col = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
+                GridColumn col = ApplicationSettings.GridIssuesColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
 
                 // Update the column order
-                if (Col != null)
+                if (col != null)
                 {
-                    Col.DisplayIndex = e.Column.DisplayIndex;
+                    col.DisplayIndex = e.Column.DisplayIndex;
                 }
             }
-        }
-        #endregion
-
-        /// <summary>
-        /// **** em desenvolvimento ****
-        /// </summary>
-        private void IconConfigureView_Click(object sender, EventArgs e)
-        {
-            // Store the current sort settings
-            GridIssuesSortSettings GridIssuesSortOld = new GridIssuesSortSettings(ApplicationSettings.GridIssuesSort.FirstColumn, ApplicationSettings.GridIssuesSort.FirstColumnSortOrder, ApplicationSettings.GridIssuesSort.SecondColumn, ApplicationSettings.GridIssuesSort.SecondColumnSortOrder);
-            GridTasksSortSettings GridTasksSortOld = new GridTasksSortSettings(ApplicationSettings.GridTasksSort.FirstColumn, ApplicationSettings.GridTasksSort.FirstColumnSortOrder, ApplicationSettings.GridTasksSort.SecondColumn, ApplicationSettings.GridTasksSort.SecondColumnSortOrder);
-
-            ConfigureViewForm frmConfigureView = new ConfigureViewForm();
-
-            if (frmConfigureView.ShowDialog() == DialogResult.OK)
-            {
-                // Apply the new visibility settings
-                UpdateColumnsVisibilityGridIssues();
-                UpdateColumnsVisibilityGridTasks();
-
-                ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
-
-                // Apply the new sort settings, if there were changes
-                if (!GridIssuesSortOld.Equals(ApplicationSettings.GridIssuesSort))
-                {
-                    // Remove the sort glyph from the old sort columns
-                    RemoveGridSortGlyph(GridType.Issues, GridIssuesSortOld, null);
-
-                    GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
-
-                    // Set the sort glyph
-                    SetGridSortGlyph(GridType.Issues);
-                }
-
-                // Apply the new sort settings, if there were changes
-                if (!GridTasksSortOld.Equals(ApplicationSettings.GridTasksSort))
-                {
-                    // Remove the sort glyph from the old sort columns
-                    RemoveGridSortGlyph(GridType.Tasks, null, GridTasksSortOld);
-
-                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
-
-                    // Set the sort glyph
-                    SetGridSortGlyph(GridType.Tasks);
-                }
-            }
-
-            frmConfigureView.Dispose();            
         }
 
         /// <summary>
@@ -2176,6 +1395,540 @@ namespace MiniBug
             // Set the sort glyph
             SetGridSortGlyph(GridType.Issues);
         }
+        #endregion
+
+        #region "Tasks"
+        /// <summary>
+        /// Initialize the tasks DataGridView.
+        /// </summary>
+        private void InitializeGridTasks()
+        {
+            initializingGridTasks = true;
+
+            GridTasks.BackgroundColor = TabControl.DefaultBackColor;
+            GridTasks.BorderStyle = BorderStyle.None;
+            GridTasks.Dock = DockStyle.Fill;
+
+            GridTasks.AllowUserToAddRows = false;
+            GridTasks.AllowUserToDeleteRows = false;
+            GridTasks.AllowUserToOrderColumns = true;
+            GridTasks.AllowUserToResizeColumns = true;
+            GridTasks.AllowUserToResizeRows = false;
+            GridTasks.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            GridTasks.ColumnHeadersVisible = true;
+            GridTasks.RowHeadersVisible = false;
+            GridTasks.ReadOnly = true;
+            GridTasks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            GridTasks.MultiSelect = true;
+            GridTasks.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            GridTasks.ShowCellToolTips = true;
+
+            // Add columns to the tasks grid
+            DataGridViewTextBoxColumn column = null;
+            GridColumn col;
+
+            // ID
+            col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.ID];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridTasks.Columns.Add(column);
+
+            // Priority
+            col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Priority];
+            DataGridViewImageColumn imageColumn = new DataGridViewImageColumn
+            {
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                MinimumWidth = 32
+            };
+            GridTasks.Columns.Add(imageColumn);
+
+            // Status
+            col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Status];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            };
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            column.DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
+            GridTasks.Columns.Add(column);
+
+            // Target version
+            col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.TargetVersion];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridTasks.Columns.Add(column);
+
+            // Summary
+            col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Summary];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible
+            };
+            GridTasks.Columns.Add(column);
+
+            // Date created
+            col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateCreated];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            };
+            GridTasks.Columns.Add(column);
+
+            // Date modified
+            col = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateModified];
+            column = new DataGridViewTextBoxColumn
+            {
+                Name = col.Name,
+                HeaderText = col.HeaderText,
+                Visible = col.Visible,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            };
+            GridTasks.Columns.Add(column);
+
+            GridTasks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Set the display order for each column and also programmatic sort mode
+            foreach (DataGridViewColumn c in GridTasks.Columns)
+            {
+                GridColumn taskCol = ApplicationSettings.GridTasksColumns.Where(z => z.Value.Name == c.Name).FirstOrDefault().Value;
+                c.DisplayIndex = taskCol.DisplayIndex;
+
+                c.SortMode = DataGridViewColumnSortMode.Programmatic;
+            }
+
+            initializingGridTasks = false;
+        }
+
+        /// <summary>
+        /// Populate the tasks grid.
+        /// </summary>
+        private void PopulateGridTasks()
+        {
+            if ((Program.SoftwareProject != null) && (Program.SoftwareProject.Tasks != null))
+            {
+                foreach (KeyValuePair<int, Task> item in Program.SoftwareProject.Tasks)
+                {
+                    AddTaskToGrid(item.Value);
+                }
+            }
+
+            // Sort the contents according to the sort criteria
+            GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+        }
+
+        /// <summary>
+        /// Updates the visibility of the tasks grid columns, according to the current settings.
+        /// </summary>
+        private void UpdateColumnsVisibilityGridTasks()
+        {
+            GridTasks.SuspendLayout();
+
+            foreach (KeyValuePair<TaskFieldsUI, GridColumn> item in ApplicationSettings.GridTasksColumns)
+            {
+                GridTasks.Columns[item.Value.Name].Visible = item.Value.Visible;
+            }
+
+            GridTasks.ResumeLayout();
+        }
+
+        /// <summary>
+        /// Advanced formatting of cells.
+        /// </summary>
+        private void GridTasks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // ***** adaptar este método **
+
+            if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Tasks.Count == 0))
+            {
+                return;
+            }
+
+            int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
+
+            // Text color of finished tasks
+            if (Program.SoftwareProject.Tasks.ContainsKey(key))
+            {
+                if (Program.SoftwareProject.Tasks[key].Status == TaskStatus.Finished)
+                {
+                    e.CellStyle.ForeColor = ApplicationSettings.GridClosedItem;
+                    e.CellStyle.SelectionForeColor = ApplicationSettings.GridClosedItem;
+                }
+            }
+
+            // Configure/format the "priority" column's cells
+            if (GridTasks.Columns[e.ColumnIndex].Name == "priority")
+            {
+                // Test if the cell has no image assigned
+                if (e.Value == null)
+                {
+                    // Assign a 1x1 bitmap so that a "missing image" icon is not displayed
+                    e.Value = new Bitmap(1, 1);
+                }
+                else
+                {
+                    // Set the tooltip for this cell, but only if the project has tasks
+                    if ((Program.SoftwareProject.Tasks == null) || (Program.SoftwareProject.Tasks.Count == 0))
+                    {
+                        return;
+                    }
+
+                    string s = string.Empty;
+
+                    switch (Program.SoftwareProject.Tasks[key].Priority)
+                    {
+                        case TaskPriority.Low:
+                            s = "Low priority";
+                            break;
+
+                        case TaskPriority.Normal:
+                            s = "Normal priority";
+                            break;
+
+                        case TaskPriority.High:
+                            s = "High priority";
+                            break;
+
+                        case TaskPriority.Urgent:
+                            s = "Urgent priority";
+                            break;
+
+                        case TaskPriority.Immediate:
+                            s = "Immediate priority";
+                            break;
+                    }
+
+                    GridTasks[e.ColumnIndex, e.RowIndex].ToolTipText = s;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Advanced formatting of cells.
+        /// </summary>
+        private void GridTasks_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            e.PaintBackground(e.ClipBounds, true);
+            e.PaintContent(e.ClipBounds);
+
+            // Draw a filled rectangle in the "Status" column
+            if (GridTasks.Columns[e.ColumnIndex].Name == "status")
+            {
+                int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
+                Brush fillColor;
+
+                // Set the color for the rectangle, according to the Task status
+                fillColor = ApplicationSettings.TaskStatusColors[Program.SoftwareProject.Tasks[key].Status];
+
+                if (fillColor != Brushes.Transparent)
+                {
+                    int size = ApplicationSettings.GridStatusRectangleSize;
+                    Rectangle rect = new Rectangle(e.CellBounds.Location.X + 4, e.CellBounds.Location.Y + (e.CellBounds.Height / 2) - (size / 2), size, size);
+                    e.Graphics.FillRectangle(fillColor, rect);
+                    e.PaintContent(rect);
+                }
+            }
+
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Returns a bitmap image corresponding to a given task priority.
+        /// </summary>
+        /// <param name="priority">A task priority</param>
+        /// <returns>A bitmap image.</returns>
+        private object GetTaskPriorityImage(TaskPriority priority)
+        {
+            switch (priority)
+            {
+                case TaskPriority.High:
+                    return MiniBug.Properties.Resources.Priority_High;
+
+                case TaskPriority.Urgent:
+                    return MiniBug.Properties.Resources.Priority_Urgent;
+
+                case TaskPriority.Immediate:
+                    return MiniBug.Properties.Resources.Priority_Immediate;
+
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Add a new task to the grid.
+        /// </summary>
+        /// <param name="newTask">The task to add to the grid.</param>
+        private void AddTaskToGrid(Task newTask)
+        {
+            GridTasks.Rows.Add(new object[] {
+                newTask.ID.ToString(),
+                GetTaskPriorityImage(newTask.Priority),
+                newTask.Status.ToDescription(),
+                newTask.TargetVersion,
+                newTask.Summary,
+                newTask.DateCreated.ToString("g"),
+                newTask.DateModified.ToString("g")
+            });
+        }
+
+        /// <summary>
+        /// Refresh task's data in the tasks grid.
+        /// </summary>
+        /// <param name="rowIndex">The row index in the task grid, that holds the data for the task.</param>
+        /// <param name="taskID">The id of the task (the task key in the collection of tasks).</param>
+        private void RefreshTaskInGrid(int rowIndex, int taskID)
+        {
+            string key = string.Empty;
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Priority].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = GetTaskPriorityImage(Program.SoftwareProject.Tasks[taskID].Priority);
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Status].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].Status.ToDescription();
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.TargetVersion].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].TargetVersion;
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.Summary].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].Summary;
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateCreated].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].DateCreated.ToString("g");
+
+            key = ApplicationSettings.GridTasksColumns[TaskFieldsUI.DateModified].Name;
+            GridTasks.Rows[rowIndex].Cells[key].Value = Program.SoftwareProject.Tasks[taskID].DateModified.ToString("g");
+        }
+
+        /// <summary>
+        /// Create a new task.
+        /// </summary>
+        private void NewTask()
+        {
+            TaskForm frmTask = new TaskForm(OperationType.New);
+
+            if (frmTask.ShowDialog() == DialogResult.OK)
+            {
+                Program.SoftwareProject.AddTask(frmTask.CurrentTask);
+
+                // Add the new task to the grid
+                AddTaskToGrid(frmTask.CurrentTask);
+
+                // Unselect all the previously selected rows
+                foreach (DataGridViewRow row in GridTasks.SelectedRows)
+                {
+                    row.Selected = false;
+                }
+
+                // Select the last row (the one which was added)
+                GridTasks.Rows[GridTasks.Rows.Count - 1].Selected = true;
+
+                // Save the project file
+                SaveProject();
+
+                // Refresh the UI controls
+                SetControlsState();
+
+                // Sort the contents according to the sort criteria
+                GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+            }
+
+            frmTask.Dispose();
+        }
+
+        /// <summary>
+        /// Edit the selected task.
+        /// </summary>
+        private void EditTask()
+        {
+            if (GridTasks.SelectedRows.Count == 1)
+            {
+                // Get the key of the task in the selected row 
+                int id = Int32.Parse(GridTasks.SelectedRows[0].Cells["id"].Value.ToString());
+
+                TaskForm frmTask = new TaskForm(OperationType.Edit, Program.SoftwareProject.Tasks[id]);
+
+                if (frmTask.ShowDialog() == DialogResult.OK)
+                {
+                    Program.SoftwareProject.Tasks[id] = frmTask.CurrentTask;
+
+                    // Refresh the task information in the grid
+                    RefreshTaskInGrid(GridTasks.SelectedRows[0].Index, id);
+
+                    // Save the project file
+                    SaveProject();
+
+                    // Refresh the UI controls
+                    SetControlsState();
+
+                    // Sort the contents according to the sort criteria
+                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+                }
+
+                frmTask.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Delete the selected tasks.
+        /// </summary>
+        private void DeleteTask()
+        {
+            if (GridTasks.SelectedRows.Count > 0)
+            {
+                string msg = (GridTasks.SelectedRows.Count == 1) ? string.Empty : "s";
+
+                // Confirm this operation
+                if (MessageBox.Show($"Are you sure you want to delete the selected task{msg}?", $"Delete Task{msg}", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) == DialogResult.OK)
+                {
+                    // Iterate all the selected rows in the grid
+                    foreach (DataGridViewRow row in GridTasks.SelectedRows)
+                    {
+                        // Get the key of the task in the selected row 
+                        int key = Int32.Parse(row.Cells["id"].Value.ToString());
+
+                        // Get the index of the selected row
+                        int i = row.Index;
+
+                        // Remove the task from the collection
+                        Program.SoftwareProject.Tasks.Remove(key);
+
+                        // Remove the row from the grid
+                        GridTasks.Rows.RemoveAt(i);
+                    }
+
+                    // Save the project file
+                    SaveProject();
+
+                    // Refresh the UI controls
+                    SetControlsState();
+
+                    // Sort the contents according to the sort criteria
+                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clone the selected task.
+        /// </summary>
+        private void CloneTask()
+        {
+            if (GridTasks.SelectedRows.Count == 1)
+            {
+                // Get the key of the task in the selected row 
+                int id = Int32.Parse(GridTasks.SelectedRows[0].Cells["id"].Value.ToString());
+
+                Task newTask = new Task();
+                Program.SoftwareProject.Tasks[id].Clone(ref newTask);
+                Program.SoftwareProject.AddTask(newTask);
+
+                // Add the new task to the grid
+                AddTaskToGrid(newTask);
+
+                // Save the project file
+                SaveProject();
+
+                // Refresh the UI controls
+                SetControlsState();
+
+                // Sort the contents according to the sort criteria
+                GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+            }
+        }
+
+        /// <summary>
+        /// Handle a double-click on the tasks grid: edit a task.
+        /// </summary>
+        private void GridTasks_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            EditTask();
+        }
+
+        /// <summary>
+        /// When the selection changes in the tasks grid, enable/disable certain icons.
+        /// </summary>
+        private void GridTasks_SelectionChanged(object sender, EventArgs e)
+        {
+            if (GridTasks.SelectedRows.Count == 1)
+            {
+                IconEditTask.Enabled = true;
+                IconCloneTask.Enabled = true;
+            }
+            else
+            {
+                IconEditTask.Enabled = false;
+                IconCloneTask.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Delete the selected tasks when the user clicks the Delete key.
+        /// </summary>
+        private void GridTasks_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                e.Handled = true;
+                DeleteTask();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                EditTask();
+            }
+        }
+
+        /// <summary>
+        /// Handle changing the column order in the tasks grid.
+        /// </summary>
+        private void GridTasks_ColumnDisplayIndexChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            if (!this.initializingGridTasks)
+            {
+                // Get the Task instance with the specified column name
+                GridColumn Col = ApplicationSettings.GridTasksColumns.Where(z => z.Value.Name == e.Column.Name).FirstOrDefault().Value;
+
+                // Update the column order
+                if (Col != null)
+                {
+                    Col.DisplayIndex = e.Column.DisplayIndex;
+                }
+            }
+        }
 
         /// <summary>
         /// Handle clicks on the header cells in the tasks DataGridView: sort by the clicked column.
@@ -2240,5 +1993,178 @@ namespace MiniBug
             // Set the sort glyph
             SetGridSortGlyph(GridType.Tasks);
         }
+        #endregion
+
+        /// <summary>
+        /// **** em desenvolvimento ****
+        /// </summary>
+        private void IconConfigureView_Click(object sender, EventArgs e)
+        {
+            // Store the current sort settings
+            GridIssuesSortSettings gridIssuesSortOld = new GridIssuesSortSettings(ApplicationSettings.GridIssuesSort.FirstColumn, ApplicationSettings.GridIssuesSort.FirstColumnSortOrder, ApplicationSettings.GridIssuesSort.SecondColumn, ApplicationSettings.GridIssuesSort.SecondColumnSortOrder);
+            GridTasksSortSettings gridTasksSortOld = new GridTasksSortSettings(ApplicationSettings.GridTasksSort.FirstColumn, ApplicationSettings.GridTasksSort.FirstColumnSortOrder, ApplicationSettings.GridTasksSort.SecondColumn, ApplicationSettings.GridTasksSort.SecondColumnSortOrder);
+
+            ConfigureViewForm frmConfigureView = new ConfigureViewForm();
+
+            if (frmConfigureView.ShowDialog() == DialogResult.OK)
+            {
+                // Apply the new visibility settings
+                UpdateColumnsVisibilityGridIssues();
+                UpdateColumnsVisibilityGridTasks();
+
+                ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
+
+                // Apply the new sort settings, if there were changes
+                if (!gridIssuesSortOld.Equals(ApplicationSettings.GridIssuesSort))
+                {
+                    // Remove the sort glyph from the old sort columns
+                    RemoveGridSortGlyph(GridType.Issues, gridIssuesSortOld, null);
+
+                    GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
+
+                    // Set the sort glyph
+                    SetGridSortGlyph(GridType.Issues);
+                }
+
+                // Apply the new sort settings, if there were changes
+                if (!gridTasksSortOld.Equals(ApplicationSettings.GridTasksSort))
+                {
+                    // Remove the sort glyph from the old sort columns
+                    RemoveGridSortGlyph(GridType.Tasks, null, gridTasksSortOld);
+
+                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+
+                    // Set the sort glyph
+                    SetGridSortGlyph(GridType.Tasks);
+                }
+            }
+
+            frmConfigureView.Dispose();            
+        }
+
+        #region "Grids"
+        /// <summary>
+        ///  Apply the settings to the Issues and Tasks grids.
+        /// </summary>
+        private void ApplySettingsToGrids()
+        {
+            // Apply settings to the Issues grid
+            #region "Issues"
+            // Grid Font
+            GridIssues.Font = ApplicationSettings.GridFont;
+            GridIssues.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+
+            // Grid borders
+            if (ApplicationSettings.GridShowBorders)
+            {
+                GridIssues.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+                GridIssues.GridColor = ApplicationSettings.GridBorderColor;
+            }
+            else
+            {
+                GridIssues.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            }
+
+            // Selection color
+            GridIssues.DefaultCellStyle.SelectionBackColor = ApplicationSettings.GridSelectionBackColor;
+            GridIssues.DefaultCellStyle.SelectionForeColor = ApplicationSettings.GridSelectionForeColor;
+
+            // Alternating row colors
+            GridIssues.RowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
+            if (ApplicationSettings.GridAlternatingRowColor)
+            {
+                GridIssues.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridAlternateRowBackColor;
+            }
+            else
+            {
+                GridIssues.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
+            }
+            #endregion
+
+            // Apply settings to the Tasks grid
+            #region "Tasks"
+            // Grid Font
+            GridTasks.Font = ApplicationSettings.GridFont;
+            GridTasks.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+
+            // Grid borders
+            if (ApplicationSettings.GridShowBorders)
+            {
+                GridTasks.GridColor = ApplicationSettings.GridBorderColor;
+            }
+            else
+            {
+                GridTasks.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            }
+
+            // Selection color
+            GridTasks.DefaultCellStyle.SelectionBackColor = ApplicationSettings.GridSelectionBackColor;
+            GridTasks.DefaultCellStyle.SelectionForeColor = ApplicationSettings.GridSelectionForeColor;
+
+            // Alternating row colors
+            GridTasks.RowsDefaultCellStyle.BackColor = ApplicationSettings.GridRowBackColor;
+            if (ApplicationSettings.GridAlternatingRowColor)
+            {
+                GridTasks.AlternatingRowsDefaultCellStyle.BackColor = ApplicationSettings.GridAlternateRowBackColor;
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// Display the sort glyph, in the sort columns of the issues or tasks DataGridViews.
+        /// </summary>
+        /// <param name="grid">The DataGridView to apply the sort glyph.</param>
+        private void SetGridSortGlyph(GridType grid)
+        {
+            if ((grid == GridType.All) || (grid == GridType.Issues))
+            {
+                GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridIssuesSort.FirstColumnSortOrder;
+
+                if (ApplicationSettings.GridIssuesSort.SecondColumn != null)
+                {
+                    GridIssues.Columns[ApplicationSettings.GridIssuesColumns[ApplicationSettings.GridIssuesSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridIssuesSort.SecondColumnSortOrder.Value;
+                }
+            }
+
+            if ((grid == GridType.All) || (grid == GridType.Tasks))
+            {
+                GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.FirstColumn].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridTasksSort.FirstColumnSortOrder;
+
+                if (ApplicationSettings.GridTasksSort.SecondColumn != null)
+                {
+                    GridTasks.Columns[ApplicationSettings.GridTasksColumns[ApplicationSettings.GridTasksSort.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = ApplicationSettings.GridTasksSort.SecondColumnSortOrder.Value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Remove the sort glyph, in the specificied columns, of the issues and/or tasks DataGridView.
+        /// </summary>
+        /// <param name="grid">The DataGridView(s) to remove the sort glyph.</param>
+        /// <param name="issuesSortSettings">Contains the columns to remove the glyph in the issues DataGridView.</param>
+        /// <param name="tasksSortSettings">Contains the columns to remove the glyph in the tasks DataGridView.</param>
+        private void RemoveGridSortGlyph(GridType grid, GridIssuesSortSettings issuesSortSettings, GridTasksSortSettings tasksSortSettings)
+        {
+            if ((issuesSortSettings != null) && ((grid == GridType.All) || (grid == GridType.Issues)))
+            {
+                GridIssues.Columns[ApplicationSettings.GridIssuesColumns[issuesSortSettings.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+
+                if (issuesSortSettings.SecondColumn != null)
+                {
+                    GridIssues.Columns[ApplicationSettings.GridIssuesColumns[issuesSortSettings.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+                }
+            }
+
+            if ((tasksSortSettings != null) && ((grid == GridType.All) || (grid == GridType.Tasks)))
+            {
+                GridTasks.Columns[ApplicationSettings.GridTasksColumns[tasksSortSettings.FirstColumn].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+
+                if (tasksSortSettings.SecondColumn != null)
+                {
+                    GridTasks.Columns[ApplicationSettings.GridTasksColumns[tasksSortSettings.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
+                }
+            }
+        }
+        #endregion
     }
 }
