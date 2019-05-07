@@ -11,6 +11,9 @@ namespace MiniBug
 {
     static class Program
     {
+        /// <summary>
+        /// A software project that this application will work with. Contains issues and tasks.
+        /// </summary>
         public static Project SoftwareProject = null;
 
         /// <summary>
