@@ -502,7 +502,7 @@ namespace MiniBug
             {
                 ShowProjectErrorFeedback(status);
 
-                // **** TODO: reverter alterações ****
+                // *** TODO: reverter alterações
                 // Abort the new project
                 //Program.SoftwareProject = null;
             }
@@ -959,7 +959,7 @@ namespace MiniBug
         /// </summary>
         private void GridIssues_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // ***** adaptar este método **
+            // *** adaptar este método
 
             if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Issues.Count == 0))
             {
@@ -1028,7 +1028,7 @@ namespace MiniBug
             }
         }
 
-        // ***** atualizar este método
+        // *** atualizar este método
         /// <summary>
         /// Advanced formatting of cells.
         /// </summary>
@@ -1565,7 +1565,7 @@ namespace MiniBug
         /// </summary>
         private void GridTasks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // ***** adaptar este método **
+            // *** adaptar este método
 
             if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Tasks.Count == 0))
             {
@@ -1996,7 +1996,7 @@ namespace MiniBug
         #endregion
 
         /// <summary>
-        /// **** em desenvolvimento ****
+        /// *** em desenvolvimento
         /// </summary>
         private void IconConfigureView_Click(object sender, EventArgs e)
         {

@@ -48,7 +48,7 @@
             this.btOK.Location = new System.Drawing.Point(592, 286);
             this.btOK.Name = "btOK";
             this.btOK.Size = new System.Drawing.Size(75, 23);
-            this.btOK.TabIndex = 3;
+            this.btOK.TabIndex = 2;
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
             this.btOK.Click += new System.EventHandler(this.btOK_Click);
@@ -58,7 +58,7 @@
             this.btCancel.Location = new System.Drawing.Point(673, 286);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
-            this.btCancel.TabIndex = 4;
+            this.btCancel.TabIndex = 3;
             this.btCancel.Text = "Cancel";
             this.btCancel.UseVisualStyleBackColor = true;
             this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
@@ -71,7 +71,7 @@
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
             this.TabControl.Size = new System.Drawing.Size(736, 236);
-            this.TabControl.TabIndex = 5;
+            this.TabControl.TabIndex = 1;
             // 
             // tabPage1
             // 
@@ -123,7 +123,7 @@
             this.label1.Location = new System.Drawing.Point(13, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(510, 13);
-            this.label1.TabIndex = 6;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Select which columns to show and which columns to use for sorting in the Issues a" +
     "nd Tasks grids:";
             // 
