@@ -98,6 +98,11 @@ namespace MiniBug
         };
 
         /// <summary>
+        /// Font to use in the Description field of the Issues and Tasks forms.
+        /// </summary>
+        public static readonly Font FormDescriptionFieldFont = new Font("Consolas", 9);
+
+        /// <summary>
         /// The columns of the issues DataGridView.
         /// </summary>
         public static Dictionary<IssueFieldsUI, GridColumn> GridIssuesColumns = new Dictionary<IssueFieldsUI, GridColumn>()

@@ -129,6 +129,8 @@ namespace MiniBug
                 lblID.Text = CurrentTask.ID.ToString();
             }
 
+            txtDescription.Font = ApplicationSettings.FormDescriptionFieldFont;
+
             // Resume the layout logic
             this.ResumeLayout();
         }

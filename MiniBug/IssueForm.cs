@@ -128,7 +128,9 @@ namespace MiniBug
                 cboPriority.SelectedValue = Convert.ToInt32(CurrentIssue.Priority);
 
                 lblID.Text = CurrentIssue.ID.ToString();
-            }            
+            }
+
+            txtDescription.Font = ApplicationSettings.FormDescriptionFieldFont;
 
             // Resume the layout logic
             this.ResumeLayout();
