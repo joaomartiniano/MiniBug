@@ -18,6 +18,9 @@ namespace MiniBug
     /// </summary>
     public enum GridType { None = 0, All, Issues, Tasks }
 
+    /// <summary>
+    /// Result of a filesystem operation.
+    /// </summary>
     public enum FileSystemOperationStatus {
         None = 0,
 
@@ -59,9 +62,6 @@ namespace MiniBug
 
         /// <summary>Export projet to CSV: trying to export to a non-existing directory.</summary>
         ExportToCsvErrorDirectoryNotFound,
-
-        /*/// <summary>Export projet to CSV: error reported by the CSV exporting module.</summary>
-        ExportToCsvErrorFileNotFound,*/
 
         /// <summary>Export projet to CSV: file path and/or file name too long.</summary>
         ExportToCsvErrorPathTooLong,

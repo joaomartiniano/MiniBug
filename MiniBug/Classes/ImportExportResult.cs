@@ -75,7 +75,6 @@ namespace MiniBug
         }
     }
 
-
     /// <summary>
     /// Result of an import/export operation. Contains details about the import/export operation.
     /// </summary>
@@ -84,6 +83,7 @@ namespace MiniBug
         public ImportExportOperation Operation { get; set; } = ImportExportOperation.None;
 
         public ImportExportResultData Issues { get; set; } = null;
+
         public ImportExportResultData Tasks { get; set; } = null;
 
         public ImportExportResult(ImportExportOperation operation)
