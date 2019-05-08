@@ -37,6 +37,17 @@ namespace MiniBug
             // Resume the layout logic
             GridTasks.ResumeLayout();
             GridIssues.ResumeLayout();
+
+            SetAccessibilityInformation();
+        }
+
+        /// <summary>
+        /// Add accessibility data to form controls.
+        /// </summary>
+        private void SetAccessibilityInformation()
+        {
+            TabControl.TabPages[0].AccessibleDescription = "Column definitions for the Issues grid";
+            TabControl.TabPages[1].AccessibleDescription = "Column definitions for the Tasks grid";
         }
 
         #region "Issues"

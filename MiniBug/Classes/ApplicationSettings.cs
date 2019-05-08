@@ -108,7 +108,7 @@ namespace MiniBug
         public static Dictionary<IssueFieldsUI, GridColumn> GridIssuesColumns = new Dictionary<IssueFieldsUI, GridColumn>()
         {
             { IssueFieldsUI.ID,
-                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 1, Description = "Unique numerical code of the issue" } },
+                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 1, Description = "Unique numerical code assigned to the issue" } },
 
             { IssueFieldsUI.Priority,
                 new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 0, Description = "Priority of an issue" } },
@@ -138,7 +138,7 @@ namespace MiniBug
         public static Dictionary<TaskFieldsUI, GridColumn> GridTasksColumns = new Dictionary<TaskFieldsUI, GridColumn>()
         {
             { TaskFieldsUI.ID,
-                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 1, Description = "Unique numerical code of the task" } },
+                new GridColumn { Name = "id", HeaderText = "ID", Visible = true, DisplayIndex = 1, Description = "Unique numerical code assigned to the task" } },
 
             { TaskFieldsUI.Priority,
                 new GridColumn { Name = "priority", HeaderText = "", Visible = true, DisplayIndex = 0, Description = "Priority of a task" } },

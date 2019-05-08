@@ -319,80 +319,80 @@
             this.exitToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
-            this.toolStripMenuItem1.Text = "File";
+            this.toolStripMenuItem1.Text = "&File";
             // 
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewProject_32x32;
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.newProjectToolStripMenuItem.Text = "New Project...";
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.newProjectToolStripMenuItem.Text = "&New Project...";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Image = global::MiniBug.Properties.Resources.OpenProject_32x32;
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.openProjectToolStripMenuItem.Text = "Open Project...";
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.openProjectToolStripMenuItem.Text = "&Open Project...";
             this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
             // editProjectToolStripMenuItem
             // 
             this.editProjectToolStripMenuItem.Name = "editProjectToolStripMenuItem";
-            this.editProjectToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.editProjectToolStripMenuItem.Text = "Project Settings...";
+            this.editProjectToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.editProjectToolStripMenuItem.Text = "&Project Settings...";
             this.editProjectToolStripMenuItem.Click += new System.EventHandler(this.editProjectToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.exportToolStripMenuItem.Text = "Export...";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.exportToolStripMenuItem.Text = "&Export...";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(203, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(182, 6);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Image = global::MiniBug.Properties.Resources.Settings_32x32;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.settingsToolStripMenuItem.Text = "Settings...";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.settingsToolStripMenuItem.Text = "&Settings...";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(203, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(182, 6);
             // 
             // recentProjectsToolStripMenuItem
             // 
             this.recentProjectsToolStripMenuItem.Name = "recentProjectsToolStripMenuItem";
-            this.recentProjectsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.recentProjectsToolStripMenuItem.Text = "Recent Projects";
+            this.recentProjectsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.recentProjectsToolStripMenuItem.Text = "&Recent Projects";
             // 
             // clearRecentProjectsListToolStripMenuItem
             // 
             this.clearRecentProjectsListToolStripMenuItem.Image = global::MiniBug.Properties.Resources.Delete_32x32;
             this.clearRecentProjectsListToolStripMenuItem.Name = "clearRecentProjectsListToolStripMenuItem";
             this.clearRecentProjectsListToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.clearRecentProjectsListToolStripMenuItem.Text = "Clear Recent Projects";
+            this.clearRecentProjectsListToolStripMenuItem.Text = "&Clear Recent Projects";
             this.clearRecentProjectsListToolStripMenuItem.Click += new System.EventHandler(this.clearRecentProjectsListToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(203, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // issuesToolStripMenuItem
@@ -404,38 +404,38 @@
             this.cloneIssueToolStripMenuItem});
             this.issuesToolStripMenuItem.Name = "issuesToolStripMenuItem";
             this.issuesToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
-            this.issuesToolStripMenuItem.Text = "Issues";
+            this.issuesToolStripMenuItem.Text = "&Issues";
             // 
             // newIssueToolStripMenuItem
             // 
             this.newIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewBug_32x32;
             this.newIssueToolStripMenuItem.Name = "newIssueToolStripMenuItem";
-            this.newIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.newIssueToolStripMenuItem.Text = "New Issue...";
+            this.newIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newIssueToolStripMenuItem.Text = "&New Issue...";
             this.newIssueToolStripMenuItem.Click += new System.EventHandler(this.newIssueToolStripMenuItem_Click);
             // 
             // editIssueToolStripMenuItem
             // 
             this.editIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.EditBug_32x32;
             this.editIssueToolStripMenuItem.Name = "editIssueToolStripMenuItem";
-            this.editIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.editIssueToolStripMenuItem.Text = "Edit Issue...";
+            this.editIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editIssueToolStripMenuItem.Text = "&Edit Issue...";
             this.editIssueToolStripMenuItem.Click += new System.EventHandler(this.editIssueToolStripMenuItem_Click);
             // 
             // deleteIssueToolStripMenuItem
             // 
             this.deleteIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.DeleteBug_32x32;
             this.deleteIssueToolStripMenuItem.Name = "deleteIssueToolStripMenuItem";
-            this.deleteIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.deleteIssueToolStripMenuItem.Text = "Delete Issue";
+            this.deleteIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteIssueToolStripMenuItem.Text = "&Delete Issue";
             this.deleteIssueToolStripMenuItem.Click += new System.EventHandler(this.deleteIssueToolStripMenuItem_Click);
             // 
             // cloneIssueToolStripMenuItem
             // 
             this.cloneIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.CloneBug_32x32;
             this.cloneIssueToolStripMenuItem.Name = "cloneIssueToolStripMenuItem";
-            this.cloneIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.cloneIssueToolStripMenuItem.Text = "Clone Issue";
+            this.cloneIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cloneIssueToolStripMenuItem.Text = "&Clone Issue";
             this.cloneIssueToolStripMenuItem.Click += new System.EventHandler(this.cloneIssueToolStripMenuItem_Click);
             // 
             // tasksToolStripMenuItem
@@ -447,37 +447,37 @@
             this.cloneTaskToolStripMenuItem});
             this.tasksToolStripMenuItem.Name = "tasksToolStripMenuItem";
             this.tasksToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.tasksToolStripMenuItem.Text = "Tasks";
+            this.tasksToolStripMenuItem.Text = "&Tasks";
             // 
             // newTaskToolStripMenuItem
             // 
             this.newTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewTask_32x32;
             this.newTaskToolStripMenuItem.Name = "newTaskToolStripMenuItem";
-            this.newTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.newTaskToolStripMenuItem.Text = "New Task...";
+            this.newTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newTaskToolStripMenuItem.Text = "&New Task...";
             this.newTaskToolStripMenuItem.Click += new System.EventHandler(this.newTaskToolStripMenuItem_Click);
             // 
             // editTaskToolStripMenuItem
             // 
             this.editTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.EditTask_32x32;
             this.editTaskToolStripMenuItem.Name = "editTaskToolStripMenuItem";
-            this.editTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.editTaskToolStripMenuItem.Text = "Edit Task...";
+            this.editTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editTaskToolStripMenuItem.Text = "&Edit Task...";
             this.editTaskToolStripMenuItem.Click += new System.EventHandler(this.editTaskToolStripMenuItem_Click);
             // 
             // deleteTaskToolStripMenuItem
             // 
             this.deleteTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.DeleteTask_32x32;
             this.deleteTaskToolStripMenuItem.Name = "deleteTaskToolStripMenuItem";
-            this.deleteTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.deleteTaskToolStripMenuItem.Text = "Delete Task";
+            this.deleteTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteTaskToolStripMenuItem.Text = "&Delete Task";
             this.deleteTaskToolStripMenuItem.Click += new System.EventHandler(this.deleteTaskToolStripMenuItem_Click);
             // 
             // cloneTaskToolStripMenuItem
             // 
             this.cloneTaskToolStripMenuItem.Name = "cloneTaskToolStripMenuItem";
-            this.cloneTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.cloneTaskToolStripMenuItem.Text = "Clone Task";
+            this.cloneTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cloneTaskToolStripMenuItem.Text = "&Clone Task";
             this.cloneTaskToolStripMenuItem.Click += new System.EventHandler(this.cloneTaskToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -486,14 +486,14 @@
             this.aboutMiniBugToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Text = "&Help";
             // 
             // aboutMiniBugToolStripMenuItem
             // 
             this.aboutMiniBugToolStripMenuItem.Image = global::MiniBug.Properties.Resources.About_32x32;
             this.aboutMiniBugToolStripMenuItem.Name = "aboutMiniBugToolStripMenuItem";
-            this.aboutMiniBugToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.aboutMiniBugToolStripMenuItem.Text = "About MiniBug";
+            this.aboutMiniBugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutMiniBugToolStripMenuItem.Text = "&About MiniBug";
             this.aboutMiniBugToolStripMenuItem.Click += new System.EventHandler(this.aboutMiniBugToolStripMenuItem_Click);
             // 
             // openFileDialog1

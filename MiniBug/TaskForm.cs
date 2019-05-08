@@ -133,6 +133,26 @@ namespace MiniBug
 
             // Resume the layout logic
             this.ResumeLayout();
+
+            SetAccessibilityInformation();
+        }
+
+        /// <summary>
+        /// Add accessibility data to form controls.
+        /// </summary>
+        private void SetAccessibilityInformation()
+        {
+            lblID.AccessibleName = "Task ID";
+            lblID.AccessibleDescription = "Unique numerical code assigned to the task";
+            lblDateCreated.AccessibleName = "Date Created";
+            lblDateCreated.AccessibleDescription = "Date/time when the task was created";
+            lblDateModified.AccessibleName = "Date Modified";
+            lblDateModified.AccessibleDescription = "Date/time when the task was last modified";
+            txtSummary.AccessibleDescription = "Brief summary of the task";
+            cboStatus.AccessibleDescription = "Current status of the task";
+            cboPriority.AccessibleDescription = "Priority of a task";
+            txtTargetVersion.AccessibleDescription = "Version where the task must be resolved";
+            txtDescription.AccessibleDescription = "Extended description of the task";
         }
 
         /// <summary>

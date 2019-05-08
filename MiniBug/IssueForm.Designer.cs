@@ -94,7 +94,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Summary:";
+            this.label4.Text = "&Summary:";
             // 
             // txtSummary
             // 
@@ -112,7 +112,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(42, 13);
             this.label5.TabIndex = 8;
-            this.label5.Text = "Status:";
+            this.label5.Text = "St&atus:";
             // 
             // cboStatus
             // 
@@ -129,7 +129,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 13);
             this.label6.TabIndex = 10;
-            this.label6.Text = "Priority:";
+            this.label6.Text = "&Priority:";
             // 
             // cboPriority
             // 
@@ -146,7 +146,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
             this.label7.TabIndex = 12;
-            this.label7.Text = "Version:";
+            this.label7.Text = "&Version:";
             // 
             // txtVersion
             // 
@@ -162,7 +162,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(84, 13);
             this.label8.TabIndex = 14;
-            this.label8.Text = "Target Version:";
+            this.label8.Text = "&Target Version:";
             // 
             // txtTargetVersion
             // 
@@ -178,7 +178,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(69, 13);
             this.label9.TabIndex = 16;
-            this.label9.Text = "Description:";
+            this.label9.Text = "&Description:";
             // 
             // txtDescription
             // 

@@ -97,7 +97,7 @@
             this.lblIssues.Name = "lblIssues";
             this.lblIssues.Size = new System.Drawing.Size(94, 13);
             this.lblIssues.TabIndex = 2;
-            this.lblIssues.Text = "Issues File Name:";
+            this.lblIssues.Text = "&Issues File Name:";
             // 
             // lblTasks
             // 
@@ -107,7 +107,7 @@
             this.lblTasks.Name = "lblTasks";
             this.lblTasks.Size = new System.Drawing.Size(90, 13);
             this.lblTasks.TabIndex = 5;
-            this.lblTasks.Text = "Tasks File Name:";
+            this.lblTasks.Text = "&Tasks File Name:";
             // 
             // txtIssuesFilename
             // 
@@ -132,7 +132,7 @@
             this.lblLocation.Name = "lblLocation";
             this.lblLocation.Size = new System.Drawing.Size(54, 13);
             this.lblLocation.TabIndex = 8;
-            this.lblLocation.Text = "Location:";
+            this.lblLocation.Text = "&Location:";
             // 
             // txtLocation
             // 
@@ -148,7 +148,7 @@
             this.btBrowse.Name = "btBrowse";
             this.btBrowse.Size = new System.Drawing.Size(75, 23);
             this.btBrowse.TabIndex = 10;
-            this.btBrowse.Text = "Browse...";
+            this.btBrowse.Text = "&Browse...";
             this.btBrowse.UseVisualStyleBackColor = true;
             this.btBrowse.Click += new System.EventHandler(this.btBrowse_Click);
             // 
