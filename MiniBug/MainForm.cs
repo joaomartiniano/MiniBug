@@ -66,6 +66,19 @@ namespace MiniBug
 
             // Set the sort glyph for the issues and tasks DataGridViews
             SetGridSortGlyph(GridType.All);
+
+            SetAccessibilityInformation();
+        }
+
+        /// <summary>
+        /// Add accessibility data to form controls.
+        /// </summary>
+        private void SetAccessibilityInformation()
+        {
+            GridIssues.AccessibleName = "Issues Grid";
+            GridIssues.AccessibleDescription = "Grid with the project issues";
+            GridTasks.AccessibleName = "Tasks Grid";
+            GridTasks.AccessibleDescription = "Grid with the project tasks";
         }
 
         /// <summary>
