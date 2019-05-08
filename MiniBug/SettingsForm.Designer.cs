@@ -83,7 +83,7 @@
             this.lblGridlineColor.Name = "lblGridlineColor";
             this.lblGridlineColor.Size = new System.Drawing.Size(82, 13);
             this.lblGridlineColor.TabIndex = 1;
-            this.lblGridlineColor.Text = "Gridline Color:";
+            this.lblGridlineColor.Text = "&Gridline Color:";
             // 
             // chkShowGridlines
             // 
@@ -92,7 +92,7 @@
             this.chkShowGridlines.Name = "chkShowGridlines";
             this.chkShowGridlines.Size = new System.Drawing.Size(104, 17);
             this.chkShowGridlines.TabIndex = 0;
-            this.chkShowGridlines.Text = "Show Gridlines";
+            this.chkShowGridlines.Text = "S&how Gridlines";
             this.chkShowGridlines.UseVisualStyleBackColor = true;
             this.chkShowGridlines.CheckedChanged += new System.EventHandler(this.chkShowGridlines_CheckedChanged);
             // 
@@ -103,7 +103,7 @@
             this.chkAlternateRowColors.Name = "chkAlternateRowColors";
             this.chkAlternateRowColors.Size = new System.Drawing.Size(146, 17);
             this.chkAlternateRowColors.TabIndex = 2;
-            this.chkAlternateRowColors.Text = "Alternating Row Colors";
+            this.chkAlternateRowColors.Text = "&Alternating Row Colors";
             this.chkAlternateRowColors.UseVisualStyleBackColor = true;
             this.chkAlternateRowColors.CheckedChanged += new System.EventHandler(this.chkAlternateRowColors_CheckedChanged);
             // 
@@ -124,7 +124,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Font:";
+            this.label3.Text = "&Font:";
             // 
             // cboFont
             // 
@@ -141,7 +141,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(30, 13);
             this.label4.TabIndex = 2;
-            this.label4.Text = "Size:";
+            this.label4.Text = "&Size:";
             // 
             // txtFontSize
             // 
@@ -158,7 +158,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(104, 13);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Background Color:";
+            this.label5.Text = "&Background Color:";
             // 
             // SelectionBackgroundColor
             // 
@@ -177,7 +177,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(61, 13);
             this.label7.TabIndex = 2;
-            this.label7.Text = "Text Color:";
+            this.label7.Text = "&Text Color:";
             // 
             // groupBox1
             // 
@@ -233,7 +233,7 @@
             this.lblAlternateRowColor.Name = "lblAlternateRowColor";
             this.lblAlternateRowColor.Size = new System.Drawing.Size(114, 13);
             this.lblAlternateRowColor.TabIndex = 3;
-            this.lblAlternateRowColor.Text = "Alternate Row Color:";
+            this.lblAlternateRowColor.Text = "A&lternate Row Color:";
             // 
             // RowColor
             // 
@@ -252,7 +252,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(64, 13);
             this.label9.TabIndex = 0;
-            this.label9.Text = "Row Color:";
+            this.label9.Text = "&Row Color:";
             // 
             // groupBox3
             // 
@@ -272,7 +272,7 @@
             this.btLoadDefaults.Name = "btLoadDefaults";
             this.btLoadDefaults.Size = new System.Drawing.Size(96, 23);
             this.btLoadDefaults.TabIndex = 7;
-            this.btLoadDefaults.Text = "Load defaults";
+            this.btLoadDefaults.Text = "&Load defaults";
             this.btLoadDefaults.UseVisualStyleBackColor = true;
             this.btLoadDefaults.Click += new System.EventHandler(this.btLoadDefaults_Click);
             // 

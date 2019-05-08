@@ -55,6 +55,29 @@ namespace MiniBug
 
             // Resume the layout logic
             this.ResumeLayout();
+
+            SetAccessibilityInformation();
+        }
+
+        /// <summary>
+        /// Add accessibility data to form controls.
+        /// </summary>
+        private void SetAccessibilityInformation()
+        {
+            cboFont.AccessibleDescription = "Text font used to display information in the Issues and Tasks grids";
+            txtFontSize.AccessibleName = "Font size";
+            txtFontSize.AccessibleDescription = "Font size for the Issues and Tasks grids";
+
+            chkShowGridlines.AccessibleDescription = "Turn on or off gridlines in the Issues and Tasks grids";
+            GridlineColor.AccessibleDescription = "Gridline color in the Issues and Tasks grids";
+            SelectionBackgroundColor.AccessibleDescription = "Background color for the selected rows in the Issues and Tasks grids";
+            SelectionTextColor.AccessibleDescription = "Foreground color for the selected rows in the Issues and Tasks grids";
+
+            RowColor.AccessibleDescription = "Background color of rows in the Issues and Tasks grids";
+            chkAlternateRowColors.AccessibleDescription = "Display rows of alternating colors in the Issues and Tasks grids";
+            AlternateRowColor.AccessibleDescription = "Alternate row background color in the Issues and Tasks grids";
+
+            btLoadDefaults.AccessibleDescription = "Load application default values for the settings";
         }
 
         /// <summary>

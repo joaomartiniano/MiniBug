@@ -212,6 +212,17 @@ namespace MiniBug
 
             // Resume the layout logic
             this.ResumeLayout();
+
+            SetAccessibilityInformation();
+        }
+
+        /// <summary>
+        /// Add accessibility data to form controls.
+        /// </summary>
+        private void SetAccessibilityInformation()
+        {
+            IconDescription.AccessibleDescription = "Icon image that conveys a graphical representation of the result of the operation";
+            FlowLayoutPanel1.AccessibleDescription = "Detailed information about the result of the operation";
         }
 
         /// <summary>

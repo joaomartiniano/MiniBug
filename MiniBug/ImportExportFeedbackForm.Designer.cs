@@ -84,7 +84,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 15;
-            this.label1.Text = "Details:";
+            this.label1.Text = "&Details:";
             // 
             // FlowLayoutPanel1
             // 

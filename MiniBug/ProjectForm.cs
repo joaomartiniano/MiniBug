@@ -84,6 +84,18 @@ namespace MiniBug
 
             // Resume the layout logic
             this.ResumeLayout();
+
+            SetAccessibilityInformation();
+        }
+
+        /// <summary>
+        /// Add accessibility data to form controls.
+        /// </summary>
+        private void SetAccessibilityInformation()
+        {
+            txtFilename.AccessibleDescription = "The name of the file containing the project";
+            txtLocation.AccessibleDescription = "Folder where the project file will be saved";
+            btBrowse.AccessibleDescription = "Browse for the folder where the project file will be saved";
         }
 
         /// <summary>

@@ -83,7 +83,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(76, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Project name:";
+            this.label1.Text = "Project &name:";
             // 
             // txtName
             // 
@@ -100,7 +100,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Location:";
+            this.label2.Text = "&Location:";
             // 
             // txtLocation
             // 
@@ -116,7 +116,7 @@
             this.btBrowse.Name = "btBrowse";
             this.btBrowse.Size = new System.Drawing.Size(75, 23);
             this.btBrowse.TabIndex = 7;
-            this.btBrowse.Text = "Browse...";
+            this.btBrowse.Text = "&Browse...";
             this.btBrowse.UseVisualStyleBackColor = true;
             this.btBrowse.Click += new System.EventHandler(this.btBrowse_Click);
             // 
@@ -149,7 +149,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Filename:";
+            this.label4.Text = "&Filename:";
             // 
             // txtFilename
             // 
