@@ -44,7 +44,7 @@
             this.IconDeleteTask = new System.Windows.Forms.ToolStripButton();
             this.IconCloneTask = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.IconConfigureView = new System.Windows.Forms.ToolStripButton();
+            this.IconConfigureColumns = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -166,7 +166,7 @@
             this.IconDeleteTask,
             this.IconCloneTask,
             this.toolStripSeparator5,
-            this.IconConfigureView});
+            this.IconConfigureColumns});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(801, 52);
@@ -279,16 +279,16 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 52);
             // 
-            // IconConfigureView
+            // IconConfigureColumns
             // 
-            this.IconConfigureView.Image = global::MiniBug.Properties.Resources.ConfigureView_32x32;
-            this.IconConfigureView.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.IconConfigureView.Name = "IconConfigureView";
-            this.IconConfigureView.Size = new System.Drawing.Size(111, 49);
-            this.IconConfigureView.Text = "Configure Columns";
-            this.IconConfigureView.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.IconConfigureView.ToolTipText = "Column settings";
-            this.IconConfigureView.Click += new System.EventHandler(this.IconConfigureView_Click);
+            this.IconConfigureColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.IconConfigureColumns.Image = global::MiniBug.Properties.Resources.ConfigureView_32x32;
+            this.IconConfigureColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.IconConfigureColumns.Name = "IconConfigureColumns";
+            this.IconConfigureColumns.Size = new System.Drawing.Size(36, 49);
+            this.IconConfigureColumns.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.IconConfigureColumns.ToolTipText = "Configure column settings";
+            this.IconConfigureColumns.Click += new System.EventHandler(this.IconConfigureColumns_Click);
             // 
             // menuStrip1
             // 
@@ -582,7 +582,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripButton IconConfigureView;
+        private System.Windows.Forms.ToolStripButton IconConfigureColumns;
         private System.Windows.Forms.ToolStripMenuItem clearRecentProjectsListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configureColumnsToolStripMenuItem;
     }

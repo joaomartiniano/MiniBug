@@ -621,7 +621,7 @@ namespace MiniBug
         /// </summary>
         private void configureColumnsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            ConfigureColumns();
         }
 
         /// <summary>
@@ -794,6 +794,14 @@ namespace MiniBug
         private void IconCloneTask_Click(object sender, EventArgs e)
         {
             CloneTask();
+        }
+
+        /// <summary>
+        /// Configure column settings in the issues and tasks DataGridViews.
+        /// </summary>
+        private void IconConfigureColumns_Click(object sender, EventArgs e)
+        {
+            ConfigureColumns();
         }
         #endregion
 
@@ -2017,9 +2025,9 @@ namespace MiniBug
         #endregion
 
         /// <summary>
-        /// *** em desenvolvimento
+        /// Configure column settings in the issues and tasks DataGridViews.
         /// </summary>
-        private void IconConfigureView_Click(object sender, EventArgs e)
+        private void ConfigureColumns()
         {
             // Store the current sort settings
             GridIssuesSortSettings gridIssuesSortOld = new GridIssuesSortSettings(ApplicationSettings.GridIssuesSort.FirstColumn, ApplicationSettings.GridIssuesSort.FirstColumnSortOrder, ApplicationSettings.GridIssuesSort.SecondColumn, ApplicationSettings.GridIssuesSort.SecondColumnSortOrder);
@@ -2060,7 +2068,7 @@ namespace MiniBug
                 }
             }
 
-            frmConfigureView.Dispose();            
+            frmConfigureView.Dispose();
         }
 
         #region "Grids"
@@ -2187,6 +2195,5 @@ namespace MiniBug
             }
         }
         #endregion
-
     }
 }
