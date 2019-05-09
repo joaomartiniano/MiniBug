@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.GridIssues = new System.Windows.Forms.DataGridView();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -233,7 +232,7 @@
             this.IconNewTask.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.IconNewTask.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.IconNewTask.Name = "IconNewTask";
-            this.IconNewTask.Size = new System.Drawing.Size(34, 49);
+            this.IconNewTask.Size = new System.Drawing.Size(37, 49);
             this.IconNewTask.Text = "New";
             this.IconNewTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.IconNewTask.ToolTipText = "New Task";
@@ -265,7 +264,7 @@
             // 
             // IconCloneTask
             // 
-            this.IconCloneTask.Image = ((System.Drawing.Image)(resources.GetObject("IconCloneTask.Image")));
+            this.IconCloneTask.Image = global::MiniBug.Properties.Resources.CloneTask_32x32;
             this.IconCloneTask.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.IconCloneTask.Name = "IconCloneTask";
             this.IconCloneTask.Size = new System.Drawing.Size(41, 49);
@@ -281,12 +280,12 @@
             // 
             // IconConfigureView
             // 
-            this.IconConfigureView.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.IconConfigureView.Image = global::MiniBug.Properties.Resources.ConfigureView_32x32;
             this.IconConfigureView.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.IconConfigureView.Name = "IconConfigureView";
-            this.IconConfigureView.Size = new System.Drawing.Size(36, 49);
-            this.IconConfigureView.Text = "toolStripButton1";
+            this.IconConfigureView.Size = new System.Drawing.Size(111, 49);
+            this.IconConfigureView.Text = "Configure Columns";
+            this.IconConfigureView.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.IconConfigureView.ToolTipText = "Column settings";
             this.IconConfigureView.Click += new System.EventHandler(this.IconConfigureView_Click);
             // 
@@ -410,7 +409,7 @@
             // 
             this.newIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewBug_32x32;
             this.newIssueToolStripMenuItem.Name = "newIssueToolStripMenuItem";
-            this.newIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.newIssueToolStripMenuItem.Text = "&New Issue...";
             this.newIssueToolStripMenuItem.Click += new System.EventHandler(this.newIssueToolStripMenuItem_Click);
             // 
@@ -418,7 +417,7 @@
             // 
             this.editIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.EditBug_32x32;
             this.editIssueToolStripMenuItem.Name = "editIssueToolStripMenuItem";
-            this.editIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.editIssueToolStripMenuItem.Text = "&Edit Issue...";
             this.editIssueToolStripMenuItem.Click += new System.EventHandler(this.editIssueToolStripMenuItem_Click);
             // 
@@ -426,7 +425,7 @@
             // 
             this.deleteIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.DeleteBug_32x32;
             this.deleteIssueToolStripMenuItem.Name = "deleteIssueToolStripMenuItem";
-            this.deleteIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.deleteIssueToolStripMenuItem.Text = "&Delete Issue";
             this.deleteIssueToolStripMenuItem.Click += new System.EventHandler(this.deleteIssueToolStripMenuItem_Click);
             // 
@@ -434,7 +433,7 @@
             // 
             this.cloneIssueToolStripMenuItem.Image = global::MiniBug.Properties.Resources.CloneBug_32x32;
             this.cloneIssueToolStripMenuItem.Name = "cloneIssueToolStripMenuItem";
-            this.cloneIssueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cloneIssueToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.cloneIssueToolStripMenuItem.Text = "&Clone Issue";
             this.cloneIssueToolStripMenuItem.Click += new System.EventHandler(this.cloneIssueToolStripMenuItem_Click);
             // 
@@ -453,7 +452,7 @@
             // 
             this.newTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.NewTask_32x32;
             this.newTaskToolStripMenuItem.Name = "newTaskToolStripMenuItem";
-            this.newTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.newTaskToolStripMenuItem.Text = "&New Task...";
             this.newTaskToolStripMenuItem.Click += new System.EventHandler(this.newTaskToolStripMenuItem_Click);
             // 
@@ -461,7 +460,7 @@
             // 
             this.editTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.EditTask_32x32;
             this.editTaskToolStripMenuItem.Name = "editTaskToolStripMenuItem";
-            this.editTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.editTaskToolStripMenuItem.Text = "&Edit Task...";
             this.editTaskToolStripMenuItem.Click += new System.EventHandler(this.editTaskToolStripMenuItem_Click);
             // 
@@ -469,12 +468,13 @@
             // 
             this.deleteTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.DeleteTask_32x32;
             this.deleteTaskToolStripMenuItem.Name = "deleteTaskToolStripMenuItem";
-            this.deleteTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.deleteTaskToolStripMenuItem.Text = "&Delete Task";
             this.deleteTaskToolStripMenuItem.Click += new System.EventHandler(this.deleteTaskToolStripMenuItem_Click);
             // 
             // cloneTaskToolStripMenuItem
             // 
+            this.cloneTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.CloneTask_32x32;
             this.cloneTaskToolStripMenuItem.Name = "cloneTaskToolStripMenuItem";
             this.cloneTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cloneTaskToolStripMenuItem.Text = "&Clone Task";
@@ -492,7 +492,7 @@
             // 
             this.aboutMiniBugToolStripMenuItem.Image = global::MiniBug.Properties.Resources.About_32x32;
             this.aboutMiniBugToolStripMenuItem.Name = "aboutMiniBugToolStripMenuItem";
-            this.aboutMiniBugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutMiniBugToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.aboutMiniBugToolStripMenuItem.Text = "&About MiniBug";
             this.aboutMiniBugToolStripMenuItem.Click += new System.EventHandler(this.aboutMiniBugToolStripMenuItem_Click);
             // 

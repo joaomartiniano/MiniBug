@@ -1,16 +1,10 @@
-# MiniBug
+# MiniBug - Issue Tracker and Todo List
 
-## Issue Tracker and Todo List
+MiniBug is a barebones, simple issue tracker and to-do list. It is a desktop single-user application.
 
-MiniBug is a simple issue tracker (and to-do list), desktop single user application.
+*image*
 
-For some time I had the need for a desktop app, a really simple bug tracker (and a wishlist To Do).
-
-There are a lot of very fine products (free or paid) that do this kind of task very, very well. However, most of the time I just need something dead simple, albeit a bit more sophisticated than a text file.
-
-I ended up creating MiniBug, which was designed to work the way I need (although I'm not 100% satisfied). If someone else finds it useful, then good.
-
-### Features
+## Features
 
 - Issues: create, edit, delete, clone
 - Tasks: create, edit, delete, clone
@@ -18,7 +12,11 @@ I ended up creating MiniBug, which was designed to work the way I need (although
 - Some user defined settings
 - Import/export issues and tasks to CSV format
 
-### How To Use
+## Sample Project
+
+I've made a small sample project, with bugs and tasks that I collected from applications public bug trackers (Firefox, Inkscape, MariaDB and Kodi).
+
+# How To Use
 
 First you need to create a new project:
 
@@ -30,13 +28,21 @@ A project has issues and tasks.
 
 Issues are bugs/problems, tasks is a simple to do list (other issue trackers mix them but I prefer to have them in separate views).
 
-### Show/hide columns
+## Issues
+
+...
+
+## Tasks
+
+...
+
+## Show/hide columns
 
 Using the **Configure Columns** window the user can select which columns to show:
 
 *image*
 
-### Sorting
+## Sorting
 
 You can sort the rows in the grids, in two ways:
 
@@ -46,12 +52,18 @@ You can sort the rows in the grids, in two ways:
 
 
 
-### Importing and Exporting
+## Exporting
 
-MiniBug has an option for importing and exporting the issues and tasks of a project, to CSV (comma separated values).
+MiniBug has an option for exporting the issues and tasks of a project, to CSV (comma separated values).
 
-Exporting is easy: you just type a filename and choose a location for the exported files.
+*image*
 
-To import...
+To export, type a filename for the issues and tasks .CSV files, select a location to export and hit export.
+
+After the export operation, a window presents the result of the operation. If errors were encountered, the details of the error(s) and possible solutions are presented.
+
+*image*
+
+
 
 
