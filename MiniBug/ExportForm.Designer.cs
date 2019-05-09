@@ -204,6 +204,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ExportForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Export";
             this.Load += new System.EventHandler(this.ExportForm_Load);

@@ -141,6 +141,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ConfigureViewForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Configure Columns";
             this.Load += new System.EventHandler(this.ConfigureViewForm_Load);
