@@ -2,7 +2,7 @@
 
 MiniBug is a barebones, simple issue tracker and to-do list. It is a desktop single-user application.
 
-![MiniBug main window](screenshots/main-window.png)
+<img src="Screenshots/main-window.png" alt="MiniBug main window">
 
 ## Features
 
