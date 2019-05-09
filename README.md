@@ -16,4 +16,4 @@ MiniBug is a barebones, simple issue tracker and to-do list. It is a desktop sin
 
 I've made a small sample project, with bugs and tasks that I copied from some applications public bug trackers (Inkscape, Firefox, MariaDB and Kodi).
 
-Download the file minibug-MiniBug Sample Project.json and open it in MiniBug.
+Download the file [minibug-MiniBug Sample Project.json]() and open it in MiniBug.
