@@ -2024,53 +2024,6 @@ namespace MiniBug
         }
         #endregion
 
-        /// <summary>
-        /// Configure column settings in the issues and tasks DataGridViews.
-        /// </summary>
-        private void ConfigureColumns()
-        {
-            // Store the current sort settings
-            GridIssuesSortSettings gridIssuesSortOld = new GridIssuesSortSettings(ApplicationSettings.GridIssuesSort.FirstColumn, ApplicationSettings.GridIssuesSort.FirstColumnSortOrder, ApplicationSettings.GridIssuesSort.SecondColumn, ApplicationSettings.GridIssuesSort.SecondColumnSortOrder);
-            GridTasksSortSettings gridTasksSortOld = new GridTasksSortSettings(ApplicationSettings.GridTasksSort.FirstColumn, ApplicationSettings.GridTasksSort.FirstColumnSortOrder, ApplicationSettings.GridTasksSort.SecondColumn, ApplicationSettings.GridTasksSort.SecondColumnSortOrder);
-
-            ConfigureViewForm frmConfigureView = new ConfigureViewForm();
-
-            if (frmConfigureView.ShowDialog() == DialogResult.OK)
-            {
-                // Apply the new visibility settings
-                UpdateColumnsVisibilityGridIssues();
-                UpdateColumnsVisibilityGridTasks();
-
-                ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
-
-                // Apply the new sort settings, if there were changes
-                if (!gridIssuesSortOld.Equals(ApplicationSettings.GridIssuesSort))
-                {
-                    // Remove the sort glyph from the old sort columns
-                    RemoveGridSortGlyph(GridType.Issues, gridIssuesSortOld, null);
-
-                    GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
-
-                    // Set the sort glyph
-                    SetGridSortGlyph(GridType.Issues);
-                }
-
-                // Apply the new sort settings, if there were changes
-                if (!gridTasksSortOld.Equals(ApplicationSettings.GridTasksSort))
-                {
-                    // Remove the sort glyph from the old sort columns
-                    RemoveGridSortGlyph(GridType.Tasks, null, gridTasksSortOld);
-
-                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
-
-                    // Set the sort glyph
-                    SetGridSortGlyph(GridType.Tasks);
-                }
-            }
-
-            frmConfigureView.Dispose();
-        }
-
         #region "Grids"
         /// <summary>
         ///  Apply the settings to the Issues and Tasks grids.
@@ -2193,6 +2146,53 @@ namespace MiniBug
                     GridTasks.Columns[ApplicationSettings.GridTasksColumns[tasksSortSettings.SecondColumn.Value].Name].HeaderCell.SortGlyphDirection = SortOrder.None;
                 }
             }
+        }
+
+        /// <summary>
+        /// Configure column settings in the issues and tasks DataGridViews.
+        /// </summary>
+        private void ConfigureColumns()
+        {
+            // Store the current sort settings
+            GridIssuesSortSettings gridIssuesSortOld = new GridIssuesSortSettings(ApplicationSettings.GridIssuesSort.FirstColumn, ApplicationSettings.GridIssuesSort.FirstColumnSortOrder, ApplicationSettings.GridIssuesSort.SecondColumn, ApplicationSettings.GridIssuesSort.SecondColumnSortOrder);
+            GridTasksSortSettings gridTasksSortOld = new GridTasksSortSettings(ApplicationSettings.GridTasksSort.FirstColumn, ApplicationSettings.GridTasksSort.FirstColumnSortOrder, ApplicationSettings.GridTasksSort.SecondColumn, ApplicationSettings.GridTasksSort.SecondColumnSortOrder);
+
+            ConfigureViewForm frmConfigureView = new ConfigureViewForm();
+
+            if (frmConfigureView.ShowDialog() == DialogResult.OK)
+            {
+                // Apply the new visibility settings
+                UpdateColumnsVisibilityGridIssues();
+                UpdateColumnsVisibilityGridTasks();
+
+                ApplicationSettings.Save(ApplicationSettings.SaveSettings.ColumnOrderSort);
+
+                // Apply the new sort settings, if there were changes
+                if (!gridIssuesSortOld.Equals(ApplicationSettings.GridIssuesSort))
+                {
+                    // Remove the sort glyph from the old sort columns
+                    RemoveGridSortGlyph(GridType.Issues, gridIssuesSortOld, null);
+
+                    GridIssues.Sort(new IssuesDataGridViewRowComparer(SortOrder.Ascending));
+
+                    // Set the sort glyph
+                    SetGridSortGlyph(GridType.Issues);
+                }
+
+                // Apply the new sort settings, if there were changes
+                if (!gridTasksSortOld.Equals(ApplicationSettings.GridTasksSort))
+                {
+                    // Remove the sort glyph from the old sort columns
+                    RemoveGridSortGlyph(GridType.Tasks, null, gridTasksSortOld);
+
+                    GridTasks.Sort(new TasksDataGridViewRowComparer(SortOrder.Ascending));
+
+                    // Set the sort glyph
+                    SetGridSortGlyph(GridType.Tasks);
+                }
+            }
+
+            frmConfigureView.Dispose();
         }
         #endregion
     }
