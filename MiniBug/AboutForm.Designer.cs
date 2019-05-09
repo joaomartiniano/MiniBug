@@ -91,10 +91,10 @@
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(107, 110);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(264, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(265, 13);
             this.linkLabel1.TabIndex = 5;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "https://www.github.com/joaomartiniano/minibug";
+            this.linkLabel1.Text = "https://www.github.com/joaomartiniano/MiniBug";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // AboutForm
