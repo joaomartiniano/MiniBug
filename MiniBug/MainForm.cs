@@ -617,6 +617,14 @@ namespace MiniBug
         }
 
         /// <summary>
+        /// Configure column settings in the issues and tasks DataGridViews.
+        /// </summary>
+        private void configureColumnsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
         /// Change the application settings.
         /// </summary>
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2179,5 +2187,6 @@ namespace MiniBug
             }
         }
         #endregion
+
     }
 }

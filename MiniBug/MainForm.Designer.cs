@@ -71,6 +71,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMiniBugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.configureColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.GridIssues)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -310,6 +311,7 @@
             this.editProjectToolStripMenuItem,
             this.exportToolStripMenuItem,
             this.toolStripSeparator3,
+            this.configureColumnsToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.toolStripSeparator4,
             this.recentProjectsToolStripMenuItem,
@@ -476,7 +478,7 @@
             // 
             this.cloneTaskToolStripMenuItem.Image = global::MiniBug.Properties.Resources.CloneTask_32x32;
             this.cloneTaskToolStripMenuItem.Name = "cloneTaskToolStripMenuItem";
-            this.cloneTaskToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cloneTaskToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.cloneTaskToolStripMenuItem.Text = "&Clone Task";
             this.cloneTaskToolStripMenuItem.Click += new System.EventHandler(this.cloneTaskToolStripMenuItem_Click);
             // 
@@ -499,6 +501,14 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // configureColumnsToolStripMenuItem
+            // 
+            this.configureColumnsToolStripMenuItem.Image = global::MiniBug.Properties.Resources.ConfigureView_32x32;
+            this.configureColumnsToolStripMenuItem.Name = "configureColumnsToolStripMenuItem";
+            this.configureColumnsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.configureColumnsToolStripMenuItem.Text = "Confi&gure Columns";
+            this.configureColumnsToolStripMenuItem.Click += new System.EventHandler(this.configureColumnsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -574,6 +584,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton IconConfigureView;
         private System.Windows.Forms.ToolStripMenuItem clearRecentProjectsListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configureColumnsToolStripMenuItem;
     }
 }
 
