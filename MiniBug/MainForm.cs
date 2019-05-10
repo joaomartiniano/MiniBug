@@ -984,14 +984,12 @@ namespace MiniBug
         /// </summary>
         private void GridIssues_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // *** adaptar este método
-
             if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Issues.Count == 0))
             {
                 return;
             }
 
-            int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
+            int key = Convert.ToInt32(GridIssues[ApplicationSettings.GridIssuesColumns[IssueFieldsUI.ID].Name, e.RowIndex].Value.ToString());
 
             // Text color of closed issues
             if (Program.SoftwareProject.Issues.ContainsKey(key))
@@ -1004,7 +1002,7 @@ namespace MiniBug
             }
 
             // Configure/format the "priority" column's cells
-            if (GridIssues.Columns[e.ColumnIndex].Name == "priority")
+            if (GridIssues.Columns[e.ColumnIndex].Name == ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Priority].Name)
             {
                 // Test if the cell has no image assigned
                 if (e.Value == null)
@@ -1590,14 +1588,12 @@ namespace MiniBug
         /// </summary>
         private void GridTasks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            // *** adaptar este método
-
             if ((Program.SoftwareProject == null) || (Program.SoftwareProject.Tasks.Count == 0))
             {
                 return;
             }
 
-            int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
+            int key = Convert.ToInt32(GridTasks[ApplicationSettings.GridTasksColumns[TaskFieldsUI.ID].Name, e.RowIndex].Value.ToString());
 
             // Text color of finished tasks
             if (Program.SoftwareProject.Tasks.ContainsKey(key))
@@ -1610,7 +1606,7 @@ namespace MiniBug
             }
 
             // Configure/format the "priority" column's cells
-            if (GridTasks.Columns[e.ColumnIndex].Name == "priority")
+            if (GridTasks.Columns[e.ColumnIndex].Name == ApplicationSettings.GridTasksColumns[TaskFieldsUI.Priority].Name)
             {
                 // Test if the cell has no image assigned
                 if (e.Value == null)
