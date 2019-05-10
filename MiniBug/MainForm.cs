@@ -837,7 +837,7 @@ namespace MiniBug
                 HeaderText = col.HeaderText,
                 Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -851,7 +851,7 @@ namespace MiniBug
                 HeaderText = col.HeaderText,
                 Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells,
                 MinimumWidth = 32
             };
             GridIssues.Columns.Add(imageColumn);
@@ -864,7 +864,7 @@ namespace MiniBug
                 HeaderText = col.HeaderText,
                 Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
             column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -879,7 +879,7 @@ namespace MiniBug
                 HeaderText = col.HeaderText,
                 Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
@@ -892,7 +892,7 @@ namespace MiniBug
                 HeaderText = col.HeaderText,
                 Visible = col.Visible,
                 Resizable = DataGridViewTriState.False,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
@@ -914,7 +914,7 @@ namespace MiniBug
                 Name = col.Name,
                 HeaderText = col.HeaderText,
                 Visible = col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
             GridIssues.Columns.Add(column);
 
@@ -925,7 +925,7 @@ namespace MiniBug
                 Name = col.Name,
                 HeaderText = col.HeaderText,
                 Visible = col.Visible,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
             GridIssues.Columns.Add(column);
 
