@@ -823,6 +823,9 @@ namespace MiniBug
             GridIssues.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
             GridIssues.ShowCellToolTips = true;
 
+            GridIssues.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridIssues.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             GridIssues.AutoGenerateColumns = false;
 
             // Add columns to the issues grid
@@ -839,8 +842,6 @@ namespace MiniBug
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Priority
@@ -866,7 +867,6 @@ namespace MiniBug
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
-            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             column.DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
             GridIssues.Columns.Add(column);
@@ -881,7 +881,6 @@ namespace MiniBug
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Target version
@@ -894,7 +893,6 @@ namespace MiniBug
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
             };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridIssues.Columns.Add(column);
 
             // Summary
@@ -905,6 +903,7 @@ namespace MiniBug
                 HeaderText = col.HeaderText,
                 Visible = col.Visible
             };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             GridIssues.Columns.Add(column);
 
             // Date created
@@ -1441,6 +1440,11 @@ namespace MiniBug
             GridTasks.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
             GridTasks.ShowCellToolTips = true;
 
+            GridTasks.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            GridTasks.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            GridTasks.AutoGenerateColumns = false;
+
             // Add columns to the tasks grid
             DataGridViewTextBoxColumn column = null;
             GridColumn col;
@@ -1455,8 +1459,6 @@ namespace MiniBug
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridTasks.Columns.Add(column);
 
             // Priority
@@ -1482,7 +1484,6 @@ namespace MiniBug
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
-            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             column.DefaultCellStyle.Padding = new Padding(15, 0, 6, 0);
             GridTasks.Columns.Add(column);
@@ -1497,7 +1498,6 @@ namespace MiniBug
                 Resizable = DataGridViewTriState.False,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             };
-            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridTasks.Columns.Add(column);
 
             // Summary
@@ -1508,6 +1508,7 @@ namespace MiniBug
                 HeaderText = col.HeaderText,
                 Visible = col.Visible
             };
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             GridTasks.Columns.Add(column);
 
             // Date created
