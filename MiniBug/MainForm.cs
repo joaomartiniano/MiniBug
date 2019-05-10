@@ -1051,7 +1051,6 @@ namespace MiniBug
             }
         }
 
-        // *** atualizar este método
         /// <summary>
         /// Advanced formatting of cells.
         /// </summary>
@@ -1066,9 +1065,9 @@ namespace MiniBug
             e.PaintContent(e.ClipBounds);
 
             // Draw a filled rectangle in the "Status" column
-            if (GridIssues.Columns[e.ColumnIndex].Name == "status")
+            if (GridIssues.Columns[e.ColumnIndex].Name == ApplicationSettings.GridIssuesColumns[IssueFieldsUI.Status].Name)
             {
-                int key = Convert.ToInt32(GridIssues["id", e.RowIndex].Value.ToString());
+                int key = Convert.ToInt32(GridIssues[ApplicationSettings.GridIssuesColumns[IssueFieldsUI.ID].Name, e.RowIndex].Value.ToString());
                 Brush fillColor;
 
                 // Set the color for the rectangle, according to the Issue status
@@ -1666,9 +1665,9 @@ namespace MiniBug
             e.PaintContent(e.ClipBounds);
 
             // Draw a filled rectangle in the "Status" column
-            if (GridTasks.Columns[e.ColumnIndex].Name == "status")
+            if (GridTasks.Columns[e.ColumnIndex].Name == ApplicationSettings.GridTasksColumns[TaskFieldsUI.Status].Name)
             {
-                int key = Convert.ToInt32(GridTasks["id", e.RowIndex].Value.ToString());
+                int key = Convert.ToInt32(GridTasks[ApplicationSettings.GridTasksColumns[TaskFieldsUI.ID].Name, e.RowIndex].Value.ToString());
                 Brush fillColor;
 
                 // Set the color for the rectangle, according to the Task status
