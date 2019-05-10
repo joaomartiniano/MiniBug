@@ -510,10 +510,6 @@ namespace MiniBug
             if (status != FileSystemOperationStatus.OK)
             {
                 ShowProjectErrorFeedback(status);
-
-                // *** TODO: reverter alterações
-                // Abort the new project
-                //Program.SoftwareProject = null;
             }
         }
 
