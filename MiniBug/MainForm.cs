@@ -135,8 +135,7 @@ namespace MiniBug
         {
             TabControl.Left = this.ClientRectangle.Left;
             TabControl.Width = this.ClientRectangle.Width + 3;
-            TabControl.Height = this.ClientRectangle.Height - toolStrip1.Height;
-            // *** TabControl.Dock = DockStyle.
+            TabControl.Height = this.ClientRectangle.Height - toolStrip1.Height - menuStrip1.Height + 1;
         }
 
         /// <summary>
