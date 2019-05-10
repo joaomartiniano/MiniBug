@@ -443,8 +443,6 @@ namespace MiniBug
                 FileSystemOperationStatus status = FileSystemOperationStatus.None;
                 Project newProject = new Project();
 
-                // *** ??? o que é a linha seguinte, comentada? remover ??
-                //status = ApplicationData.LoadProject(filename, out Program.SoftwareProject);
                 status = ApplicationData.LoadProject(filename, out newProject);
 
                 // If there was an error loading the new project file, show feedback
@@ -453,7 +451,6 @@ namespace MiniBug
                     ShowProjectErrorFeedback(status);
 
                     // Abort the new project
-                    //Program.SoftwareProject = null;
                     newProject = null;
                 }
                 else
