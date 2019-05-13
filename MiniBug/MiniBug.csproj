@@ -34,7 +34,7 @@
     <ProductName>MiniBug</ProductName>
     <PublisherName>João Martiniano</PublisherName>
     <SuiteName>MiniBug</SuiteName>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
